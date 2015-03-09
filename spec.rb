@@ -31,3 +31,45 @@ describe "Next state" do
 
   end
 end
+
+class Game 
+  def initialize(initial_state, players)
+    raise Error if (players.size != 2 || initial_state.size != 9) 
+    @state = initial_state
+  end
+  def advance()
+    @state = ['X', nil, nil, nil, nil, nil, nil, nil, nil]
+  end
+  def state()
+    @state
+  end
+end
+describe "Game" do
+  before(:each) do
+    @empty_state = [nil, nil, nil, nil, nil, nil, nil, nil, nil]
+    @players = {'X' => double("player"), 'O' => double("player")}
+  end
+
+  it "Given invalid amount of players raises error" do
+    expect {Game.new(@empty_state, {'X' => double("player")})}.to raise_error
+    expect {Game.new(@empty_state, {'X' => double("player"), 'O' => double("player"), 'H' => double("player")})}.to raise_error
+  end
+
+  it "Given an invalid initial state raises error" do
+    expect {Game.new([nil, nil, nil, nil, nil, nil, nil, nil], @players)}.to raise_error
+    expect {Game.new([nil, nil, nil, nil, nil, nil, nil, nil, nil, nil], @players)}.to raise_error
+  end
+
+  it "Initial state" do
+    game = Game.new(@empty_state, @players)
+    expect(game.state).to eq(@empty_state)
+  end
+  
+  it "Advances asking the first player" do
+    allow(@players['X']).to receive(:play).and_return(0)
+    game = Game.new(@empty_state, @players)
+
+    game.advance()
+    expect(game.state).to eq(['X', nil, nil, nil, nil, nil, nil, nil, nil])
+  end
+end
