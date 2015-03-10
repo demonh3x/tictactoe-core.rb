@@ -6,9 +6,12 @@ class Game
     @state
   end
   def finished?()
-    false
+    winner() != nil
   end
   def winner()
+    line = [xy(0, 0), xy(0, 1), xy(0, 2)]
+    players = line.map {|l| @state[l]}.uniq
+    players.size == 1? players.first : nil
   end
   def make_move(player, location)
     @state[location] = player
@@ -32,40 +35,40 @@ class Location
   alias_method :eql?, :==
 
   def hash()
-    self.x * self.y
+    self.x.hash * self.y.hash
   end
+end
+
+def xy(x, y)
+  Location.new(x, y)
 end
 
 describe "Location" do
   it "Should equal other location that has the same coordinates" do
-    expect(Location.new(1, 2) == Location.new(1, 2)).to eq(true)
+    expect(xy(1, 2) == xy(1, 2)).to eq(true)
   end
 
   it "Should not equal to other location with different coordinates" do
-    expect(Location.new(1, 2) == Location.new(2, 2)).to eq(false)
+    expect(xy(1, 2) == xy(2, 2)).to eq(false)
   end
 
   it "Should not equal to other non-location objects" do
-    expect(Location.new(1, 2) == "1, 2").to eq(false)
+    expect(xy(1, 2) == "1, 2").to eq(false)
   end
 
   it "Should be usable as a hash key" do
-    hash = {Location.new(1, 2) => "::associated_value::"}
-    expect(hash.key? Location.new(1, 2)).to eq(true)
-    expect(hash[Location.new(1, 2)]).to eq("::associated_value::")
+    hash = {xy(1, 2) => "::associated_value::"}
+    expect(hash.key? xy(1, 2)).to eq(true)
+    expect(hash[xy(1, 2)]).to eq("::associated_value::")
   end
 end
 
 describe "Game" do
-  def loc(x, y)
-    Location.new(x, y)
-  end
-
   before(:each) do
     @empty_state = {}
     @game = Game.new(@empty_state)
-    @x = Player.new
-    @o = Player.new
+    @a = Player.new
+    @b = Player.new
   end
 
   describe "With no moves" do
@@ -73,32 +76,60 @@ describe "Game" do
       expect(@game.state).to eq(@empty_state)
     end
 
-    it "Should have no winner" do
+    it "The game should not be finished" do 
       expect(@game.finished?).to eq(false)
+    end
+
+    it "Should have no winner" do
       expect(@game.winner).to eq(nil)
     end
   end
 
   describe "With the first move" do
     before(:each) do
-      @game.make_move(@x, loc(0,0))
+      @game.make_move(@a, xy(0,0))
     end
 
     it "The state should contain that move" do
-      expect(@game.state).to eq({loc(0,0) => @x})
+      expect(@game.state).to eq({xy(0,0) => @a})
     end
   end
 
-  describe "With three moves for x" do
+  [
+    [xy(0,0), xy(0,1), xy(0,2)],
+    #[xy(0,0), xy(1,0), xy(2,0)],
+    #[xy(0,0), xy(1,1), xy(2,2)],
+  ].each do |line|
+    describe "With a line for player a" do
+      before(:each) do
+        line.each do |l|
+          @game.make_move(@a, l)
+        end
+      end
+
+      it "The game should be finished" do
+        expect(@game.finished?).to eq(true)
+      end
+
+      it "Should have won" do
+        expect(@game.winner).to eq(@a)
+      end
+    end
+  end
+  
+  describe "With three moves not in line for player a" do
     before(:each) do
-      @game.make_move(@x, loc(0,0))
-      @game.make_move(@x, loc(0,1))
-      @game.make_move(@x, loc(0,2))
+      [xy(0,0), xy(0,1), xy(1,0)].each do |l|
+        @game.make_move(@a, l)
+      end
+    end
+    
+    it "The game should not be finished" do 
+      expect(@game.finished?).to eq(false)
     end
 
-    it "Should have won" do
-      expect(@game.finished?).to eq(true)
-      expect(@game.winner).to eq(@x)
+    it "Should have no winner" do
+      expect(@game.winner).to eq(nil)
     end
   end
 end
