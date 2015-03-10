@@ -1,85 +1,104 @@
-def next_state(state, location, player) 
-  throw Error if state[location] != nil
-
-  s = state.clone
-  s[location] = player
-  s
-end
-
-describe "Next state" do
-  describe "Given empty state" do
-    before(:each) do
-      @empty_state = [nil, nil, nil, nil, nil, nil, nil, nil, nil]
-    end
-
-    it "Does not modify the input state" do
-      next_state(@empty_state, 0, 'X')
-      expect(@empty_state).to eq([nil, nil, nil, nil, nil, nil, nil, nil, nil]) 
-    end
-
-    it "When the player plays at an already played location raises error" do
-      expect{next_state(['X', nil, nil, nil, nil, nil, nil, nil, nil], 0, 'X')}.to raise_error
-    end
-
-    it "When the player plays to the first location, he should be in that location" do
-      expect(next_state(@empty_state, 0, 'X')).to eq(['X', nil, nil, nil, nil, nil, nil, nil, nil])
-    end
-
-    it "When the player plays to the second location, he should be in that location" do
-      expect(next_state(@empty_state, 1, 'O')).to eq([nil, 'O', nil, nil, nil, nil, nil, nil, nil])
-    end
-
-  end
-end
-
-class Game 
-  def initialize(initial_state, players)
-    raise Error if (players.size != 2 || initial_state.size != 9) 
-    @state = initial_state
-    @players = players
-  end
-  def advance()
-    p = @players.cycle.peek
-    player = p[1]
-    icon = p[0]
-    @state = next_state(@state, player.play, icon) 
+class Game
+  def initialize(initial_state)
+    @state = {}
   end
   def state()
     @state
   end
+  def finished?()
+    false
+  end
+  def winner()
+  end
+  def make_move(player, location)
+    @state[location] = player
+  end
+end
+
+class Player
+end
+
+class Location
+  attr_reader :x, :y
+
+  def initialize(x, y)
+    @x = x
+    @y = y
+  end
+
+  def ==(other)
+    return self.class == other.class && self.x == other.x && self.y == other.y
+  end
+  alias_method :eql?, :==
+
+  def hash()
+    self.x * self.y
+  end
+end
+
+describe "Location" do
+  it "Should equal other location that has the same coordinates" do
+    expect(Location.new(1, 2) == Location.new(1, 2)).to eq(true)
+  end
+
+  it "Should not equal to other location with different coordinates" do
+    expect(Location.new(1, 2) == Location.new(2, 2)).to eq(false)
+  end
+
+  it "Should not equal to other non-location objects" do
+    expect(Location.new(1, 2) == "1, 2").to eq(false)
+  end
+
+  it "Should be usable as a hash key" do
+    hash = {Location.new(1, 2) => "::associated_value::"}
+    expect(hash.key? Location.new(1, 2)).to eq(true)
+    expect(hash[Location.new(1, 2)]).to eq("::associated_value::")
+  end
 end
 
 describe "Game" do
+  def loc(x, y)
+    Location.new(x, y)
+  end
+
   before(:each) do
-    @empty_state = [nil, nil, nil, nil, nil, nil, nil, nil, nil]
-    @players = {'X' => double("player"), 'O' => double("player")}
+    @empty_state = {}
+    @game = Game.new(@empty_state)
+    @x = Player.new
+    @o = Player.new
   end
 
-  it "Given invalid amount of players raises error" do
-    expect {Game.new(@empty_state, {'X' => double("player")})}.to raise_error
-    expect {Game.new(@empty_state, {'X' => double("player"), 'O' => double("player"), 'H' => double("player")})}.to raise_error
+  describe "With no moves" do
+    it "Should have the same state" do
+      expect(@game.state).to eq(@empty_state)
+    end
+
+    it "Should have no winner" do
+      expect(@game.finished?).to eq(false)
+      expect(@game.winner).to eq(nil)
+    end
   end
 
-  it "Given an invalid initial state raises error" do
-    expect {Game.new([nil, nil, nil, nil, nil, nil, nil, nil], @players)}.to raise_error
-    expect {Game.new([nil, nil, nil, nil, nil, nil, nil, nil, nil, nil], @players)}.to raise_error
+  describe "With the first move" do
+    before(:each) do
+      @game.make_move(@x, loc(0,0))
+    end
+
+    it "The state should contain that move" do
+      expect(@game.state).to eq({loc(0,0) => @x})
+    end
   end
 
-  it "Initial state" do
-    game = Game.new(@empty_state, @players)
-    expect(game.state).to eq(@empty_state)
-  end
-  
-  def first_play_test(player_icon, location, expected_state)
-    allow(@players[player_icon]).to receive(:play).and_return(location)
-    game = Game.new(@empty_state, @players)
+  describe "With three moves for x" do
+    before(:each) do
+      @game.make_move(@x, loc(0,0))
+      @game.make_move(@x, loc(0,1))
+      @game.make_move(@x, loc(0,2))
+    end
 
-    game.advance()
-    expect(game.state).to eq(expected_state)
-  end
-
-  it "Advances asking the first player" do
-    first_play_test('X', 0, ['X', nil, nil, nil, nil, nil, nil, nil, nil])
-    first_play_test('X', 1, [nil, 'X', nil, nil, nil, nil, nil, nil, nil])
+    it "Should have won" do
+      expect(@game.finished?).to eq(true)
+      expect(@game.winner).to eq(@x)
+    end
   end
 end
