@@ -39,8 +39,14 @@ class Location
   end
 end
 
+class ThreeByThreeBoard
+  def location(x, y)
+    Location.new(x, y)
+  end
+end
+
 def xy(x, y)
-  Location.new(x, y)
+  ThreeByThreeBoard.new.location(x, y)
 end
 
 describe "Location" do
