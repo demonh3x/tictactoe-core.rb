@@ -295,8 +295,9 @@ describe "Game" do
   end
 end
 
-class CliObserver
-  def initialize(output, player_icons)
+class Cli
+  def initialize(input, output, player_icons)
+    @input = input
     @output = output
     @player_icons = player_icons
   end
@@ -312,66 +313,6 @@ class CliObserver
     end
   end
 
-  private
-
-  def get_icon(state, x, y)
-    player = state[BidimensionalLocation.new(x, y)]
-    icon = @player_icons[player]
-    icon == nil ? ' ' : icon
-  end
-end
-
-describe "State CLI Observer" do
-  before(:each) do
-    @X = Player.new
-    @O = Player.new
-    @out = StringIO.new
-    @observer = CliObserver.new(@out, {@X => 'X', @O => 'O'})
-  end
-
-  it "Prints the an empty state" do
-    @observer.update(state(
-      nil, nil, nil,
-      nil, nil, nil,
-      nil, nil, nil,
-    ))
-    expect(@out.string).to eq(
-      "  x 0   1   2\n" +
-      "y +---+---+---+\n" +
-      "0 |   |   |   |\n" +
-      "  +---+---+---+\n" +
-      "1 |   |   |   |\n" +
-      "  +---+---+---+\n" +
-      "2 |   |   |   |\n" +
-      "  +---+---+---+\n"
-    )
-  end
-
-  it "Prints state with some pieces" do
-    @observer.update(state(
-      @X,  nil, @O,
-      nil, @O,  @X,
-      nil, nil, nil,
-    ))
-    expect(@out.string).to eq(
-      "  x 0   1   2\n" +
-      "y +---+---+---+\n" +
-      "0 | X |   | O |\n" +
-      "  +---+---+---+\n" +
-      "1 |   | O | X |\n" +
-      "  +---+---+---+\n" +
-      "2 |   |   |   |\n" +
-      "  +---+---+---+\n"
-    )
-  end
-end
-
-class CliInteractor
-  def initialize(input, output)
-    @input = input
-    @output = output
-  end
-
   def give_turn
     @output.puts "Your turn! Where do you want to play? (format: x,y)"
     parts = read_ints
@@ -382,6 +323,12 @@ class CliInteractor
   end
 
   private
+
+  def get_icon(state, x, y)
+    player = state[BidimensionalLocation.new(x, y)]
+    icon = @player_icons[player]
+    icon == nil ? ' ' : icon
+  end
 
   def read_ints
     i = read_input
@@ -408,11 +355,52 @@ class CliInteractor
   end
 end
 
-describe "Human CLI Interactor" do
+describe "CLI" do
   before(:each) do
+    @X = Player.new
+    @O = Player.new
     @in = StringIO.new
     @out = StringIO.new
-    @interactor = CliInteractor.new(@in, @out)
+    @icons = {@X => 'X', @O => 'O'}
+    @cli = Cli.new(@in, @out, @icons)
+  end
+
+  describe "when updating" do
+    it "Prints the an empty state" do
+      @cli.update(state(
+        nil, nil, nil,
+        nil, nil, nil,
+        nil, nil, nil,
+      ))
+      expect(@out.string).to eq(
+        "  x 0   1   2\n" +
+        "y +---+---+---+\n" +
+        "0 |   |   |   |\n" +
+        "  +---+---+---+\n" +
+        "1 |   |   |   |\n" +
+        "  +---+---+---+\n" +
+        "2 |   |   |   |\n" +
+        "  +---+---+---+\n"
+      )
+    end
+
+    it "Prints state with some pieces" do
+      @cli.update(state(
+        @X,  nil, @O,
+        nil, @O,  @X,
+        nil, nil, nil,
+      ))
+      expect(@out.string).to eq(
+        "  x 0   1   2\n" +
+        "y +---+---+---+\n" +
+        "0 | X |   | O |\n" +
+        "  +---+---+---+\n" +
+        "1 |   | O | X |\n" +
+        "  +---+---+---+\n" +
+        "2 |   |   |   |\n" +
+        "  +---+---+---+\n"
+      )
+    end
   end
 
   def human_will_send(str)
@@ -421,27 +409,27 @@ describe "Human CLI Interactor" do
 
   it "asks for a location" do
     human_will_send("1,2")
-    @interactor.give_turn
+    @cli.give_turn
     expect(@out.string).to include("Your turn! Where do you want to play? (format: x,y)\n")
   end
 
   describe "given no input" do
     it "returns nil" do
-      expect(@interactor.give_turn).to eq(nil)
+      expect(@cli.give_turn).to eq(nil)
     end
   end
 
   describe "given an input with no whitespaces" do
     it "reads the location" do
       human_will_send("1,2")
-      expect(@interactor.give_turn).to eq(xy(1, 2))
+      expect(@cli.give_turn).to eq(xy(1, 2))
     end
   end
 
   describe "given an input with some whitespaces" do
     it "reads the location" do
       human_will_send("  \t 2 ,\t 0 ")
-      expect(@interactor.give_turn).to eq(xy(2, 0))
+      expect(@cli.give_turn).to eq(xy(2, 0))
     end
   end
 
@@ -449,7 +437,7 @@ describe "Human CLI Interactor" do
     it "should try to read again" do
       human_will_send("::invalid_input::")
       human_will_send("1, 1")
-      expect(@interactor.give_turn).to eq(xy(1, 1))
+      expect(@cli.give_turn).to eq(xy(1, 1))
       expect(@out.string).to include("Don't understand \"::invalid_input::\". Please, make sure you use the format \"x,y\"\n")
     end
   end
