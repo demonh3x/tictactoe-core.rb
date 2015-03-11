@@ -303,7 +303,7 @@ class CliObserver
 
   private
   def get_icon(state, x, y)
-    player = state[xy(x, y)]
+    player = state[BidimensionalLocation.new(x, y)]
     icon = @player_icons[player]
     icon == nil ? ' ' : icon
   end
