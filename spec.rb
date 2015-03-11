@@ -366,7 +366,7 @@ describe "CLI" do
   end
 
   describe "when updating" do
-    it "Prints the an empty state" do
+    it "prints the an empty state" do
       @cli.update(state(
         nil, nil, nil,
         nil, nil, nil,
@@ -384,7 +384,7 @@ describe "CLI" do
       )
     end
 
-    it "Prints state with some pieces" do
+    it "prints state with some pieces" do
       @cli.update(state(
         @X,  nil, @O,
         nil, @O,  @X,
