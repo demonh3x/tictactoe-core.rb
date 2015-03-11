@@ -349,7 +349,7 @@ class Cli
 
   def parse_location(location_string)
     parts = location_string.split(',').map{|s| Integer(s.strip) rescue nil}
-    return nil if parts.any?{|p| p.nil?}
+    return nil if parts.any?{|p| p.nil?} || parts.size != 2
     x = parts[0]
     y = parts[1]
     BidimensionalLocation.new(x, y)
@@ -443,12 +443,28 @@ describe "CLI" do
       end
     end
 
+    def expect_invalid_input(invalid_input)
+      human_will_send(invalid_input)
+      human_will_send("1, 1")
+      expect(@cli.ask_for_location).to eq(xy(1, 1))
+      expect(@out.string).to include("Don't understand \"#{invalid_input}\". Please, make sure you use the format \"x,y\"\n")
+    end
+
     describe "given an invalid input" do
       it "should try to read again" do
-        human_will_send("::invalid_input::")
-        human_will_send("1, 1")
-        expect(@cli.ask_for_location).to eq(xy(1, 1))
-        expect(@out.string).to include("Don't understand \"::invalid_input::\". Please, make sure you use the format \"x,y\"\n")
+        expect_invalid_input("::invalid_input::")
+      end
+    end
+
+    describe "given less coordinates than required" do
+      it "should try to read again" do
+        expect_invalid_input("1")
+      end
+    end
+
+    describe "given more coordinates than required" do
+      it "should try to read again" do
+        expect_invalid_input("0, 1, 2")
       end
     end
   end
