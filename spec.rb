@@ -366,40 +366,44 @@ describe "CLI" do
   end
 
   describe "when updating" do
-    it "prints the an empty state" do
-      @cli.update(state(
-        nil, nil, nil,
-        nil, nil, nil,
-        nil, nil, nil,
-      ))
-      expect(@out.string).to eq(
-        "  x 0   1   2\n" +
-        "y +---+---+---+\n" +
-        "0 |   |   |   |\n" +
-        "  +---+---+---+\n" +
-        "1 |   |   |   |\n" +
-        "  +---+---+---+\n" +
-        "2 |   |   |   |\n" +
-        "  +---+---+---+\n"
-      )
+    describe "given an empty state" do
+      it "prints it without pieces" do
+        @cli.update(state(
+          nil, nil, nil,
+          nil, nil, nil,
+          nil, nil, nil,
+        ))
+        expect(@out.string).to eq(
+          "  x 0   1   2\n" +
+          "y +---+---+---+\n" +
+          "0 |   |   |   |\n" +
+          "  +---+---+---+\n" +
+          "1 |   |   |   |\n" +
+          "  +---+---+---+\n" +
+          "2 |   |   |   |\n" +
+          "  +---+---+---+\n"
+        )
+      end
     end
 
-    it "prints state with some pieces" do
-      @cli.update(state(
-        @X,  nil, @O,
-        nil, @O,  @X,
-        nil, nil, nil,
-      ))
-      expect(@out.string).to eq(
-        "  x 0   1   2\n" +
-        "y +---+---+---+\n" +
-        "0 | X |   | O |\n" +
-        "  +---+---+---+\n" +
-        "1 |   | O | X |\n" +
-        "  +---+---+---+\n" +
-        "2 |   |   |   |\n" +
-        "  +---+---+---+\n"
-      )
+    describe "given a state with some moves" do
+      it "prints it with the pieces at the correct position" do
+        @cli.update(state(
+          @X,  nil, @O,
+          nil, @O,  @X,
+          nil, nil, nil,
+        ))
+        expect(@out.string).to eq(
+          "  x 0   1   2\n" +
+          "y +---+---+---+\n" +
+          "0 | X |   | O |\n" +
+          "  +---+---+---+\n" +
+          "1 |   | O | X |\n" +
+          "  +---+---+---+\n" +
+          "2 |   |   |   |\n" +
+          "  +---+---+---+\n"
+        )
+      end
     end
   end
 
@@ -407,38 +411,40 @@ describe "CLI" do
     @in.string += "#{str}\n"
   end
 
-  it "asks for a location" do
-    human_will_send("1,2")
-    @cli.give_turn
-    expect(@out.string).to include("Your turn! Where do you want to play? (format: x,y)\n")
-  end
-
-  describe "given no input" do
-    it "returns nil" do
-      expect(@cli.give_turn).to eq(nil)
-    end
-  end
-
-  describe "given an input with no whitespaces" do
-    it "reads the location" do
+  describe "when giving turn" do
+    it "asks for a location" do
       human_will_send("1,2")
-      expect(@cli.give_turn).to eq(xy(1, 2))
+      @cli.give_turn
+      expect(@out.string).to include("Your turn! Where do you want to play? (format: x,y)\n")
     end
-  end
 
-  describe "given an input with some whitespaces" do
-    it "reads the location" do
-      human_will_send("  \t 2 ,\t 0 ")
-      expect(@cli.give_turn).to eq(xy(2, 0))
+    describe "given no input" do
+      it "returns nil" do
+        expect(@cli.give_turn).to eq(nil)
+      end
     end
-  end
 
-  describe "given an invalid input" do
-    it "should try to read again" do
-      human_will_send("::invalid_input::")
-      human_will_send("1, 1")
-      expect(@cli.give_turn).to eq(xy(1, 1))
-      expect(@out.string).to include("Don't understand \"::invalid_input::\". Please, make sure you use the format \"x,y\"\n")
+    describe "given an input with no whitespaces" do
+      it "reads the location" do
+        human_will_send("1,2")
+        expect(@cli.give_turn).to eq(xy(1, 2))
+      end
+    end
+
+    describe "given an input with some whitespaces" do
+      it "reads the location" do
+        human_will_send("  \t 2 ,\t 0 ")
+        expect(@cli.give_turn).to eq(xy(2, 0))
+      end
+    end
+
+    describe "given an invalid input" do
+      it "should try to read again" do
+        human_will_send("::invalid_input::")
+        human_will_send("1, 1")
+        expect(@cli.give_turn).to eq(xy(1, 1))
+        expect(@out.string).to include("Don't understand \"::invalid_input::\". Please, make sure you use the format \"x,y\"\n")
+      end
     end
   end
 end
