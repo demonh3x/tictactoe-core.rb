@@ -110,7 +110,7 @@ def xy(x, y)
   BidimensionalLocation.new(x, y)
 end
 
-describe "Location" do
+RSpec.describe "Location" do
   it "should equal other location that has the same coordinates" do
     expect(xy(1, 2) == xy(1, 2)).to eq(true)
   end
@@ -130,7 +130,7 @@ describe "Location" do
   end
 end
 
-describe "3x3 board" do
+RSpec.describe "3x3 board" do
   before(:each) do
     @board = ThreeByThreeBoard.new
   end
@@ -179,7 +179,7 @@ def state(
   }
 end
 
-describe "Game" do
+RSpec.describe "Game" do
   before(:each) do
     @board = ThreeByThreeBoard.new
     @game = Game.new(@board)
@@ -360,7 +360,7 @@ class Cli
   end
 end
 
-describe "CLI" do
+RSpec.describe "CLI" do
   before(:each) do
     @X = Player.new
     @O = Player.new
