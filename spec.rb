@@ -353,3 +353,89 @@ describe "State CLI Observer" do
     )
   end
 end
+
+class CliInteractor
+  def initialize(input, output)
+    @input = input
+    @output = output
+  end
+
+  def give_turn
+    @output.puts "Your turn! Where do you want to play? (format: x,y)"
+    parts = read_ints
+    return nil if parts.nil?
+    x = parts[0]
+    y = parts[1]
+    BidimensionalLocation.new(x, y)
+  end
+
+  private
+  def read_ints()
+    i = read_input()
+    return nil if i.nil?
+    while !is_valid?(i)
+      @output.puts "Don't understand \"#{i[:str]}\". Please, make sure you use the format \"x,y\""
+      i = read_input()
+    end
+
+    i[:parts]
+  end
+  def read_input()
+      str = @input.gets
+      return nil if str.nil?
+      {
+        :str => str.strip,
+        :parts => str.split(',').map{|s| Integer(s.strip) rescue nil}
+      }
+  end
+  def is_valid?(input)
+    !input[:parts].any?{|p| p.nil?}
+  end
+end
+
+describe "Human CLI Interactor" do
+  before(:each) do
+    @in = StringIO.new
+    @out = StringIO.new
+    @interactor = CliInteractor.new(@in, @out)
+  end
+
+  def human_will_send(str)
+    @in.string += "#{str}\n"
+  end
+
+  it "Asks for a location" do
+    human_will_send("1,2")
+    @interactor.give_turn()
+    expect(@out.string).to include("Your turn! Where do you want to play? (format: x,y)\n")
+  end
+
+  describe "Given no input" do
+    it "Returns nil" do
+      expect(@interactor.give_turn()).to eq(nil)
+    end
+  end
+
+  describe "Given an input with no whitespaces" do
+    it "Reads the location" do
+      human_will_send("1,2")
+      expect(@interactor.give_turn()).to eq(xy(1, 2))
+    end
+  end
+
+  describe "Given an input with some whitespaces" do
+    it "Reads the location" do
+      human_will_send("  \t 2 ,\t 0 ")
+      expect(@interactor.give_turn()).to eq(xy(2, 0))
+    end
+  end
+
+  describe "Given an invalid input" do
+    it "Should try to read again" do
+      human_will_send("::invalid_input::")
+      human_will_send("1, 1")
+      expect(@interactor.give_turn()).to eq(xy(1, 1))
+      expect(@out.string).to include("Don't understand \"::invalid_input::\". Please, make sure you use the format \"x,y\"\n")
+    end
+  end
+end
