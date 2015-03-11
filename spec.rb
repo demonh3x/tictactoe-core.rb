@@ -313,7 +313,7 @@ class Cli
     end
   end
 
-  def give_turn
+  def ask_for_location
     @output.puts "Your turn! Where do you want to play? (format: x,y)"
     parts = read_ints
     return nil if parts.nil?
@@ -411,30 +411,30 @@ describe "CLI" do
     @in.string += "#{str}\n"
   end
 
-  describe "when giving turn" do
-    it "asks for a location" do
+  describe "when asking for a location" do
+    it "prints the message doing it" do
       human_will_send("1,2")
-      @cli.give_turn
+      @cli.ask_for_location
       expect(@out.string).to include("Your turn! Where do you want to play? (format: x,y)\n")
     end
 
     describe "given no input" do
       it "returns nil" do
-        expect(@cli.give_turn).to eq(nil)
+        expect(@cli.ask_for_location).to eq(nil)
       end
     end
 
     describe "given an input with no whitespaces" do
       it "reads the location" do
         human_will_send("1,2")
-        expect(@cli.give_turn).to eq(xy(1, 2))
+        expect(@cli.ask_for_location).to eq(xy(1, 2))
       end
     end
 
     describe "given an input with some whitespaces" do
       it "reads the location" do
         human_will_send("  \t 2 ,\t 0 ")
-        expect(@cli.give_turn).to eq(xy(2, 0))
+        expect(@cli.ask_for_location).to eq(xy(2, 0))
       end
     end
 
@@ -442,7 +442,7 @@ describe "CLI" do
       it "should try to read again" do
         human_will_send("::invalid_input::")
         human_will_send("1, 1")
-        expect(@cli.give_turn).to eq(xy(1, 1))
+        expect(@cli.ask_for_location).to eq(xy(1, 1))
         expect(@out.string).to include("Don't understand \"::invalid_input::\". Please, make sure you use the format \"x,y\"\n")
       end
     end
