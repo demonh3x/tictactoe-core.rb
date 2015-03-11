@@ -78,9 +78,15 @@ class ThreeByThreeBoard
         BidimensionalLocation.new(y, x)}}
 
     diagonals = [
-      [xy(0, 0), xy(1, 1), xy(2, 2)],
-      [xy(0, 2), xy(1, 1), xy(2, 0)],
-    ]
+      [[0, 0], [1, 1], [2, 2]],
+      [[0, 2], [1, 1], [2, 0]]
+    ].map{|d|
+      d.map{|xy|
+        x = xy[0]
+        y = xy[1]
+        BidimensionalLocation.new(x, y)
+      }
+    }
 
     @lines = horizontal + vertical + diagonals
   end
