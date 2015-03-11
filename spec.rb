@@ -314,12 +314,8 @@ class Cli
   end
 
   def ask_for_location
-    @output.puts "Your turn! Where do you want to play? (format: x,y)"
-    parts = read_ints
-    return nil if parts.nil?
-    x = parts[0]
-    y = parts[1]
-    BidimensionalLocation.new(x, y)
+    print_turn
+    read_valid_location
   end
 
   private
@@ -330,28 +326,37 @@ class Cli
     icon == nil ? ' ' : icon
   end
 
-  def read_ints
-    i = read_input
-    return nil if i.nil?
-    while !is_valid?(i)
-      @output.puts "Don't understand \"#{i[:str]}\". Please, make sure you use the format \"x,y\""
-      i = read_input
-    end
+  def print_turn
+    @output.puts "Your turn! Where do you want to play? (format: x,y)"
+  end
+  
+  def read_valid_location
+    begin
+      input_string = read_input
+      location = parse_location(input_string)
+      invalid_input = location.nil?
+      print_invalid_input(input_string) if invalid_input
+    end while invalid_input
 
-    i[:parts]
+    location
   end
 
   def read_input
       str = @input.gets
-      return nil if str.nil?
-      {
-        :str => str.strip,
-        :parts => str.split(',').map{|s| Integer(s.strip) rescue nil}
-      }
+      raise "No data readed from the CLI input!" if str.nil?
+      str.strip
   end
 
-  def is_valid?(input)
-    !input[:parts].any?{|p| p.nil?}
+  def parse_location(location_string)
+    parts = location_string.split(',').map{|s| Integer(s.strip) rescue nil}
+    return nil if parts.any?{|p| p.nil?}
+    x = parts[0]
+    y = parts[1]
+    BidimensionalLocation.new(x, y)
+  end
+
+  def print_invalid_input(input_string)
+      @output.puts "Don't understand \"#{input_string}\". Please, make sure you use the format \"x,y\""
   end
 end
 
@@ -419,8 +424,8 @@ describe "CLI" do
     end
 
     describe "given no input" do
-      it "returns nil" do
-        expect(@cli.ask_for_location).to eq(nil)
+      it "raises an error" do
+        expect{@cli.ask_for_location}.to raise_error("No data readed from the CLI input!")
       end
     end
 
