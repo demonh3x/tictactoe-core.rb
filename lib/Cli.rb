@@ -1,11 +1,12 @@
 require 'Location'
 
 class Cli
-  def initialize(input, output, player_icons, board)
+  def initialize(input, output, player_icons, board, player)
     @input = input
     @output = output
     @player_icons = player_icons
     @board = board
+    @player = player
   end
 
   def update(state)
@@ -22,6 +23,16 @@ class Cli
   def ask_for_location
     print_turn
     read_valid_location
+  end
+
+  def announce_winner(player)
+    if player.nil?
+      print_draw
+    elsif player == @player
+      print_win
+    else
+      print_lose
+    end
   end
 
   private
@@ -81,5 +92,17 @@ class Cli
   
   def print_location_outside_board
     @output.puts "That location is outside the board. Please, try one inside it."
+  end
+
+  def print_draw
+    @output.puts "It is a draw."
+  end
+
+  def print_win
+    @output.puts "You win!"
+  end
+
+  def print_lose
+    @output.puts "You lose."
   end
 end

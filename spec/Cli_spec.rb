@@ -28,7 +28,7 @@ RSpec.describe "CLI" do
     @out = StringIO.new
     @icons = {@X => 'X', @O => 'O'}
     @board = ThreeByThreeBoard.new
-    @cli = Cli.new(@in, @out, @icons, @board)
+    @cli = Cli.new(@in, @out, @icons, @board, @X)
   end
 
   describe "when updating" do
@@ -136,6 +136,23 @@ RSpec.describe "CLI" do
         expect(@cli.ask_for_location).to eq(Location.new(1, 1))
         expect(@out.string).to include("That location is outside the board. Please, try one inside it.\n")
       end
+    end
+  end
+
+  describe "when announcing the winner" do
+    it "if is self, sould print that he/she is the winner" do
+      @cli.announce_winner(@X)
+      expect(@out.string).to include("You win!")
+    end
+
+    it "if is someone else, should print that he/she lost" do
+      @cli.announce_winner(@O)
+      expect(@out.string).to include("You lose.")
+    end
+
+    it "if no one won, should print that is a draw" do
+      @cli.announce_winner(nil)
+      expect(@out.string).to include("It is a draw.")
     end
   end
 end
