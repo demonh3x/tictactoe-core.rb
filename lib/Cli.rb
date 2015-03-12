@@ -1,10 +1,11 @@
 require 'Location'
 
 class Cli
-  def initialize(input, output, player_icons)
+  def initialize(input, output, player_icons, board)
     @input = input
     @output = output
     @player_icons = player_icons
+    @board = board
   end
 
   def update(state)
@@ -41,6 +42,16 @@ class Cli
   
   def read_valid_location
     begin
+      location = read_location
+      location_outside_board = !@board.locations.include?(location)
+      print_location_outside_board if location_outside_board
+    end while location_outside_board
+
+    location
+  end
+
+  def read_location
+    begin
       input_string = read_input
       location = parse_location(input_string)
       invalid_input = location.nil?
@@ -65,6 +76,10 @@ class Cli
   end
 
   def print_invalid_input(input_string)
-      @output.puts "Don't understand \"#{input_string}\". Please, make sure you use the format \"x,y\""
+    @output.puts "Don't understand \"#{input_string}\". Please, make sure you use the format \"x,y\""
+  end
+  
+  def print_location_outside_board
+    @output.puts "That location is outside the board. Please, try one inside it."
   end
 end

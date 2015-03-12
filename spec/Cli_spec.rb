@@ -1,6 +1,7 @@
 require 'Cli'
 require 'Player'
 require 'Location'
+require 'ThreeByThreeBoard'
 
 RSpec.describe "CLI" do
   def state(
@@ -26,7 +27,8 @@ RSpec.describe "CLI" do
     @in = StringIO.new
     @out = StringIO.new
     @icons = {@X => 'X', @O => 'O'}
-    @cli = Cli.new(@in, @out, @icons)
+    @board = ThreeByThreeBoard.new
+    @cli = Cli.new(@in, @out, @icons, @board)
   end
 
   describe "when updating" do
@@ -124,6 +126,15 @@ RSpec.describe "CLI" do
     describe "given more coordinates than required" do
       it "should try to read again" do
         expect_invalid_input("0, 1, 2")
+      end
+    end
+
+    describe "given a location outside the board" do
+      it "should try again" do
+        human_will_send("3, 3")
+        human_will_send("1, 1")
+        expect(@cli.ask_for_location).to eq(Location.new(1, 1))
+        expect(@out.string).to include("That location is outside the board. Please, try one inside it.\n")
       end
     end
   end
