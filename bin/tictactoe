@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+dirname = File.expand_path(File.dirname(File.dirname(__FILE__))) + "/lib"
+$LOAD_PATH.unshift(dirname) unless $LOAD_PATH.include?(dirname)
+
+require 'Cli.rb'
+
+cli = Cli.new($stdin, $stdout, {})
+p cli.ask_for_location
+
