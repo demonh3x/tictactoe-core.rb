@@ -25,10 +25,10 @@ class Cli
     read_valid_location
   end
 
-  def announce_winner(player)
-    if player.nil?
+  def announce_result(winner)
+    if winner.nil?
       print_draw
-    elsif player == @player
+    elsif winner == @player
       print_win
     else
       print_lose

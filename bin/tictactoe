@@ -3,8 +3,22 @@
 dirname = File.expand_path(File.dirname(File.dirname(__FILE__))) + "/lib"
 $LOAD_PATH.unshift(dirname) unless $LOAD_PATH.include?(dirname)
 
-require 'Cli.rb'
+require 'Coordinator'
+require 'Cli'
+require 'Game'
+require 'ThreeByThreeBoard'
 
-cli = Cli.new($stdin, $stdout, {})
-p cli.ask_for_location
+board = ThreeByThreeBoard.new
+icons = {:x => 'X', :o => 'O'}
+coordinator = Coordinator.new(
+  Game.new(board), 
+  [
+    {:player => :x, :ui => Cli.new($stdin, $stdout, icons, board, :x)},
+    {:player => :o, :ui => Cli.new($stdin, $stdout, icons, board, :o)},
+  ]
+)
+
+while (!coordinator.finished?)
+  coordinator.step
+end
 
