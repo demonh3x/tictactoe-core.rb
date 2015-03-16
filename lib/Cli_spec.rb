@@ -87,7 +87,7 @@ RSpec.describe "CLI Player" do
     @out = StringIO.new
     @board = ThreeByThreeBoard.new
     @state = State.new(@board, {})
-    @cli = CliPlayer.new(@in, @out, :mark)
+    @player = CliPlayer.new(@in, @out, :mark)
   end
 
   def human_will_send(str)
@@ -95,11 +95,11 @@ RSpec.describe "CLI Player" do
   end
 
   def ask_for_location
-    @cli.ask_for_location(@state)
+    @player.ask_for_location(@state)
   end
 
   it "should have a mark" do
-    expect(@cli.mark).to eq(:mark)
+    expect(@player.mark).to eq(:mark)
   end
 
   describe "when asking for a location" do
@@ -160,6 +160,19 @@ RSpec.describe "CLI Player" do
         human_will_send("1, 1")
         expect(ask_for_location).to eq(Location.new(1, 1))
         expect(@out.string).to include("That location is outside the board. Please, try one inside it.\n")
+      end
+    end
+
+    describe "given an already occupied location" do
+      before(:each) do
+        @state = @state.put(Location.new(0,0), @player.mark)
+      end
+
+      it "should try again" do
+        human_will_send("0, 0")
+        human_will_send("1, 1")
+        expect(ask_for_location).to eq(Location.new(1, 1))
+        expect(@out.string).to include("That location is already occupied. Please, try an empty one.\n")
       end
     end
   end

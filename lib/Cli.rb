@@ -58,7 +58,7 @@ class CliPlayer
 
   def ask_for_location(state)
     print_turn
-    read_valid_location(state.board)
+    read_valid_location(state)
   end
 
   attr_reader :mark
@@ -71,12 +71,15 @@ class CliPlayer
     output.puts "Your turn! Where do you want to play? (format: x,y)"
   end
   
-  def read_valid_location(board)
+  def read_valid_location(state)
+    board = state.board
     begin
       location = read_location
       location_outside_board = !board.locations.include?(location)
       print_location_outside_board if location_outside_board
-    end while location_outside_board
+      location_already_occupied = !state.look_at(location).nil? 
+      print_location_already_occupied if location_already_occupied
+    end while location_outside_board || location_already_occupied
 
     location
   end
@@ -112,5 +115,9 @@ class CliPlayer
   
   def print_location_outside_board
     output.puts "That location is outside the board. Please, try one inside it."
+  end
+
+  def print_location_already_occupied
+    output.puts "That location is already occupied. Please, try an empty one."
   end
 end
