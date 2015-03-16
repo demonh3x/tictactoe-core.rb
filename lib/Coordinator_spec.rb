@@ -1,4 +1,4 @@
-require 'Coordinator'
+require 'coordinator'
 
 RSpec.describe "Coordinator" do
   class GameDouble

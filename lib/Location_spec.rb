@@ -1,4 +1,4 @@
-require 'Location'
+require 'location'
 
 RSpec.describe "Location" do
   it "should equal other location that has the same coordinates" do

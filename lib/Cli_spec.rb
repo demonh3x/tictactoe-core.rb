@@ -1,7 +1,6 @@
-require 'Cli'
-require 'Player'
-require 'Location'
-require 'ThreeByThreeBoard'
+require 'cli'
+require 'location'
+require 'three_by_three_board'
 
 RSpec.describe "CLI" do
   def state(
@@ -22,13 +21,11 @@ RSpec.describe "CLI" do
   end
 
   before(:each) do
-    @X = Player.new
-    @O = Player.new
     @in = StringIO.new
     @out = StringIO.new
-    @icons = {@X => 'X', @O => 'O'}
+    @icons = {:X => 'X', :O => 'O'}
     @board = ThreeByThreeBoard.new
-    @cli = Cli.new(@in, @out, @icons, @board, @X)
+    @cli = Cli.new(@in, @out, @icons, @board, :X)
   end
 
   describe "when updating" do
@@ -55,8 +52,8 @@ RSpec.describe "CLI" do
     describe "given a state with some moves" do
       it "prints it with the pieces at the correct position" do
         @cli.update(state(
-          @X,  nil, @O,
-          nil, @O,  @X,
+          :X,  nil, :O,
+          nil, :O,  :X,
           nil, nil, nil,
         ))
         expect(@out.string).to eq(
@@ -141,12 +138,12 @@ RSpec.describe "CLI" do
 
   describe "when announcing the winner" do
     it "if is self, sould print that he/she is the winner" do
-      @cli.announce_result(@X)
+      @cli.announce_result(:X)
       expect(@out.string).to include("You win!")
     end
 
     it "if is someone else, should print that he/she lost" do
-      @cli.announce_result(@O)
+      @cli.announce_result(:O)
       expect(@out.string).to include("You lose.")
     end
 

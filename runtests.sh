@@ -1,1 +1,1 @@
-rspec --color -fd spec/*
+rspec --color -fd lib/*

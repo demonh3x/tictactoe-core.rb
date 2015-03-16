@@ -1,17 +1,14 @@
-require 'Game'
-require 'ThreeByThreeBoard'
-require 'Player'
+require 'game'
+require 'three_by_three_board'
 
 RSpec.describe "Game" do
   before(:each) do
     @board = ThreeByThreeBoard.new
     @game = Game.new(@board)
-    @X = Player.new
-    @O = Player.new
   end
 
   it "should avoid leaking state mutations" do
-    @game.state[Location.new(0, 0)] = @X
+    @game.state[Location.new(0, 0)] = :X
     expect(@game.state[Location.new(0, 0)]).to eq(nil)
   end
 
@@ -42,11 +39,11 @@ RSpec.describe "Game" do
   describe "with the first move" do
     before(:each) do
       @loc = Location.new(0, 0)
-      @game.make_move(@X, @loc)
+      @game.make_move(:X, @loc)
     end
 
     it "the state should contain that move" do
-      expect(@game.state[@loc]).to eq(@X)
+      expect(@game.state[@loc]).to eq(:X)
     end
   end
 
@@ -54,7 +51,7 @@ RSpec.describe "Game" do
     describe "with a line for player a" do
       before(:each) do
         line.each do |l|
-          @game.make_move(@X, l)
+          @game.make_move(:X, l)
         end
       end
 
@@ -63,7 +60,7 @@ RSpec.describe "Game" do
       end
 
       it "should have won" do
-        expect(@game.winner).to eq(@X)
+        expect(@game.winner).to eq(:X)
       end
     end
   end
@@ -90,8 +87,8 @@ RSpec.describe "Game" do
   describe "with three moves not in line for player a" do
     before(:each) do
       set_state(
-        @X,  @X,  nil,
-        @X,  nil, nil,
+        :X,  :X,  nil,
+        :X,  nil, nil,
         nil, nil, nil
       )
     end
@@ -108,9 +105,9 @@ RSpec.describe "Game" do
   describe "with a full board but no winner" do
     before(:each) do
       set_state(
-        @O, @X, @X,
-        @X, @X, @O,
-        @O, @O, @X
+        :O, :X, :X,
+        :X, :X, :O,
+        :O, :O, :X
       )
     end
 

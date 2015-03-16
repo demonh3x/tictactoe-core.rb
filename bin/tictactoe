@@ -3,10 +3,10 @@
 dirname = File.expand_path(File.dirname(File.dirname(__FILE__))) + "/lib"
 $LOAD_PATH.unshift(dirname) unless $LOAD_PATH.include?(dirname)
 
-require 'Coordinator'
-require 'Cli'
-require 'Game'
-require 'ThreeByThreeBoard'
+require 'coordinator'
+require 'cli'
+require 'game'
+require 'three_by_three_board'
 
 board = ThreeByThreeBoard.new
 icons = {:x => 'X', :o => 'O'}
