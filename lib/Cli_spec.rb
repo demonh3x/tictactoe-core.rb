@@ -2,7 +2,7 @@ require 'cli'
 require 'location'
 require 'three_by_three_board'
 
-RSpec.describe "CLI" do
+RSpec.describe "CLI Observer" do
   def state(
     x0y0, x1y0, x2y0,
     x0y1, x1y1, x2y1,
@@ -24,8 +24,7 @@ RSpec.describe "CLI" do
     @in = StringIO.new
     @out = StringIO.new
     @icons = {:X => 'X', :O => 'O'}
-    @board = ThreeByThreeBoard.new
-    @cli = Cli.new(@in, @out, @icons, @board, :X)
+    @cli = Cli.new(@in, @out, @icons, :X)
   end
 
   describe "when updating" do
@@ -68,6 +67,32 @@ RSpec.describe "CLI" do
         )
       end
     end
+  end
+
+  describe "when announcing the winner" do
+    it "if is self, sould print that he/she is the winner" do
+      @cli.announce_result(:X)
+      expect(@out.string).to include("You win!")
+    end
+
+    it "if is someone else, should print that he/she lost" do
+      @cli.announce_result(:O)
+      expect(@out.string).to include("You lose.")
+    end
+
+    it "if no one won, should print that is a draw" do
+      @cli.announce_result(nil)
+      expect(@out.string).to include("It is a draw.")
+    end
+  end
+end
+
+RSpec.describe "CLI Player" do
+  before(:each) do
+    @in = StringIO.new
+    @out = StringIO.new
+    @board = ThreeByThreeBoard.new
+    @cli = CliPlayer.new(@in, @out, @board)
   end
 
   def human_will_send(str)
@@ -136,20 +161,4 @@ RSpec.describe "CLI" do
     end
   end
 
-  describe "when announcing the winner" do
-    it "if is self, sould print that he/she is the winner" do
-      @cli.announce_result(:X)
-      expect(@out.string).to include("You win!")
-    end
-
-    it "if is someone else, should print that he/she lost" do
-      @cli.announce_result(:O)
-      expect(@out.string).to include("You lose.")
-    end
-
-    it "if no one won, should print that is a draw" do
-      @cli.announce_result(nil)
-      expect(@out.string).to include("It is a draw.")
-    end
-  end
 end

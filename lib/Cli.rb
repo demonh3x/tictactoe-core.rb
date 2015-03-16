@@ -1,11 +1,10 @@
 require 'Location'
 
 class Cli
-  def initialize(input, output, player_icons, board, player)
+  def initialize(input, output, player_icons, player)
     @input = input
     @output = output
     @player_icons = player_icons
-    @board = board
     @player = player
   end
 
@@ -14,15 +13,10 @@ class Cli
     @output.puts("y +---+---+---+")
     (0..2).each do |y|
       @output.puts(
-        "#{y} | #{get_icon(state, 0, y)} | #{get_icon(state, 1, y)} | #{get_icon(state, 2, y)} |\n" +
+        "#{y} | #{get_icon(state, loc(0, y))} | #{get_icon(state, loc(1, y))} | #{get_icon(state, loc(2, y))} |\n" +
         "  +---+---+---+"
       )
     end
-  end
-
-  def ask_for_location
-    print_turn
-    read_valid_location
   end
 
   def announce_result(winner)
@@ -37,14 +31,39 @@ class Cli
 
   private
 
-  def get_icon(state, x, y)
-    player = state[loc(x, y)]
+  def get_icon(state, loc)
+    player = state[loc]
     icon = @player_icons[player]
     icon == nil ? ' ' : icon
   end
 
   def loc(x, y)
     Location.new(x, y)
+  end
+
+  def print_draw
+    @output.puts "It is a draw."
+  end
+
+  def print_win
+    @output.puts "You win!"
+  end
+
+  def print_lose
+    @output.puts "You lose."
+  end
+end
+
+class CliPlayer
+  def initialize(input, output, board)
+    @input = input
+    @output = output
+    @board = board
+  end
+
+  def ask_for_location
+    print_turn
+    read_valid_location
   end
 
   def print_turn
@@ -83,7 +102,7 @@ class Cli
     return nil if parts.any?{|p| p.nil?} || parts.size != 2
     x = parts[0]
     y = parts[1]
-    loc(x, y)
+    Location.new(x, y)
   end
 
   def print_invalid_input(input_string)
@@ -92,17 +111,5 @@ class Cli
   
   def print_location_outside_board
     @output.puts "That location is outside the board. Please, try one inside it."
-  end
-
-  def print_draw
-    @output.puts "It is a draw."
-  end
-
-  def print_win
-    @output.puts "You win!"
-  end
-
-  def print_lose
-    @output.puts "You lose."
   end
 end
