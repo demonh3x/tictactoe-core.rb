@@ -49,7 +49,6 @@ RSpec.describe "Coordinator" do
     def initialize(messages)
       @messages = messages
       @update_calls = []
-      @location_responses = []
       @announce_result_calls = []
     end
 
@@ -62,15 +61,6 @@ RSpec.describe "Coordinator" do
       @update_calls.clone
     end
 
-    def ask_for_location
-      @messages << {:obj => self, :method => :ask_for_location}
-      @location_responses.pop
-    end
-
-    def add_location_response(location)
-      @location_responses << location
-    end
-
     def announce_result(winner)
       @announce_result_calls << {:winner => winner}
     end
@@ -80,11 +70,38 @@ RSpec.describe "Coordinator" do
     end
   end
 
+  class PlayerDouble
+    def initialize(mark, messages)
+      @mark = mark
+      @messages = messages
+      @ask_for_location_calls = []
+      @location_responses = []
+    end
+
+    def ask_for_location(state)
+      @messages << {:obj => self, :method => :ask_for_location}
+      @ask_for_location_calls << {:state => state}
+      @location_responses.pop
+    end
+
+    def add_location_response(location)
+      @location_responses << location
+    end
+
+    def ask_for_location_calls
+      @ask_for_location_calls
+    end
+
+    def mark
+      @mark
+    end
+  end
+
   def stub_state(state)
     @game.add_state_response(state)
   end
 
-  def stub_ui_move(ui, location)
+  def stub_player_move(ui, location)
     ui.add_location_response(location)
   end
 
@@ -95,6 +112,11 @@ RSpec.describe "Coordinator" do
     end
   end
 
+  def expect_asked_for_location(index, player, state)
+    call = player.ask_for_location_calls[index]
+    expect(call[:state]).to equal(state)
+  end
+  
   def expect_maked_move(index, player, location)
     maked_move = @game.make_move_calls[index]
     expect(maked_move[:player]).to equal(player)
@@ -109,15 +131,13 @@ RSpec.describe "Coordinator" do
     @x_ui = UiDouble.new(@messages)
     @o_ui = UiDouble.new(@messages)
 
-    @x_player = "::x_player::"
-    @o_player = "::o_player::"
+    @x_mark = "::x_mark::"
+    @o_mark = "::o_mark::"
 
-    players = [
-      {:player => @x_player, :ui => @x_ui},
-      {:player => @o_player, :ui => @o_ui},
-    ]
+    @x_player = PlayerDouble.new(@x_mark, @messages)
+    @o_player = PlayerDouble.new(@o_mark, @messages)
 
-    @coordinator = Coordinator.new(@game, players) 
+    @coordinator = Coordinator.new(@game, [@x_ui, @o_ui], [@x_player, @o_player]) 
   end
 
   describe "given the game is finished" do
@@ -165,7 +185,7 @@ RSpec.describe "Coordinator" do
         stub_state(@initial_game_state)
 
         @first_x_location = "::first_x_location::"
-        stub_ui_move(@x_ui, @first_x_location)
+        stub_player_move(@x_player, @first_x_location)
 
         @second_game_state = "::second_game_state::"
         stub_state(@second_game_state)
@@ -177,8 +197,12 @@ RSpec.describe "Coordinator" do
         expect_uis_received_state(0, @initial_game_state)
       end
 
-      it "should ask the first player for a location and send it to game" do
-        expect_maked_move(0, @x_player, @first_x_location)
+      it "should ask the first player for a location" do
+        expect_asked_for_location(0, @x_player, @initial_game_state)
+      end
+
+      it "should send the first player location to game" do
+        expect_maked_move(0, @x_mark, @first_x_location)
       end
 
       it "should update all the UIs with the second game state" do
@@ -190,7 +214,7 @@ RSpec.describe "Coordinator" do
           {:obj => @game, :method => :state},
           {:obj => @x_ui, :method => :update},
           {:obj => @o_ui, :method => :update},
-          {:obj => @x_ui, :method => :ask_for_location},
+          {:obj => @x_player, :method => :ask_for_location},
           {:obj => @game, :method => :make_move},
           {:obj => @game, :method => :state},
           {:obj => @x_ui, :method => :update},
@@ -207,7 +231,8 @@ RSpec.describe "Coordinator" do
 
         it "should only do one update to the UIs" do
           expected_messages = [
-            {:obj => @o_ui, :method => :ask_for_location},
+            {:obj => @game, :method => :state},
+            {:obj => @o_player, :method => :ask_for_location},
             {:obj => @game, :method => :make_move},
             {:obj => @game, :method => :state},
             {:obj => @x_ui, :method => :update},

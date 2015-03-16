@@ -6,19 +6,20 @@ $LOAD_PATH.unshift(dirname) unless $LOAD_PATH.include?(dirname)
 require 'coordinator'
 require 'cli'
 require 'game'
+require 'state'
 require 'three_by_three_board'
 
-board = ThreeByThreeBoard.new
-icons = {:x => 'X', :o => 'O'}
 coordinator = Coordinator.new(
-  Game.new(board), 
+  Game.new(State.new(ThreeByThreeBoard.new, {})), 
   [
-    {:player => :x, :ui => Cli.new($stdin, $stdout, icons, board, :x)},
-    {:player => :o, :ui => Cli.new($stdin, $stdout, icons, board, :o)},
+    Cli.new($stdout, {:x => 'X', :o => 'O'})
+  ],
+  [
+    CliPlayer.new($stdin, $stdout, :x),
+    CliPlayer.new($stdin, $stdout, :o)
   ]
 )
 
 while (!coordinator.finished?)
   coordinator.step
 end
-

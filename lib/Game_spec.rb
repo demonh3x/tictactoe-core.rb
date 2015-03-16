@@ -1,20 +1,22 @@
 require 'game'
+require 'state'
 require 'three_by_three_board'
 
 RSpec.describe "Game" do
   before(:each) do
     @board = ThreeByThreeBoard.new
-    @game = Game.new(@board)
+    @game = Game.new(State.new(@board, {}))
   end
 
-  it "should avoid leaking state mutations" do
-    @game.state[Location.new(0, 0)] = :X
-    expect(@game.state[Location.new(0, 0)]).to eq(nil)
+  def expect_state(loc_marks_map)
+      loc_marks_map.each do |loc, mark|
+        expect(@game.state.look_at loc).to eq(mark)
+      end
   end
 
   describe "with no moves" do
     it "should have an empty state" do
-      expect(@game.state).to eq({
+      expect_state({
         Location.new(0, 0) => nil,  
         Location.new(0, 1) => nil,  
         Location.new(0, 2) => nil,  
@@ -43,7 +45,7 @@ RSpec.describe "Game" do
     end
 
     it "the state should contain that move" do
-      expect(@game.state[@loc]).to eq(:X)
+      expect(@game.state.look_at(@loc)).to eq(:X)
     end
   end
 

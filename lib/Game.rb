@@ -1,14 +1,10 @@
 class Game
-  def initialize(board)
-    @state = {}
-    board.locations.each do |l|
-      @state[l] = nil
-    end
-    @board = board
+  def initialize(initial_state)
+    @state = initial_state
   end
 
   def state
-    @state.clone
+    @state
   end
 
   def is_finished?
@@ -16,14 +12,14 @@ class Game
   end
 
   def winner
-    @board.lines
+    @state.board.lines
       .map{|line| player_fully_occupying(line)}
       .select{|p| p != nil}
       .first
   end
 
   def make_move(player, location)
-    @state[location] = player
+    @state = @state.put(location, player)
   end
 
   private
@@ -33,14 +29,14 @@ class Game
   end
 
   def is_full?
-    @board.locations
-      .map{|l| @state[l]}
+    @state.board.locations
+      .map{|l| @state.look_at(l)}
       .select{|p| p == nil}
       .empty?
   end
 
   def player_fully_occupying(line)
-    players = line.map {|l| @state[l]}.uniq
+    players = line.map {|l| @state.look_at(l)}.uniq
     players.size == 1? players.first : nil
   end
 end

@@ -7,7 +7,7 @@ RSpec.describe "CLI Observer" do
     x0y0, x1y0, x2y0,
     x0y1, x1y1, x2y1,
     x0y2, x1y2, x2y2)
-    {
+    State.new(ThreeByThreeBoard.new, {
       Location.new(0, 0) => x0y0,
       Location.new(1, 0) => x1y0,
       Location.new(2, 0) => x2y0,
@@ -17,14 +17,13 @@ RSpec.describe "CLI Observer" do
       Location.new(0, 2) => x0y2,
       Location.new(1, 2) => x1y2,
       Location.new(2, 2) => x2y2,
-    }
+    })
   end
 
   before(:each) do
-    @in = StringIO.new
     @out = StringIO.new
     @icons = {:X => 'X', :O => 'O'}
-    @cli = Cli.new(@in, @out, @icons, :X)
+    @cli = Cli.new(@out, @icons)
   end
 
   describe "when updating" do
@@ -70,14 +69,9 @@ RSpec.describe "CLI Observer" do
   end
 
   describe "when announcing the winner" do
-    it "if is self, sould print that he/she is the winner" do
-      @cli.announce_result(:X)
-      expect(@out.string).to include("You win!")
-    end
-
-    it "if is someone else, should print that he/she lost" do
+    it "if someone won, should print who it is" do
       @cli.announce_result(:O)
-      expect(@out.string).to include("You lose.")
+      expect(@out.string).to include("O has won!")
     end
 
     it "if no one won, should print that is a draw" do
@@ -92,44 +86,53 @@ RSpec.describe "CLI Player" do
     @in = StringIO.new
     @out = StringIO.new
     @board = ThreeByThreeBoard.new
-    @cli = CliPlayer.new(@in, @out, @board)
+    @state = State.new(@board, {})
+    @cli = CliPlayer.new(@in, @out, :mark)
   end
 
   def human_will_send(str)
     @in.string += "#{str}\n"
   end
 
+  def ask_for_location
+    @cli.ask_for_location(@state)
+  end
+
+  it "should have a mark" do
+    expect(@cli.mark).to eq(:mark)
+  end
+
   describe "when asking for a location" do
     it "prints the message doing it" do
       human_will_send("1,2")
-      @cli.ask_for_location
+      ask_for_location
       expect(@out.string).to include("Your turn! Where do you want to play? (format: x,y)\n")
     end
 
     describe "given no input" do
       it "raises an error" do
-        expect{@cli.ask_for_location}.to raise_error("No data readed from the CLI input!")
+        expect{ask_for_location}.to raise_error("No data readed from the CLI input!")
       end
     end
 
     describe "given an input with no whitespaces" do
       it "reads the location" do
         human_will_send("1,2")
-        expect(@cli.ask_for_location).to eq(Location.new(1, 2))
+        expect(ask_for_location).to eq(Location.new(1, 2))
       end
     end
 
     describe "given an input with some whitespaces" do
       it "reads the location" do
         human_will_send("  \t 2 ,\t 0 ")
-        expect(@cli.ask_for_location).to eq(Location.new(2, 0))
+        expect(ask_for_location).to eq(Location.new(2, 0))
       end
     end
 
     def expect_invalid_input(invalid_input)
       human_will_send(invalid_input)
       human_will_send("1, 1")
-      expect(@cli.ask_for_location).to eq(Location.new(1, 1))
+      expect(ask_for_location).to eq(Location.new(1, 1))
       expect(@out.string).to include("Don't understand \"#{invalid_input}\". Please, make sure you use the format \"x,y\"\n")
     end
 
@@ -155,10 +158,9 @@ RSpec.describe "CLI Player" do
       it "should try again" do
         human_will_send("3, 3")
         human_will_send("1, 1")
-        expect(@cli.ask_for_location).to eq(Location.new(1, 1))
+        expect(ask_for_location).to eq(Location.new(1, 1))
         expect(@out.string).to include("That location is outside the board. Please, try one inside it.\n")
       end
     end
   end
-
 end
