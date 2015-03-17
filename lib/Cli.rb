@@ -1,7 +1,7 @@
 require 'Location'
 
 class Cli
-  def initialize(output, player_icons)
+  def initialize(player_icons, output=$stdout)
     @output = output
     @player_icons = player_icons
   end
@@ -50,7 +50,7 @@ class Cli
 end
 
 class CliPlayer
-  def initialize(input, output, mark)
+  def initialize(mark, input=$stdin, output=$stdout)
     @input = input
     @output = output
     @mark = mark

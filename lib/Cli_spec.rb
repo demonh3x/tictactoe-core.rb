@@ -23,7 +23,7 @@ RSpec.describe "CLI Observer" do
   before(:each) do
     @out = StringIO.new
     @icons = {:X => 'X', :O => 'O'}
-    @cli = Cli.new(@out, @icons)
+    @cli = Cli.new(@icons, @out)
   end
 
   describe "when updating" do
@@ -87,7 +87,7 @@ RSpec.describe "CLI Player" do
     @out = StringIO.new
     @board = ThreeByThreeBoard.new
     @state = State.new(@board, {})
-    @player = CliPlayer.new(@in, @out, :mark)
+    @player = CliPlayer.new(:mark, @in, @out)
   end
 
   def human_will_send(str)

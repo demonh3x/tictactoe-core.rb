@@ -7,20 +7,18 @@ RSpec.describe "Integration" do
       @coordinator = Coordinator.new(
         Game.new(State.new(ThreeByThreeBoard.new, {})),
         [
-          Cli.new(@out, {:x => 'X', :o => 'O'})
+          Cli.new({:x => 'X', :o => 'O'}, @out)
         ],
         [
-          CliPlayer.new(@x_in, @out, :x),
-          CliPlayer.new(@o_in, @out, :o),
+          CliPlayer.new(:x, @x_in, @out),
+          CliPlayer.new(:o, @o_in, @out),
         ]
       )
     end
 
     describe "after running it" do
       before(:each) do
-        while (!@coordinator.finished?)
-          @coordinator.step
-        end
+        @coordinator.step until @coordinator.finished?
       end
 
       it "should have announced the winner" do
