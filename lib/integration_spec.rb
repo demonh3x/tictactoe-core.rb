@@ -31,9 +31,9 @@ RSpec.describe "Integration" do
     end
   end
 
-  describe "full game with 3x3 board between human and computer" do
+  describe "full game with 3x3 board between computer and human" do
     it "should have announced the winner" do
-      expect(run_game %w(3 hvc 2,0 2,1 2,2 n)).to include("X has won!")
+      expect(run_game %w(3 cvh 0,2 1,2 n)).to include("X has won!")
     end
   end
 end
