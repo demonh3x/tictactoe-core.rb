@@ -1,7 +1,7 @@
 class RandomPlayer
   attr_reader :mark
 
-  def initialize(mark, random=Random.new)
+  def initialize(mark, random)
     @random = random
     @mark = mark
   end
