@@ -5,7 +5,7 @@ RSpec.describe "Integration" do
     commands.push("").join("\n")
   end
 
-  class Allways0Random
+  class NotRandom
     def rand
       0.0
     end
@@ -14,7 +14,7 @@ RSpec.describe "Integration" do
   def run_game(commands)
     input = StringIO.new format_for_stdin commands
     output = StringIO.new
-    Main.new(input, output, Allways0Random.new).run
+    Main.new(input, output, NotRandom.new).run
     output.string
   end
 
