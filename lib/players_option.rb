@@ -1,3 +1,5 @@
+require 'cli_options'
+
 class PlayersOption
   def initialize(input, output, random)
     @input = input

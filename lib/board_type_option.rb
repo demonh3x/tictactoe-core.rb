@@ -1,3 +1,5 @@
+require 'cli_options'
+
 class BoardTypeOption
   def initialize(input, output)
     @option = CliOptions.new(input, output)

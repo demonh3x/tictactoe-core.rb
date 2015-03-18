@@ -1,3 +1,5 @@
+require 'main'
+
 RSpec.describe "Integration" do
   def format_for_stdin(commands)
     commands.push("").join("\n")

@@ -4,7 +4,9 @@ require 'random_player'
 require 'game'
 require 'state'
 require 'three_by_three_board'
-require 'cli_options'
+require 'play_again_option'
+require 'board_type_option'
+require 'players_option'
 
 class Main
   def initialize(input=$stdin, output=$stdout, random=Random.new)
