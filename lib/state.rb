@@ -14,8 +14,8 @@ class State
     marks[location]
   end
 
-  def is_full?
-    available_locations.empty?
+  def is_finished?
+    winner != nil || is_full?
   end
 
   def winner
@@ -28,6 +28,10 @@ class State
 
   private
   attr_reader :board, :marks
+
+  def is_full?
+    available_locations.empty?
+  end
 
   def marks_occupying_a_full_line
     board.lines

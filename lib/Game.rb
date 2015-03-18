@@ -6,7 +6,7 @@ class Game
   attr_accessor :state
 
   def is_finished?
-    winner != nil || state.is_full?
+    state.is_finished?
   end
 
   def winner
