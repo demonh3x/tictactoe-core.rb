@@ -12,9 +12,4 @@ RSpec.describe "Game state" do
     next_state = initial_state.put(2, :mark)
     expect(initial_state.look_at(2)).to eq(nil)
   end
-
-  it "should have a board" do
-    s = State.new(:board)
-    expect(s.board).to eq(:board)
-  end
 end

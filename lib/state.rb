@@ -26,10 +26,8 @@ class State
     board.locations.select{|location| look_at(location).nil?}
   end
 
-  attr_reader :board
-
   private
-  attr_reader :marks
+  attr_reader :board, :marks
 
   def marks_occupying_a_full_line
     board.lines
