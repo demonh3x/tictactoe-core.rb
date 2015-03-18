@@ -18,34 +18,20 @@ class Main
 
   def run
     begin 
-      engine = create_game_engine ask_for_board_type, ask_for_players
+      engine = create_game_engine
       engine.step until engine.finished?
-    end while play_again?
+    end while play_again.ask
   end
 
   private
   attr_accessor :output, :play_again, :board_type, :who_will_play
 
-  def play_again?
-    play_again.ask
-  end
-
-  def ask_for_board_type
-    board_type.ask
-  end
-
-  def ask_for_players
-    who_will_play.ask
-  end
-
-  def uis
-    [Cli.new({:x => 'X', :o => 'O'}, output)]
-  end
-
-  def create_game_engine(board, players)
+  def create_game_engine
+    board = board_type.ask
+    players = who_will_play.ask
     Coordinator.new(
       Game.new(State.new(board)), 
-      uis,
+      [Cli.new({:x => 'X', :o => 'O'}, output)],
       players
     )
   end
