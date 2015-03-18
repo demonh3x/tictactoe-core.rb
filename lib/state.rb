@@ -15,17 +15,11 @@ class State
   end
 
   def is_full?
-    board.locations
-      .map{|location| look_at(location)}
-      .select{|mark| mark == nil}
-      .empty?
+    available_locations.empty?
   end
 
   def winner
-    board.lines
-      .map{|line| player_fully_occupying(line)}
-      .select{|mark| mark != nil}
-      .first
+    marks_occupying_a_full_line.first
   end
 
   attr_reader :board
@@ -33,8 +27,18 @@ class State
   private
   attr_reader :marks
 
-  def player_fully_occupying(line)
-    players = line.map {|location| look_at(location)}.uniq
-    players.size == 1? players.first : nil
+  def available_locations
+    board.locations.select{|location| look_at(location).nil?}
+  end
+
+  def marks_occupying_a_full_line
+    board.lines
+      .map{|line| mark_fully_occupying(line)}
+      .select{|mark| mark != nil}
+  end
+
+  def mark_fully_occupying(line)
+    marks = line.map {|location| look_at(location)}.uniq
+    marks.size == 1? marks.first : nil
   end
 end
