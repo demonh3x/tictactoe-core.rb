@@ -14,7 +14,7 @@ class Game
   def winner
     @state.board.lines
       .map{|line| player_fully_occupying(line)}
-      .select{|p| p != nil}
+      .select{|mark| mark != nil}
       .first
   end
 
@@ -30,13 +30,13 @@ class Game
 
   def is_full?
     @state.board.locations
-      .map{|l| @state.look_at(l)}
-      .select{|p| p == nil}
+      .map{|location| @state.look_at(location)}
+      .select{|mark| mark == nil}
       .empty?
   end
 
   def player_fully_occupying(line)
-    players = line.map {|l| @state.look_at(l)}.uniq
+    players = line.map {|location| @state.look_at(location)}.uniq
     players.size == 1? players.first : nil
   end
 end
