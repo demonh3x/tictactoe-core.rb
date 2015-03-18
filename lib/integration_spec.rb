@@ -19,8 +19,24 @@ RSpec.describe "Integration" do
   end
 
   describe "full game with 3x3 board between two humans" do
+    before(:each) do
+      @output = run_game %w(3 hvh 0,0 1,0 0,1 1,1 0,2 n)
+    end
+
     it "should have announced the winner" do
-      expect(run_game %w(3 hvh 0,0 1,0 0,1 1,1 0,2 n)).to include("X has won!")
+      expect(@output).to include("X has won!")
+    end
+    
+    it "should have asked to play again" do
+      expect(@output).to include("play again?")
+    end
+
+    it "should have asked for the size of the board" do
+      expect(@output).to include("size of the board?")
+    end
+
+    it "should have asked for the players" do
+      expect(@output).to include("Who will play?")
     end
   end
   
