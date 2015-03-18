@@ -18,11 +18,11 @@ class RandomPlayer
   end
 
   def select_random(list)
-    index = random_until list.size
+    index = bounded_random list.size
     list[index]
   end
 
-  def random_until(outer_bound)
+  def bounded_random(outer_bound)
     (random.rand * outer_bound).to_i
   end
 end
