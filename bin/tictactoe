@@ -3,22 +3,5 @@
 dirname = File.expand_path(File.dirname(File.dirname(__FILE__))) + "/lib"
 $LOAD_PATH.unshift(dirname) unless $LOAD_PATH.include?(dirname)
 
-require 'coordinator'
-require 'cli'
-require 'random_player'
-require 'game'
-require 'state'
-require 'three_by_three_board'
-
-coordinator = Coordinator.new(
-  Game.new(State.new(ThreeByThreeBoard.new)), 
-  [
-    Cli.new({:x => 'X', :o => 'O'})
-  ],
-  [
-    CliPlayer.new(:x),
-    CliPlayer.new(:o)
-  ]
-)
-
-coordinator.step until coordinator.finished?
+require 'main'
+Main.new.run
