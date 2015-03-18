@@ -7,15 +7,11 @@ class RandomPlayer
   end
 
   def ask_for_location(state)
-    select_random available_locations state
+    select_random state.available_locations
   end
 
   private
   attr_accessor :random
-
-  def available_locations(state)
-    state.board.locations.select{|location| state.look_at(location).nil?}
-  end
 
   def select_random(list)
     index = bounded_random list.size

@@ -22,14 +22,14 @@ class State
     marks_occupying_a_full_line.first
   end
 
+  def available_locations
+    board.locations.select{|location| look_at(location).nil?}
+  end
+
   attr_reader :board
 
   private
   attr_reader :marks
-
-  def available_locations
-    board.locations.select{|location| look_at(location).nil?}
-  end
 
   def marks_occupying_a_full_line
     board.lines
