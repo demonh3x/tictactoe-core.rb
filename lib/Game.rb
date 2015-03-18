@@ -3,40 +3,17 @@ class Game
     @state = initial_state
   end
 
-  def state
-    @state
-  end
+  attr_accessor :state
 
   def is_finished?
-    has_winner? || is_full?
+    winner != nil || state.is_full?
   end
 
   def winner
-    @state.board.lines
-      .map{|line| player_fully_occupying(line)}
-      .select{|mark| mark != nil}
-      .first
+    state.winner
   end
 
   def make_move(player, location)
-    @state = @state.put(location, player)
-  end
-
-  private
-
-  def has_winner?
-    winner != nil
-  end
-
-  def is_full?
-    @state.board.locations
-      .map{|location| @state.look_at(location)}
-      .select{|mark| mark == nil}
-      .empty?
-  end
-
-  def player_fully_occupying(line)
-    players = line.map {|location| @state.look_at(location)}.uniq
-    players.size == 1? players.first : nil
+    self.state = state.put(location, player)
   end
 end
