@@ -35,7 +35,7 @@ RSpec.describe "Coordinator" do
       @winner_responses << winner
     end
 
-    def make_move(player, location)
+    def make_move(location, player)
       @messages << {:obj => self, :method => :make_move}
       @make_move_calls << {:player => player, :location => location}
     end

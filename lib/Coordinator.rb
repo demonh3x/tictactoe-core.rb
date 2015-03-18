@@ -43,7 +43,7 @@ class Coordinator
 
   def give_turn(state)
     player = turns.next
-    game.make_move(player.mark, player.ask_for_location(state))
+    game.make_move(player.ask_for_location(state), player.mark)
   end
 
   def announce_winner

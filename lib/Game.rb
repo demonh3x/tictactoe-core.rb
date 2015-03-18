@@ -13,7 +13,7 @@ class Game
     state.winner
   end
 
-  def make_move(player, location)
+  def make_move(location, player)
     self.state = state.put(location, player)
   end
 end

@@ -31,7 +31,7 @@ RSpec.describe "Game" do
   describe "with the first move" do
     before(:each) do
       @loc = 0
-      @game.make_move(:X, @loc)
+      @game.make_move(@loc, :X)
     end
 
     it "the state should contain that move" do
@@ -43,7 +43,7 @@ RSpec.describe "Game" do
     describe "with a line for player a" do
       before(:each) do
         line.each do |l|
-          @game.make_move(:X, l)
+          @game.make_move(l, :X)
         end
       end
 
@@ -59,7 +59,7 @@ RSpec.describe "Game" do
 
   def set_state(*marks)
     marks.each_with_index do |mark, location|
-      @game.make_move(mark, location)
+      @game.make_move(location, mark)
     end
   end
 
