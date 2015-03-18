@@ -1,18 +1,20 @@
+require 'state'
+
 RSpec.describe "Game state" do
   it "can look at a location" do
-    initial_state = State.new(:board, {})
-    next_state = initial_state.put(:location, :mark)
-    expect(next_state.look_at(:location)).to eq(:mark)
+    initial_state = State.new(:board)
+    next_state = initial_state.put(3, :mark)
+    expect(next_state.look_at(3)).to eq(:mark)
   end
 
   it "is immutable" do
-    initial_state = State.new(:board, {})
-    next_state = initial_state.put(:location, :mark)
-    expect(initial_state.look_at(:location)).to eq(nil)
+    initial_state = State.new(:board)
+    next_state = initial_state.put(2, :mark)
+    expect(initial_state.look_at(2)).to eq(nil)
   end
 
   it "should have a board" do
-    s = State.new(:board, {})
+    s = State.new(:board)
     expect(s.board).to eq(:board)
   end
 end

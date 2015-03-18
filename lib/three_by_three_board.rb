@@ -1,30 +1,10 @@
-require 'Location.rb'
-
 class ThreeByThreeBoard
   def initialize
-    @locations = (0..2).flat_map{|x| 
-      (0..2).flat_map{|y|
-        Location.new(x, y)}}
+    @locations = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 
-    horizontal = (0..2).map{|x| 
-      (0..2).flat_map{|y|
-        Location.new(x, y)}}
-
-    vertical = (0..2).map{|x|
-      (0..2).flat_map{|y|
-        Location.new(y, x)}}
-
-    diagonals = [
-      [[0, 0], [1, 1], [2, 2]],
-      [[0, 2], [1, 1], [2, 0]]
-    ].map{|d|
-      d.map{|xy|
-        x = xy[0]
-        y = xy[1]
-        Location.new(x, y)
-      }
-    }
-
+    horizontal = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
+    vertical = [[0, 3, 6], [1, 4, 7], [2, 5, 8]]
+    diagonals = [[0, 4, 8], [2, 4, 6]]
     @lines = horizontal + vertical + diagonals
   end
 

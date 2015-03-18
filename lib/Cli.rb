@@ -1,5 +1,3 @@
-require 'Location'
-
 class Cli
   def initialize(player_icons, output)
     @output = output
@@ -36,7 +34,7 @@ class Cli
   end
 
   def loc(x, y)
-    Location.new(x, y)
+    (y*3)+x
   end
 
   def print_draw
@@ -106,7 +104,7 @@ class CliPlayer
     return nil if parts.any?{|p| p.nil?} || parts.size != 2
     x = parts[0]
     y = parts[1]
-    Location.new(x, y)
+    (y*3)+x
   end
 
   def print_invalid_input(input_string)

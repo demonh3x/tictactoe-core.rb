@@ -1,23 +1,13 @@
 require 'cli'
-require 'location'
 require 'three_by_three_board'
 
 RSpec.describe "CLI Observer" do
-  def state(
-    x0y0, x1y0, x2y0,
-    x0y1, x1y1, x2y1,
-    x0y2, x1y2, x2y2)
-    State.new(ThreeByThreeBoard.new, {
-      Location.new(0, 0) => x0y0,
-      Location.new(1, 0) => x1y0,
-      Location.new(2, 0) => x2y0,
-      Location.new(0, 1) => x0y1,
-      Location.new(1, 1) => x1y1,
-      Location.new(2, 1) => x2y1,
-      Location.new(0, 2) => x0y2,
-      Location.new(1, 2) => x1y2,
-      Location.new(2, 2) => x2y2,
-    })
+  def state(*marks)
+    state = State.new(ThreeByThreeBoard.new)
+    marks.each_with_index {|mark, location|
+      state = state.put(location, mark)
+    }
+    state
   end
 
   before(:each) do
@@ -86,7 +76,7 @@ RSpec.describe "CLI Player" do
     @in = StringIO.new
     @out = StringIO.new
     @board = ThreeByThreeBoard.new
-    @state = State.new(@board, {})
+    @state = State.new(@board)
     @player = CliPlayer.new(:mark, @in, @out)
   end
 
@@ -118,21 +108,21 @@ RSpec.describe "CLI Player" do
     describe "given an input with no whitespaces" do
       it "reads the location" do
         human_will_send("1,2")
-        expect(ask_for_location).to eq(Location.new(1, 2))
+        expect(ask_for_location).to eq(7)
       end
     end
 
     describe "given an input with some whitespaces" do
       it "reads the location" do
         human_will_send("  \t 2 ,\t 0 ")
-        expect(ask_for_location).to eq(Location.new(2, 0))
+        expect(ask_for_location).to eq(2)
       end
     end
 
     def expect_invalid_input(invalid_input)
       human_will_send(invalid_input)
       human_will_send("1, 1")
-      expect(ask_for_location).to eq(Location.new(1, 1))
+      expect(ask_for_location).to eq(4)
       expect(@out.string).to include("Don't understand \"#{invalid_input}\". Please, make sure you use the format \"x,y\"\n")
     end
 
@@ -158,20 +148,20 @@ RSpec.describe "CLI Player" do
       it "should try again" do
         human_will_send("3, 3")
         human_will_send("1, 1")
-        expect(ask_for_location).to eq(Location.new(1, 1))
+        expect(ask_for_location).to eq(4)
         expect(@out.string).to include("That location is outside the board. Please, try one inside it.\n")
       end
     end
 
     describe "given an already occupied location" do
       before(:each) do
-        @state = @state.put(Location.new(0,0), @player.mark)
+        @state = @state.put(0, @player.mark)
       end
 
       it "should try again" do
         human_will_send("0, 0")
         human_will_send("1, 1")
-        expect(ask_for_location).to eq(Location.new(1, 1))
+        expect(ask_for_location).to eq(4)
         expect(@out.string).to include("That location is already occupied. Please, try an empty one.\n")
       end
     end

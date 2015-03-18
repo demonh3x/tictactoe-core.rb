@@ -1,5 +1,5 @@
 class State
-  def initialize(board, marks={})
+  def initialize(board, marks=[])
     @board = board
     @marks = marks
   end
