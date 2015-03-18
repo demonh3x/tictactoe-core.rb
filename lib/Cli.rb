@@ -70,16 +70,17 @@ class CliPlayer
   end
   
   def read_valid_location(state)
-    board = state.board
     begin
       location = read_location
-      location_outside_board = !board.locations.include?(location)
-      print_location_outside_board if location_outside_board
-      location_already_occupied = !state.look_at(location).nil? 
-      print_location_already_occupied if location_already_occupied
-    end while location_outside_board || location_already_occupied
+      available = available? state, location 
+      print_not_available if !available
+    end until available
 
     location
+  end
+
+  def available?(state, location)
+    state.available_locations.include? location
   end
 
   def read_location
@@ -111,11 +112,7 @@ class CliPlayer
     output.puts "Don't understand \"#{input_string}\". Please, make sure you use the format \"x,y\""
   end
   
-  def print_location_outside_board
-    output.puts "That location is outside the board. Please, try one inside it."
-  end
-
-  def print_location_already_occupied
-    output.puts "That location is already occupied. Please, try an empty one."
+  def print_not_available
+    output.puts "That location is not available. Please, try another one.\n"
   end
 end

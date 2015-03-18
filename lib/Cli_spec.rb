@@ -149,7 +149,7 @@ RSpec.describe "CLI Player" do
         human_will_send("3, 3")
         human_will_send("1, 1")
         expect(ask_for_location).to eq(4)
-        expect(@out.string).to include("That location is outside the board. Please, try one inside it.\n")
+        expect(@out.string).to include("That location is not available. Please, try another one.\n")
       end
     end
 
@@ -162,7 +162,7 @@ RSpec.describe "CLI Player" do
         human_will_send("0, 0")
         human_will_send("1, 1")
         expect(ask_for_location).to eq(4)
-        expect(@out.string).to include("That location is already occupied. Please, try an empty one.\n")
+        expect(@out.string).to include("That location is not available. Please, try another one.\n")
       end
     end
   end
