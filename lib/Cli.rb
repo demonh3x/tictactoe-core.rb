@@ -100,8 +100,13 @@ class CliPlayer
   def parse_location(location_string)
     parts = location_string.split(',').map{|s| Integer(s.strip) rescue nil}
     return nil if parts.any?{|p| p.nil?} || parts.size != 2
+
     x = parts[0]
     y = parts[1]
+    loc(x, y)
+  end
+
+  def loc(x, y)
     (y*3)+x
   end
 
