@@ -106,10 +106,8 @@ RSpec.describe "Coordinator" do
   end
 
   def expect_uis_received_state(index, state)
-    [@x_ui, @o_ui].each do |ui|
-      update_call = ui.update_calls[index]
-      expect(update_call[:state]).to equal(state)
-    end
+    update_call = @ui.update_calls[index]
+    expect(update_call[:state]).to equal(state)
   end
 
   def expect_asked_for_location(index, player, state)
@@ -128,8 +126,7 @@ RSpec.describe "Coordinator" do
 
     @game = GameDouble.new(@messages)
 
-    @x_ui = UiDouble.new(@messages)
-    @o_ui = UiDouble.new(@messages)
+    @ui = UiDouble.new(@messages)
 
     @x_mark = "::x_mark::"
     @o_mark = "::o_mark::"
@@ -137,7 +134,7 @@ RSpec.describe "Coordinator" do
     @x_player = PlayerDouble.new(@x_mark, @messages)
     @o_player = PlayerDouble.new(@o_mark, @messages)
 
-    @coordinator = Coordinator.new(@game, [@x_ui, @o_ui], [@x_player, @o_player]) 
+    @coordinator = Coordinator.new(@game, @ui, [@x_player, @o_player])
   end
 
   describe "given the game is finished" do
@@ -174,8 +171,7 @@ RSpec.describe "Coordinator" do
       end
 
       it "should announce the result of the game" do
-        expect(@x_ui.announce_result_calls.last[:winner]).to equal(@winner)
-        expect(@o_ui.announce_result_calls.last[:winner]).to equal(@winner)
+        expect(@ui.announce_result_calls.last[:winner]).to equal(@winner)
       end
     end
 
@@ -212,13 +208,11 @@ RSpec.describe "Coordinator" do
       it "should have sent the messages in order" do
         expected_messages = [
           {:obj => @game, :method => :state},
-          {:obj => @x_ui, :method => :update},
-          {:obj => @o_ui, :method => :update},
+          {:obj => @ui, :method => :update},
           {:obj => @x_player, :method => :ask_for_location},
           {:obj => @game, :method => :make_move},
           {:obj => @game, :method => :state},
-          {:obj => @x_ui, :method => :update},
-          {:obj => @o_ui, :method => :update},
+          {:obj => @ui, :method => :update},
         ]
         expect(@messages).to eq(expected_messages)
       end
@@ -235,8 +229,7 @@ RSpec.describe "Coordinator" do
             {:obj => @o_player, :method => :ask_for_location},
             {:obj => @game, :method => :make_move},
             {:obj => @game, :method => :state},
-            {:obj => @x_ui, :method => :update},
-            {:obj => @o_ui, :method => :update},
+            {:obj => @ui, :method => :update},
           ]
           expect(@messages).to eq(expected_messages)
         end

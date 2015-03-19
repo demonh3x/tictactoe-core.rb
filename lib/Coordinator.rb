@@ -1,7 +1,7 @@
 class Coordinator
-  def initialize(game, uis, players)
+  def initialize(game, ui, players)
     @game = game
-    @uis = uis
+    @ui = ui
     @players = players
     @first_step = true
     @turns = @players.cycle
@@ -15,30 +15,28 @@ class Coordinator
     raise 'The game is finished!' if finished?
 
     state = game.state
-    first_update_uis(state)
+    first_update_ui(state)
     give_turn(state)
 
     state = game.state
-    update_uis(state)
+    update_ui(state)
 
     announce_winner if finished?
   end
 
   private
   
-  attr_accessor :game, :uis, :players, :first_step, :turns
+  attr_accessor :game, :ui, :players, :first_step, :turns
 
-  def first_update_uis(state)
+  def first_update_ui(state)
     if first_step
-      update_uis(state)
+      update_ui(state)
       self.first_step = false
     end
   end
 
-  def update_uis(state)
-    uis.each do |ui|
-      ui.update(state)
-    end
+  def update_ui(state)
+    ui.update(state)
   end
 
   def give_turn(state)
@@ -48,8 +46,6 @@ class Coordinator
 
   def announce_winner
     winner = game.winner
-    uis.each do |ui|
-      ui.announce_result(winner)
-    end
+    ui.announce_result(winner)
   end
 end
