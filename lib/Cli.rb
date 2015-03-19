@@ -94,7 +94,7 @@ class CliPlayer
   def read_input
       str = input.gets
       raise "No data readed from the CLI input!" if str.nil?
-      str.strip
+      str.chomp
   end
 
   def parse_location(location_string)
