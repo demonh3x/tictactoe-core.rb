@@ -1,7 +1,6 @@
 class Cli
-  def initialize(player_icons, output)
+  def initialize(output)
     @output = output
-    @player_icons = player_icons
   end
 
   def update(state)
@@ -9,7 +8,7 @@ class Cli
     output.puts("y +---+---+---+")
     (0..2).each do |y|
       output.puts(
-        "#{y} | #{get_icon(state, loc(0, y))} | #{get_icon(state, loc(1, y))} | #{get_icon(state, loc(2, y))} |\n" +
+        "#{y} | #{get_mark(state, loc(0, y))} | #{get_mark(state, loc(1, y))} | #{get_mark(state, loc(2, y))} |\n" +
         "  +---+---+---+"
       )
     end
@@ -25,12 +24,11 @@ class Cli
 
   private
 
-  attr_reader :output, :player_icons
+  attr_reader :output
 
-  def get_icon(state, loc)
-    player = state.look_at(loc)
-    icon = player_icons[player]
-    icon == nil ? ' ' : icon
+  def get_mark(state, loc)
+    mark = state.look_at(loc)
+    mark == nil ? ' ' : mark.to_s
   end
 
   def loc(x, y)
@@ -42,8 +40,7 @@ class Cli
   end
 
   def print_winner(winner)
-    icon = player_icons[winner]
-    output.puts "#{icon} has won!"
+    output.puts "#{winner.to_s} has won!"
   end
 end
 

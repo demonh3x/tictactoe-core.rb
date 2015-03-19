@@ -12,8 +12,7 @@ RSpec.describe "CLI Observer" do
 
   before(:each) do
     @out = StringIO.new
-    @icons = {:X => 'X', :O => 'O'}
-    @cli = Cli.new(@icons, @out)
+    @cli = Cli.new(@out)
   end
 
   describe "when updating" do

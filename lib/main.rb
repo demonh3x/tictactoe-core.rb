@@ -31,7 +31,7 @@ class Main
     players = who_will_play.ask
     Coordinator.new(
       Game.new(State.new(board)), 
-      [Cli.new({:x => 'X', :o => 'O'}, output)],
+      [Cli.new(output)],
       players
     )
   end
