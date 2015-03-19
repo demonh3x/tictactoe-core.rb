@@ -4,14 +4,7 @@ class Cli
   end
 
   def update(state)
-    output.puts("  x 0   1   2")
-    output.puts("y +---+---+---+")
-    (0..2).each do |y|
-      output.puts(
-        "#{y} | #{get_mark(state, loc(0, y))} | #{get_mark(state, loc(1, y))} | #{get_mark(state, loc(2, y))} |\n" +
-        "  +---+---+---+"
-      )
-    end
+    print_board state
   end
 
   def announce_result(winner)
@@ -25,6 +18,23 @@ class Cli
   private
 
   attr_reader :output
+
+  def print_board(state)
+    marks_in_the_board = (0..8).map{|l| get_mark state, l}
+    m = marks_in_the_board
+
+    board =
+    "  x 0   1   2\n" +
+    "y +---+---+---+\n" +
+    "0 | #{m[0]} | #{m[1]} | #{m[2]} |\n" +
+    "  +---+---+---+\n" +
+    "1 | #{m[3]} | #{m[4]} | #{m[5]} |\n" +
+    "  +---+---+---+\n" +
+    "2 | #{m[6]} | #{m[7]} | #{m[8]} |\n" +
+    "  +---+---+---+"
+
+    output.puts(board)
+  end
 
   def get_mark(state, loc)
     mark = state.look_at(loc)
