@@ -20,8 +20,6 @@ class Coordinator
 
     state = game.state
     update_ui(state)
-
-    announce_winner if finished?
   end
 
   private
@@ -42,10 +40,5 @@ class Coordinator
   def give_turn(state)
     player = turns.next
     game.make_move(player.ask_for_location(state), player.mark)
-  end
-
-  def announce_winner
-    winner = game.winner
-    ui.announce_result(winner)
   end
 end

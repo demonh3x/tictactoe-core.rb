@@ -49,7 +49,6 @@ RSpec.describe "Coordinator" do
     def initialize(messages)
       @messages = messages
       @update_calls = []
-      @announce_result_calls = []
     end
 
     def update(state)
@@ -59,14 +58,6 @@ RSpec.describe "Coordinator" do
 
     def update_calls
       @update_calls.clone
-    end
-
-    def announce_result(winner)
-      @announce_result_calls << {:winner => winner}
-    end
-
-    def announce_result_calls
-      @announce_result_calls.clone
     end
   end
 
@@ -168,10 +159,6 @@ RSpec.describe "Coordinator" do
         @game.add_winner_response(@winner)
 
         @coordinator.step
-      end
-
-      it "should announce the result of the game" do
-        expect(@ui.announce_result_calls.last[:winner]).to equal(@winner)
       end
     end
 

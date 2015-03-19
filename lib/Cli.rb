@@ -5,7 +5,12 @@ class Cli
 
   def update(state)
     print_board state
+    announce_result state.winner if state.is_finished?
   end
+
+  private
+
+  attr_reader :output
 
   def announce_result(winner)
     if winner.nil?
@@ -14,10 +19,6 @@ class Cli
       print_winner(winner)
     end
   end
-
-  private
-
-  attr_reader :output
 
   def print_board(state)
     marks_in_the_board = (0..8).map{|l| get_mark state, l}

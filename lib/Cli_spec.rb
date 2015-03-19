@@ -55,17 +55,45 @@ RSpec.describe "CLI Observer" do
         )
       end
     end
-  end
 
-  describe "when announcing the winner" do
-    it "if someone won, should print who it is" do
-      @cli.announce_result(:O)
-      expect(@out.string).to include("O has won!")
-    end
-
-    it "if no one won, should print that is a draw" do
-      @cli.announce_result(nil)
-      expect(@out.string).to include("It is a draw.")
+    describe "given a finished state" do
+      it "with a winner, prints it announcing the winner" do
+        @cli.update(state(
+          :X,  nil, :O,
+          nil, :O,  :X,
+          :O,  :X,  nil,
+        ))
+        expect(@out.string).to eq(
+          "  x 0   1   2\n" +
+          "y +---+---+---+\n" +
+          "0 | X |   | O |\n" +
+          "  +---+---+---+\n" +
+          "1 |   | O | X |\n" +
+          "  +---+---+---+\n" +
+          "2 | O | X |   |\n" +
+          "  +---+---+---+\n" +
+          "O has won!\n"
+        )
+      end
+      
+      it "with a draw, prints it announcing the draw" do
+        @cli.update(state(
+          :X, :O, :X,
+          :O, :O, :X,
+          :X, :X, :O,
+        ))
+        expect(@out.string).to eq(
+          "  x 0   1   2\n" +
+          "y +---+---+---+\n" +
+          "0 | X | O | X |\n" +
+          "  +---+---+---+\n" +
+          "1 | O | O | X |\n" +
+          "  +---+---+---+\n" +
+          "2 | X | X | O |\n" +
+          "  +---+---+---+\n" +
+          "It is a draw.\n"
+        )
+      end
     end
   end
 end
