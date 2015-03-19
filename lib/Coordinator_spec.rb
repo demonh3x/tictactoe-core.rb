@@ -96,7 +96,7 @@ RSpec.describe "Coordinator" do
     ui.add_location_response(location)
   end
 
-  def expect_uis_received_state(index, state)
+  def expect_ui_received_state(index, state)
     update_call = @ui.update_calls[index]
     expect(update_call[:state]).to equal(state)
   end
@@ -176,8 +176,8 @@ RSpec.describe "Coordinator" do
         @coordinator.step
       end
 
-      it "should update all the UIs with the initial game state" do
-        expect_uis_received_state(0, @initial_game_state)
+      it "should update the UI with the initial game state" do
+        expect_ui_received_state(0, @initial_game_state)
       end
 
       it "should ask the first player for a location" do
@@ -188,8 +188,8 @@ RSpec.describe "Coordinator" do
         expect_maked_move(0, @x_mark, @first_x_location)
       end
 
-      it "should update all the UIs with the second game state" do
-        expect_uis_received_state(1, @second_game_state)
+      it "should update the UI with the second game state" do
+        expect_ui_received_state(1, @second_game_state)
       end
 
       it "should have sent the messages in order" do
@@ -210,7 +210,7 @@ RSpec.describe "Coordinator" do
           @coordinator.step
         end
 
-        it "should only do one update to the UIs" do
+        it "should only do one update to the UI" do
           expected_messages = [
             {:obj => @game, :method => :state},
             {:obj => @o_player, :method => :ask_for_location},
