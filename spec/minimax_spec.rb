@@ -17,6 +17,7 @@ RSpec.describe 'Minimax player' do
     )
     minimax = Minimax.new(draw_state, :X, :O)
     expect(minimax.score).to eq 0
+    expect(minimax.best_options).to eq []
   end
 
   it 'given a won state, the score should be 1' do
@@ -27,6 +28,7 @@ RSpec.describe 'Minimax player' do
     )
     minimax = Minimax.new(won_state, :X, :O)
     expect(minimax.score).to eq 1
+    expect(minimax.best_options).to eq []
   end
 
   it 'given a lost state, the score should be -1' do
@@ -37,6 +39,7 @@ RSpec.describe 'Minimax player' do
     )
     minimax = Minimax.new(lost_state, :X, :O)
     expect(minimax.score).to eq(-1)
+    expect(minimax.best_options).to eq []
   end
 
   it 'given a winnable state by X, the score should be 1' do
@@ -47,6 +50,7 @@ RSpec.describe 'Minimax player' do
     )
     minimax = Minimax.new(winnable_state_by_x, :X, :X)
     expect(minimax.score).to eq(1)
+    expect(minimax.best_options).to eq [8]
   end
 
   it 'given a winnable state by O, the score should be 1' do
@@ -57,6 +61,7 @@ RSpec.describe 'Minimax player' do
     )
     minimax = Minimax.new(winnable_state_by_o, :O, :O)
     expect(minimax.score).to eq(1)
+    expect(minimax.best_options).to eq [8]
   end
 
   it 'given a winnable state by X, the score should be 1' do
@@ -67,6 +72,7 @@ RSpec.describe 'Minimax player' do
     )
     minimax = Minimax.new(winnable_state_by_o, :X, :X)
     expect(minimax.score).to eq(1)
+    expect(minimax.best_options).to eq [8]
   end
 
   it 'given the possibility to end in a draw instead of losing, the score should be 0' do
@@ -77,6 +83,7 @@ RSpec.describe 'Minimax player' do
     )
     minimax = Minimax.new(state, :X, :X)
     expect(minimax.score).to eq(0)
+    expect(minimax.best_options).to eq [8]
   end
 
   it 'given the possibility to lose if the opponent is choosing, the score should be -1' do
@@ -87,5 +94,17 @@ RSpec.describe 'Minimax player' do
     )
     minimax = Minimax.new(state, :X, :O)
     expect(minimax.score).to eq(-1)
+    expect(minimax.best_options).to eq []
+  end
+
+  it 'given the posibility to double fork, the score should be 1' do
+    state = board(
+      :X,  :O,  :X,
+      nil, nil, nil,
+      nil, nil, :O
+    )
+    minimax = Minimax.new(state, :X, :X)
+    expect(minimax.score).to eq(1)
+    expect(minimax.best_options).to eq [6]
   end
 end
