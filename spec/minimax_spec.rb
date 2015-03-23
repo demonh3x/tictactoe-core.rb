@@ -15,7 +15,7 @@ RSpec.describe 'Minimax player' do
       :O, :X, :X,
       :O, :X, :O
     )
-    minimax = Minimax.new(draw_state, :X, :O)
+    minimax = Minimax.new(draw_state, :X, :O, :O)
     expect(minimax.score).to eq 0
     expect(minimax.best_options).to eq []
   end
@@ -26,7 +26,7 @@ RSpec.describe 'Minimax player' do
       :O, :X, :O,
       :O, :X, :X
     )
-    minimax = Minimax.new(won_state, :X, :O)
+    minimax = Minimax.new(won_state, :X, :O, :O)
     expect(minimax.score).to eq 1
     expect(minimax.best_options).to eq []
   end
@@ -37,7 +37,7 @@ RSpec.describe 'Minimax player' do
       :X, :O, :X,
       :O, :X, :O
     )
-    minimax = Minimax.new(lost_state, :X, :O)
+    minimax = Minimax.new(lost_state, :X, :O, :O)
     expect(minimax.score).to eq(-1)
     expect(minimax.best_options).to eq []
   end
@@ -48,7 +48,7 @@ RSpec.describe 'Minimax player' do
       :O, :X, :O,
       :O, :X, nil
     )
-    minimax = Minimax.new(winnable_state_by_x, :X, :X)
+    minimax = Minimax.new(winnable_state_by_x, :X, :O, :X)
     expect(minimax.score).to eq(1)
     expect(minimax.best_options).to eq [8]
   end
@@ -59,7 +59,7 @@ RSpec.describe 'Minimax player' do
       :X, :O,  :O,
       :X, nil, nil
     )
-    minimax = Minimax.new(winnable_state_by_o, :O, :O)
+    minimax = Minimax.new(winnable_state_by_o, :O, :X, :O)
     expect(minimax.score).to eq(1)
     expect(minimax.best_options).to eq [8]
   end
@@ -70,7 +70,7 @@ RSpec.describe 'Minimax player' do
       :O,  :O,  :X,
       nil, nil, nil
     )
-    minimax = Minimax.new(winnable_state_by_o, :X, :X)
+    minimax = Minimax.new(winnable_state_by_o, :X, :O, :X)
     expect(minimax.score).to eq(1)
     expect(minimax.best_options).to eq [8]
   end
@@ -81,7 +81,7 @@ RSpec.describe 'Minimax player' do
       :X, :O,  :X,
       :X, nil, nil
     )
-    minimax = Minimax.new(state, :X, :X)
+    minimax = Minimax.new(state, :X, :O, :X)
     expect(minimax.score).to eq(0)
     expect(minimax.best_options).to eq [8]
   end
@@ -92,7 +92,7 @@ RSpec.describe 'Minimax player' do
       nil, :O,  :X,
       :X,  nil, nil
     )
-    minimax = Minimax.new(state, :X, :O)
+    minimax = Minimax.new(state, :X, :O, :O)
     expect(minimax.score).to eq(-1)
     expect(minimax.best_options).to eq []
   end
@@ -103,7 +103,7 @@ RSpec.describe 'Minimax player' do
       nil, nil, nil,
       nil, nil, :O
     )
-    minimax = Minimax.new(state, :X, :X)
+    minimax = Minimax.new(state, :X, :O, :X)
     expect(minimax.score).to eq(1)
     expect(minimax.best_options).to eq [6]
   end

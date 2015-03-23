@@ -1,7 +1,8 @@
 class Minimax
-  def initialize(state, me, current_player)
+  def initialize(state, me, opponent, current_player)
     @state = state
     @me = me
+    @opponent = opponent
     @current_player = current_player
   end
 
@@ -18,7 +19,7 @@ class Minimax
   end
 
   private
-  attr_accessor :state, :me, :current_player
+  attr_accessor :state, :me, :current_player, :opponent
 
   def is_my_turn?
     current_player == me
@@ -64,7 +65,10 @@ class Minimax
 
   def location_score(location)
     next_state = state.put(location, current_player)
-    next_player = current_player == :X ? :O : :X
-    Minimax.new(next_state, me, next_player).score
+    Minimax.new(next_state, me, opponent, next_player).score
+  end
+
+  def next_player
+    is_my_turn?? opponent : me
   end
 end
