@@ -55,8 +55,8 @@ RSpec.describe 'Minimax player' do
 
   it 'given a winnable state by O, the score should be 1' do
     winnable_state_by_o = board(
-      :O, :X, :X,
-      :X, :O, :O,
+      :O, :X,  :X,
+      :X, :O,  :O,
       :X, nil, nil
     )
     minimax = Minimax.new(winnable_state_by_o, :O, :O)
@@ -66,8 +66,8 @@ RSpec.describe 'Minimax player' do
 
   it 'given a winnable state by X, the score should be 1' do
     winnable_state_by_o = board(
-      :O, :X, :X,
-      :O, :O, :X,
+      :O,  :X,  :X,
+      :O,  :O,  :X,
       nil, nil, nil
     )
     minimax = Minimax.new(winnable_state_by_o, :X, :X)
@@ -77,8 +77,8 @@ RSpec.describe 'Minimax player' do
 
   it 'given the possibility to end in a draw instead of losing, the score should be 0' do
     state = board(
-      :O, :X, :O,
-      :X, :O, :X,
+      :O, :X,  :O,
+      :X, :O,  :X,
       :X, nil, nil
     )
     minimax = Minimax.new(state, :X, :X)
@@ -88,9 +88,9 @@ RSpec.describe 'Minimax player' do
 
   it 'given the possibility to lose if the opponent is choosing, the score should be -1' do
     state = board(
-      :O, :X, :O,
-      nil, :O, :X,
-      :X, nil, nil
+      :O,  :X,  :O,
+      nil, :O,  :X,
+      :X,  nil, nil
     )
     minimax = Minimax.new(state, :X, :O)
     expect(minimax.score).to eq(-1)
