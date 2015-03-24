@@ -1,19 +1,17 @@
 require 'coordinator'
 require 'cli'
-require 'random_player'
 require 'game'
 require 'state'
-require 'three_by_three_board'
 require 'play_again_option'
 require 'board_type_option'
 require 'players_option'
 
 class Main
-  def initialize(input=$stdin, output=$stdout, random=Random.new)
+  def initialize(input=$stdin, output=$stdout)
     @output = output
     @play_again = PlayAgainOption.new(input, output)
     @board_type = BoardTypeOption.new(input, output)
-    @who_will_play = PlayersOption.new(input, output, random)
+    @who_will_play = PlayersOption.new(input, output)
   end
 
   def run

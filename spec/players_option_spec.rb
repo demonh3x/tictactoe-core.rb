@@ -2,7 +2,7 @@ RSpec.describe "Players option" do
   def cli_output(commands)
     input = commands.push("").join("\n")
     out = StringIO.new
-    option = PlayersOption.new(StringIO.new(input), out, Random.new)
+    option = PlayersOption.new(StringIO.new(input), out)
     option.ask
     out.string
   end
@@ -30,7 +30,7 @@ RSpec.describe "Players option" do
   def ask_for_players(commands)
     input = commands.push("").join("\n")
     out = StringIO.new
-    option = PlayersOption.new(StringIO.new(input), out, Random.new)
+    option = PlayersOption.new(StringIO.new(input), out)
     option.ask
   end
 
@@ -40,7 +40,7 @@ RSpec.describe "Players option" do
   end
 
   def expect_computer_with_mark(player, mark)
-    expect(player).to be_an_instance_of RandomPlayer
+    expect(player).to be_an_instance_of PerfectPlayer
     expect(player.mark).to eq(mark)
   end
 

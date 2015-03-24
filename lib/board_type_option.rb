@@ -1,4 +1,5 @@
 require 'cli_options'
+require 'three_by_three_board'
 
 class BoardTypeOption
   def initialize(input, output)

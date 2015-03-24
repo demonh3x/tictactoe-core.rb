@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'main'
 
 RSpec.describe "Integration" do
@@ -5,16 +6,10 @@ RSpec.describe "Integration" do
     commands.push("").join("\n")
   end
 
-  class NotRandom
-    def rand
-      0.0
-    end
-  end
-
   def run_game(commands)
     input = StringIO.new format_for_stdin commands
     output = StringIO.new
-    Main.new(input, output, NotRandom.new).run
+    Main.new(input, output).run
     output.string
   end
 
