@@ -1,3 +1,5 @@
+require 'state'
+require 'three_by_three_board'
 require 'minimax'
 
 RSpec.describe 'Minimax player' do
