@@ -1,4 +1,5 @@
 require 'state'
+require 'random_player'
 
 RSpec.describe "Random player" do
   class BoardStub
