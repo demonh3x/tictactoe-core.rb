@@ -9,7 +9,7 @@ RSpec.describe "Game state" do
 
   it "is immutable" do
     initial_state = State.new(:board)
-    next_state = initial_state.put(2, :mark)
+    initial_state.put(2, :mark)
     expect(initial_state.look_at(2)).to eq(nil)
   end
 end
