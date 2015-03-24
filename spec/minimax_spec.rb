@@ -1,6 +1,7 @@
 require 'state'
 require 'three_by_three_board'
 require 'minimax'
+require 'timeout'
 
 RSpec.describe 'Minimax player' do
   def board(*marks)
@@ -108,5 +109,16 @@ RSpec.describe 'Minimax player' do
     minimax = Minimax.new(state, :X, :O, :X)
     expect(minimax.score).to eq(1)
     expect(minimax.best_options).to eq [6]
+  end
+
+  it 'given an empty state, should not take more than one second to have an answer' do
+    state = board(
+      nil, nil, nil,
+      nil, nil, nil,
+      nil, nil, nil
+    )
+    Timeout::timeout(1) {
+      Minimax.new(state, :X, :O, :X).best_options
+    }
   end
 end

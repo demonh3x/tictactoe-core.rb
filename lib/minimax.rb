@@ -7,10 +7,12 @@ class Minimax
   end
 
   def score
+    return 0 if state.available_locations.size == 9
     state.is_finished?? leaf_score : node_score
   end
 
   def best_options
+    return [0] if state.available_locations.size == 9
     if !state.is_finished? && is_my_turn?
       locations_with_best_score
     else
