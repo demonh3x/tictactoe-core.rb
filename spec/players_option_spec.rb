@@ -1,3 +1,5 @@
+require 'players_option'
+
 RSpec.describe "Players option" do
   def cli_output(commands)
     input = commands.push("").join("\n")
