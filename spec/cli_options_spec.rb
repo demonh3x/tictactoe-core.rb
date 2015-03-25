@@ -1,3 +1,5 @@
+require 'cli_options'
+
 RSpec.describe "CLI Options" do
   describe "given two options, when asking for a selection" do
     before(:each) do
