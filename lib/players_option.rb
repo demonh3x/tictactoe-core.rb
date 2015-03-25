@@ -14,17 +14,17 @@ class PlayersOption
     response = option.ask_for_one(
       "Who will play?",
       {
-        "hvh" => "Human VS Human",
-        "hvc" => "Human VS Computer",
-        "cvh" => "Computer VS Human",
-        "cvc" => "Computer VS Computer",
+        "1" => "Human VS Human",
+        "2" => "Human VS Computer",
+        "3" => "Computer VS Human",
+        "4" => "Computer VS Computer",
       })
     
     case response
-    when "hvh" then [human(:x), human(:o)]
-    when "hvc" then [human(:x), computer(:o, :x)]
-    when "cvh" then [computer(:x, :o), human(:o)]
-    when "cvc" then [computer(:x, :o), computer(:o, :x)]
+    when "1" then [human(:x), human(:o)]
+    when "2" then [human(:x), computer(:o, :x)]
+    when "3" then [computer(:x, :o), human(:o)]
+    when "4" then [computer(:x, :o), computer(:o, :x)]
     end
   end
 

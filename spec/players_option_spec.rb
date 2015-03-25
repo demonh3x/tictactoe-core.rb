@@ -8,23 +8,23 @@ RSpec.describe "Players option" do
   end
 
   it "should print the question" do
-    expect(cli_output %w(hvh)).to include("Who will play?")
+    expect(cli_output %w(1)).to include("Who will play?")
   end
 
   it "should print the options" do
-    expect(cli_output %w(hvh)).to include(
-      "hvh = Human VS Human\n" +
-      "hvc = Human VS Computer\n" +
-      "cvh = Computer VS Human\n" +
-      "cvc = Computer VS Computer\n")
+    expect(cli_output %w(1)).to include(
+      "1 = Human VS Human\n" +
+      "2 = Human VS Computer\n" +
+      "3 = Computer VS Human\n" +
+      "4 = Computer VS Computer\n")
   end
 
   it "given an invalid option should say is invalid" do
-    expect(cli_output %w(invalid hvh)).to include('"invalid" is not a valid option!')
+    expect(cli_output %w(invalid 1)).to include('"invalid" is not a valid option!')
   end
 
   it "given an invalid option should repeat the valid ones" do
-    expect(cli_output %w(invalid hvh)).to include('try one of ["hvh", "hvc", "cvh", "cvc"]')
+    expect(cli_output %w(invalid 1)).to include('try one of ["1", "2", "3", "4"]')
   end
 
   def ask_for_players(commands)
@@ -46,7 +46,7 @@ RSpec.describe "Players option" do
 
   describe "answering human vs human" do
     before(:each) do
-      @players = ask_for_players %w(hvh)
+      @players = ask_for_players %w(1)
     end
 
     it "should return the first player human with mark X" do
@@ -60,7 +60,7 @@ RSpec.describe "Players option" do
 
   describe "answering human vs computer" do
     before(:each) do
-      @players = ask_for_players %w(hvc)
+      @players = ask_for_players %w(2)
     end
 
     it "should return the first player human with mark X" do
@@ -74,7 +74,7 @@ RSpec.describe "Players option" do
 
   describe "answering computer vs human" do
     before(:each) do
-      @players = ask_for_players %w(cvh)
+      @players = ask_for_players %w(3)
     end
 
     it "should return the first player computer with mark X" do
@@ -88,7 +88,7 @@ RSpec.describe "Players option" do
 
   describe "answering computer vs computer" do
     before(:each) do
-      @players = ask_for_players %w(cvc)
+      @players = ask_for_players %w(4)
     end
 
     it "should return the first player computer with mark X" do
