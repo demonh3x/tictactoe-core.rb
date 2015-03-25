@@ -1,3 +1,5 @@
+require 'board_type_option'
+
 RSpec.describe "Board type option" do
   def cli_output(commands)
     input = commands.push("").join("\n")
