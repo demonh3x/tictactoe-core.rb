@@ -1,226 +1,96 @@
 require 'coordinator'
 
 RSpec.describe "Coordinator" do
-  class GameDouble
-    def initialize(messages)
-      @messages = messages
-      @state_responses = []
-      @make_move_calls = []
-      @is_finished_responses = []
-      @winner_responses = []
-    end
+  it 'is finished if the state is finished' do
+    state = spy :is_finished? => true
+    coordinator = Coordinator.new state, spy, [spy, spy]
 
-    def state
-      @messages << {:obj => self, :method => :state}
-      @state_responses.shift
-    end
-
-    def add_state_response(state)
-      @state_responses.push(state)
-    end
-
-    def is_finished?
-      @is_finished_responses.shift
-    end
-
-    def add_finished_response(is_finished)
-      @is_finished_responses << is_finished
-    end
-
-    def winner
-      @winner_responses.shift
-    end
-
-    def add_winner_response(winner)
-      @winner_responses << winner
-    end
-
-    def make_move(location, player)
-      @messages << {:obj => self, :method => :make_move}
-      @make_move_calls << {:player => player, :location => location}
-    end
-
-    def make_move_calls
-      @make_move_calls.clone
-    end
+    expect(coordinator.finished?).to eq(true)
   end
 
-  class UiDouble
-    def initialize(messages)
-      @messages = messages
-      @update_calls = []
-    end
+  it 'is not finished if the state is not finished' do
+    state = spy :is_finished? => false
+    coordinator = Coordinator.new state, spy, [spy, spy]
 
-    def update(state)
-      @messages << {:obj => self, :method => :update}
-      @update_calls << {:state => state}
-    end
-
-    def update_calls
-      @update_calls.clone
-    end
+    expect(coordinator.finished?).to eq(false)
   end
 
-  class PlayerDouble
-    def initialize(mark, messages)
-      @mark = mark
-      @messages = messages
-      @ask_for_location_calls = []
-      @location_responses = []
-    end
+  it 'when starting, updates the UI with the initial state' do
+    initial_state = spy
+    ui = spy
+    coordinator = Coordinator.new initial_state, ui, [spy, spy]
 
-    def ask_for_location(state)
-      @messages << {:obj => self, :method => :ask_for_location}
-      @ask_for_location_calls << {:state => state}
-      @location_responses.pop
-    end
+    coordinator.start
 
-    def add_location_response(location)
-      @location_responses << location
-    end
-
-    def ask_for_location_calls
-      @ask_for_location_calls
-    end
-
-    def mark
-      @mark
-    end
+    expect(ui).to have_received(:update).with(initial_state).at_least(1).times
   end
 
-  def stub_state(state)
-    @game.add_state_response(state)
+  it 'at the first step, asks the first player' do
+    state = spy
+    first_player = spy
+    coordinator = Coordinator.new state, spy, [first_player, spy]
+
+    coordinator.start
+    coordinator.step
+
+    expect(first_player).to have_received(:ask_for_location).with(state).at_least(1).times
   end
 
-  def stub_player_move(ui, location)
-    ui.add_location_response(location)
+  it 'at the first step, the first player decision is used to calculate the next step' do
+    state = spy
+    first_player = spy :ask_for_location => :first_player_decision, :mark => :first_player_mark
+    coordinator = Coordinator.new state, spy, [first_player, spy]
+
+    coordinator.start
+    coordinator.step
+
+    expect(state).to have_received(:put).with(:first_player_decision, :first_player_mark)
   end
 
-  def expect_ui_received_state(index, state)
-    update_call = @ui.update_calls[index]
-    expect(update_call[:state]).to equal(state)
+  it 'at the first step, the UI is updated with the new state' do
+    state = spy :put => :new_state
+    ui = spy
+    coordinator = Coordinator.new state, ui, [spy, spy]
+
+    coordinator.start
+    coordinator.step
+
+    expect(ui).to have_received(:update).with(:new_state)
   end
 
-  def expect_asked_for_location(index, player, state)
-    call = player.ask_for_location_calls[index]
-    expect(call[:state]).to equal(state)
-  end
-  
-  def expect_maked_move(index, player, location)
-    maked_move = @game.make_move_calls[index]
-    expect(maked_move[:player]).to equal(player)
-    expect(maked_move[:location]).to equal(location)
-  end
+  it 'at the second step, asks the second player' do
+    state = spy
+    second_player = spy
+    coordinator = Coordinator.new state, spy, [spy, second_player]
 
-  before(:each) do
-    @messages = []
+    coordinator.start
+    coordinator.step
+    coordinator.step
 
-    @game = GameDouble.new(@messages)
-
-    @ui = UiDouble.new(@messages)
-
-    @x_mark = "::x_mark::"
-    @o_mark = "::o_mark::"
-
-    @x_player = PlayerDouble.new(@x_mark, @messages)
-    @o_player = PlayerDouble.new(@o_mark, @messages)
-
-    @coordinator = Coordinator.new(@game, @ui, [@x_player, @o_player])
+    expect(second_player).to have_received(:ask_for_location).with(state).at_least(1).times
   end
 
-  describe "given the game is finished" do
-    before(:each) do
-      @game.add_finished_response(true)
-    end
-    
-    it "should be finished" do
-      expect(@coordinator.finished?).to eq(true)
-    end
+  it 'at the second step, the second player decision is used to calculate the next step' do
+    state = spy
+    second_player = spy :ask_for_location => :second_player_decision, :mark => :second_player_mark
+    coordinator = Coordinator.new state, spy, [spy, second_player]
 
-    it "when doing a step should raise error" do
-      expect{@coordinator.step}.to raise_error("The game is finished!")
-    end
+    coordinator.start
+    coordinator.step
+    coordinator.step
+
+    expect(state).to have_received(:put).with(:second_player_decision, :second_player_mark)
   end
-  
-  describe "given the game is not finished" do
-    before(:each) do
-      @game.add_finished_response(false)
-    end
 
-    it "should not be finished" do
-      expect(@coordinator.finished?).to eq(false)
-    end
+  it 'at the second step, the UI is updated with the new state' do
+    state = spy(:put => spy(:put => :new_state))
+    ui = spy
+    coordinator = Coordinator.new state, ui, [spy, spy]
 
-    describe "and the next step finishes the game" do
-      before(:each) do
-        @game.add_finished_response(true)
+    coordinator.start
+    coordinator.step
+    coordinator.step
 
-        @winner = "::winner::"
-        @game.add_winner_response(@winner)
-
-        @coordinator.step
-      end
-    end
-
-    describe "after the first step" do
-      before(:each) do
-        @initial_game_state = "::initial_game_state::"
-        stub_state(@initial_game_state)
-
-        @first_x_location = "::first_x_location::"
-        stub_player_move(@x_player, @first_x_location)
-
-        @second_game_state = "::second_game_state::"
-        stub_state(@second_game_state)
-
-        @coordinator.step
-      end
-
-      it "should update the UI with the initial game state" do
-        expect_ui_received_state(0, @initial_game_state)
-      end
-
-      it "should ask the first player for a location" do
-        expect_asked_for_location(0, @x_player, @initial_game_state)
-      end
-
-      it "should send the first player location to game" do
-        expect_maked_move(0, @x_mark, @first_x_location)
-      end
-
-      it "should update the UI with the second game state" do
-        expect_ui_received_state(1, @second_game_state)
-      end
-
-      it "should have sent the messages in order" do
-        expected_messages = [
-          {:obj => @game, :method => :state},
-          {:obj => @ui, :method => :update},
-          {:obj => @x_player, :method => :ask_for_location},
-          {:obj => @game, :method => :make_move},
-          {:obj => @game, :method => :state},
-          {:obj => @ui, :method => :update},
-        ]
-        expect(@messages).to eq(expected_messages)
-      end
-
-      describe "subsequent steps" do
-        before(:each) do
-          @messages.clear
-          @coordinator.step
-        end
-
-        it "should only do one update to the UI" do
-          expected_messages = [
-            {:obj => @game, :method => :state},
-            {:obj => @o_player, :method => :ask_for_location},
-            {:obj => @game, :method => :make_move},
-            {:obj => @game, :method => :state},
-            {:obj => @ui, :method => :update},
-          ]
-          expect(@messages).to eq(expected_messages)
-        end
-      end
-    end
+    expect(ui).to have_received(:update).with(:new_state)
   end
 end

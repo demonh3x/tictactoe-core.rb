@@ -1,44 +1,36 @@
 class Coordinator
-  def initialize(game, ui, players)
-    @game = game
+  def initialize(state, ui, players)
+    @state = state
     @ui = ui
-    @players = players
-    @first_step = true
-    @turns = @players.cycle
+    @turns = players.cycle
   end
 
   def finished?
-    game.is_finished?
+    state.is_finished?
+  end
+
+  def start
+    update_ui
   end
 
   def step
-    raise 'The game is finished!' if finished?
-
-    state = game.state
-    first_update_ui(state)
-    give_turn(state)
-
-    state = game.state
-    update_ui(state)
+    give_turn
+    update_ui
   end
 
   private
   
-  attr_accessor :game, :ui, :players, :first_step, :turns
+  attr_accessor :state, :ui, :turns
 
-  def first_update_ui(state)
-    if first_step
-      update_ui(state)
-      self.first_step = false
-    end
-  end
-
-  def update_ui(state)
-    ui.update(state)
-  end
-
-  def give_turn(state)
+  def give_turn
     player = turns.next
-    game.make_move(player.ask_for_location(state), player.mark)
+    location = player.ask_for_location(state)
+    mark = player.mark
+
+    self.state = state.put(location, mark)
+  end
+
+  def update_ui
+    ui.update(state)
   end
 end

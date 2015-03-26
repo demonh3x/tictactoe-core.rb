@@ -18,6 +18,23 @@ RSpec.describe "Integration" do
       @output = run_game %w(3 1 0,0 1,0 0,1 1,1 0,2 n)
     end
 
+    it "should have printed the initial state" do
+      expect(@output).to include(
+        "  x 0   1   2\n"\
+        "y +---+---+---+\n"\
+        "0 |   |   |   |\n"\
+        "  +---+---+---+\n"\
+        "1 |   |   |   |\n"\
+        "  +---+---+---+\n"\
+        "2 |   |   |   |\n"\
+        "  +---+---+---+\n"\
+      )
+    end
+
+    it "should have announced the winner" do
+      expect(@output).to include("x has won!")
+    end
+
     it "should have announced the winner" do
       expect(@output).to include("x has won!")
     end
