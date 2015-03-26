@@ -1,4 +1,4 @@
-class Coordinator
+class Game
   def initialize(state, ui, players)
     @state = state
     @ui = ui

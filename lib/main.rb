@@ -1,4 +1,4 @@
-require 'coordinator'
+require 'game'
 require 'cli'
 require 'state'
 require 'play_again_option'
@@ -15,19 +15,19 @@ class Main
 
   def run
     begin 
-      engine = create_game_engine
-      engine.start
-      engine.step until engine.finished?
+      game = create_game
+      game.start
+      game.step until game.finished?
     end while play_again.ask
   end
 
   private
   attr_accessor :output, :play_again, :board_type, :who_will_play
 
-  def create_game_engine
+  def create_game
     board = board_type.ask
     players = who_will_play.ask
-    Coordinator.new(
+    Game.new(
       State.new(board),
       Cli.new(output),
       players
