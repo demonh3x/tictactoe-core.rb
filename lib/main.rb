@@ -8,8 +8,10 @@ require 'players_option'
 class Main
   def initialize(input=$stdin, output=$stdout)
     @output = output
+
+    @board_type = create_board_option(input, output)
+
     @play_again = PlayAgainOption.new(input, output)
-    @board_type = BoardTypeOption.new(input, output)
     @who_will_play = PlayersOption.new(input, output)
   end
 
@@ -24,8 +26,15 @@ class Main
   private
   attr_accessor :output, :play_again, :board_type, :who_will_play
 
+  def create_board_option(input, output)
+    cli_asker = CliOptions.new(input, output)
+    board_selection = BoardTypeSelection.new(cli_asker)
+    board_factory = BoardTypeFactory.new
+    @board_type = BoardTypeOption.new(board_selection, board_factory)
+  end
+
   def create_game
-    board = board_type.ask
+    board = board_type.get
     players = who_will_play.ask
     Game.new(
       State.new(board),

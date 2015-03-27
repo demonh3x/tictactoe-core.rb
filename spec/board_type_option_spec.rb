@@ -1,11 +1,18 @@
 require 'board_type_option'
 
 RSpec.describe "Board type option" do
+  def create(input, out)
+    cli_asker = CliOptions.new(input, out)
+    selection = BoardTypeSelection.new(cli_asker)
+    factory = BoardTypeFactory.new
+    BoardTypeOption.new(selection, factory)
+  end
+
   def cli_output(commands)
-    input = commands.push("").join("\n")
+    input = StringIO.new(commands.push("").join("\n"))
     out = StringIO.new
-    option = BoardTypeOption.new(StringIO.new(input), out)
-    option.ask
+    option = create(input, out)
+    option.get
     out.string
   end
 
@@ -26,10 +33,10 @@ RSpec.describe "Board type option" do
   end
 
   def ask_board_type(commands)
-    input = commands.push("").join("\n")
+    input = StringIO.new(commands.push("").join("\n"))
     out = StringIO.new
-    option = BoardTypeOption.new(StringIO.new(input), out)
-    option.ask
+    option = create(input, out)
+    option.get
   end
 
   it "should return a ThreeByThreeBoard if answering 3" do
