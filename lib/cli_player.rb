@@ -17,7 +17,7 @@ class CliPlayer
   attr_reader :input, :output
 
   def print_turn
-    output.puts "Your turn! Where do you want to play? (format: x,y)"
+    output.puts "Your turn! Where do you want to play?"
   end
   
   def read_valid_location(state)
@@ -52,20 +52,11 @@ class CliPlayer
   end
 
   def parse_location(location_string)
-    parts = location_string.split(',').map{|s| Integer(s.strip) rescue nil}
-    return nil if parts.any?{|p| p.nil?} || parts.size != 2
-
-    x = parts[0]
-    y = parts[1]
-    loc(x, y)
-  end
-
-  def loc(x, y)
-    (y*3)+x
+    Integer(location_string) rescue nil
   end
 
   def print_invalid_input(input_string)
-    output.puts "Don't understand \"#{input_string}\". Please, make sure you use the format \"x,y\""
+    output.puts "Don't understand \"#{input_string}\". Please, make sure you use a number."
   end
   
   def print_not_available

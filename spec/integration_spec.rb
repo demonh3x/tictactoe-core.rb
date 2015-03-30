@@ -15,19 +15,18 @@ RSpec.describe "Integration" do
 
   describe "full game with 3x3 board between two humans" do
     before(:each) do
-      @output = run_game %w(3 1 0,0 1,0 0,1 1,1 0,2 n)
+      @output = run_game %w(3 1 0 1 3 4 6 n)
     end
 
     it "should have printed the initial state" do
       expect(@output).to include(
-        "  x 0   1   2\n"\
-        "y +---+---+---+\n"\
-        "0 |   |   |   |\n"\
-        "  +---+---+---+\n"\
-        "1 |   |   |   |\n"\
-        "  +---+---+---+\n"\
-        "2 |   |   |   |\n"\
-        "  +---+---+---+\n"\
+        "+---+---+---+\n"\
+        "| 0 | 1 | 2 |\n"\
+        "+---+---+---+\n"\
+        "| 3 | 4 | 5 |\n"\
+        "+---+---+---+\n"\
+        "| 6 | 7 | 8 |\n"\
+        "+---+---+---+\n"\
       )
     end
 
@@ -54,14 +53,14 @@ RSpec.describe "Integration" do
   
   describe "two full games with 3x3 board between two humans" do
     it "should have announced the winner of the second game" do
-      commands = %w(3 1 0,0 1,0 0,1 1,1 0,2 y 3 1 0,0 1,0 0,1 1,1 2,0 1,2 n)
+      commands = %w(3 1 0 1 3 4 6 y 3 1 0 1 3 4 2 7 n)
       expect(run_game commands).to include("o has won!")
     end
   end
 
   describe "full game with 3x3 board between computer and human" do
     it "should have announced the winner" do
-      expect(run_game %w(3 3 0,2 1,2 n)).to include("x has won!")
+      expect(run_game %w(3 3 6 7 n)).to include("x has won!")
     end
   end
 end

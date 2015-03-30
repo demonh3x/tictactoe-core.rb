@@ -25,25 +25,20 @@ class Cli
     m = marks_in_the_board
 
     board =
-    "  x 0   1   2\n" +
-    "y +---+---+---+\n" +
-    "0 | #{m[0]} | #{m[1]} | #{m[2]} |\n" +
-    "  +---+---+---+\n" +
-    "1 | #{m[3]} | #{m[4]} | #{m[5]} |\n" +
-    "  +---+---+---+\n" +
-    "2 | #{m[6]} | #{m[7]} | #{m[8]} |\n" +
-    "  +---+---+---+"
+    "+---+---+---+\n" +
+    "| #{m[0]} | #{m[1]} | #{m[2]} |\n" +
+    "+---+---+---+\n" +
+    "| #{m[3]} | #{m[4]} | #{m[5]} |\n" +
+    "+---+---+---+\n" +
+    "| #{m[6]} | #{m[7]} | #{m[8]} |\n" +
+    "+---+---+---+"
 
     output.puts(board)
   end
 
   def get_mark(state, loc)
     mark = state.look_at(loc)
-    mark == nil ? ' ' : mark.to_s
-  end
-
-  def loc(x, y)
-    (y*3)+x
+    mark == nil ? loc : mark.to_s
   end
 
   def print_draw
