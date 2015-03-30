@@ -4,8 +4,9 @@ RSpec.describe "Play again option" do
   def cli_output(commands)
     input = commands.push("").join("\n")
     out = StringIO.new
-    option = PlayAgainOption.new(StringIO.new(input), out)
-    option.ask
+    cli = CliOptions.new(StringIO.new(input), out)
+    option = PlayAgainOption.new(cli)
+    option.get
     out.string
   end
 
@@ -28,8 +29,9 @@ RSpec.describe "Play again option" do
   def play_again?(commands)
     input = commands.push("").join("\n")
     out = StringIO.new
-    option = PlayAgainOption.new(StringIO.new(input), out)
-    option.ask
+    cli = CliOptions.new(StringIO.new(input), out)
+    option = PlayAgainOption.new(cli)
+    option.get
   end
 
   it "should return true if answering yes" do

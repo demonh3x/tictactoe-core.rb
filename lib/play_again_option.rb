@@ -1,11 +1,11 @@
 require 'cli_options'
 
 class PlayAgainOption
-  def initialize(input, output)
-    @option = CliOptions.new(input, output)
+  def initialize(cli)
+    @option = cli
   end
 
-  def ask
+  def get
     response = option.ask_for_one(
       "Do you want to play again?",
       {"y" => "Yes", "n" => "No"})

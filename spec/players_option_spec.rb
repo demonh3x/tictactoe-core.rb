@@ -1,12 +1,20 @@
 require 'players_option'
 
 RSpec.describe "Players option" do
+  def create(i, o)
+    cli = CliOptions.new(i, o)
+    selection = PlayersSelection.new(cli)
+    factory = PlayersFactory.new(i, o)
+
+    PlayersOption.new(selection, factory)
+  end
+
   def cli_output(commands)
-    input = commands.push("").join("\n")
-    out = StringIO.new
-    option = PlayersOption.new(StringIO.new(input), out)
-    option.ask
-    out.string
+    i = StringIO.new(commands.push("").join("\n"))
+    o = StringIO.new
+    option = create(i, o)
+    option.get
+    o.string
   end
 
   it "should print the question" do
@@ -30,10 +38,10 @@ RSpec.describe "Players option" do
   end
 
   def ask_for_players(commands)
-    input = commands.push("").join("\n")
-    out = StringIO.new
-    option = PlayersOption.new(StringIO.new(input), out)
-    option.ask
+    i = StringIO.new(commands.push("").join("\n"))
+    o = StringIO.new
+    option = create(i, o)
+    option.get
   end
 
   def expect_human_with_mark(player, mark)
