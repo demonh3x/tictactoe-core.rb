@@ -45,7 +45,7 @@ class Minimax
   end
 
   def locations_with_best_score
-    r = node_options.inject({:score => -1, :locations => []}) {|result, option|
+    r = node_options.inject({:score => -1, :locations => []}) do |result, option|
       if option[:score] == result[:score]
         result[:locations] << option[:location]
         result
@@ -54,7 +54,7 @@ class Minimax
       else
         result
       end
-    }
+    end
 
     r[:locations]
   end
