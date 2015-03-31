@@ -1,3 +1,4 @@
+require 'fixed_strategy_player'
 require 'minimax'
 
 class PerfectPlayer < FixedStrategyPlayer
