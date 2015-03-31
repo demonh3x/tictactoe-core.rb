@@ -51,10 +51,10 @@ class PlayersFactory
 
   def constructors
     @constructors ||= {
-      :human => Proc.new do |mark|   
+      :human => lambda do |mark|
         CliPlayer.new(mark, input, output)
       end,
-      :computer => Proc.new do |mark|
+      :computer => lambda do |mark|
         PerfectPlayer.new(mark, opponent(mark))
       end
     }
