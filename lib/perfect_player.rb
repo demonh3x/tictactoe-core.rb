@@ -1,19 +1,11 @@
 require 'minimax'
 
-class PerfectPlayer
-  def initialize(me, opponent)
-    @me = me
-    @opponent = opponent
-  end
+class PerfectPlayer < FixedStrategyPlayer
+  def initialize(my_mark, opponents_mark)
+    strategy = lambda do |state|
+      Minimax.new(state, my_mark, opponents_mark, my_mark).best_options
+    end
 
-  def ask_for_location(state)
-    Minimax.new(state, me, opponent, me).best_options.first
+    super(my_mark, strategy)
   end
-  
-  def mark
-    me
-  end
-
-  private
-  attr_reader :me, :opponent
 end
