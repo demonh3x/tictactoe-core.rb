@@ -118,7 +118,20 @@ RSpec.describe 'Minimax player' do
       nil, nil, nil
     )
     Timeout::timeout(1) {
-      Minimax.new(state, :X, :O, :X).best_options
+      minimax = Minimax.new(state, :X, :O, :X)
+      minimax.score
+      minimax.best_options
     }
+  end
+
+  it 'given an empty state, all locations are a draw' do
+    state = board(
+      nil, nil, nil,
+      nil, nil, nil,
+      nil, nil, nil
+    )
+    minimax = Minimax.new(state, :X, :O, :X)
+    expect(minimax.score).to eq(0)
+    expect(minimax.best_options).to eq [0, 1, 2, 3, 4, 5, 6, 7, 8]
   end
 end
