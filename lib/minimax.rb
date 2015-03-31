@@ -21,7 +21,7 @@ class Minimax
   end
 
   private
-  attr_accessor :state, :me, :current_player, :opponent
+  attr_reader :state, :me, :current_player, :opponent
 
   def is_my_turn?
     current_player == me
