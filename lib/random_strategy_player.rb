@@ -1,17 +1,18 @@
-class RandomPlayer
+class RandomStrategyPlayer
   attr_reader :mark
 
-  def initialize(mark, random)
-    @random = random
+  def initialize(mark, strategy, random)
     @mark = mark
+    @strategy = strategy
+    @random = random
   end
 
   def ask_for_location(state)
-    select_random state.available_locations
+    select_random strategy.call(state)
   end
 
   private
-  attr_accessor :random
+  attr_accessor :random, :strategy
 
   def select_random(list)
     index = bounded_random list.size
