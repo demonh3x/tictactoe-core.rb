@@ -1,6 +1,7 @@
 require 'cli'
 require 'state'
 require 'three_by_three_board'
+require 'four_by_four_board'
 
 RSpec.describe "CLI" do
   def state(board, *marks)
@@ -17,7 +18,7 @@ RSpec.describe "CLI" do
   end
 
   describe "when updating" do
-    describe "given an empty state" do
+    describe "given a 3x3 empty state" do
       it "prints it without pieces" do
         @cli.update(state(
           ThreeByThreeBoard.new,
@@ -33,6 +34,29 @@ RSpec.describe "CLI" do
           "+---+---+---+\n" +
           "| 6 | 7 | 8 |\n" +
           "+---+---+---+\n"
+        )
+      end
+    end
+
+    describe "given a 4x4 empty state" do
+      it "prints it without pieces" do
+        @cli.update(state(
+          FourByFourBoard.new,
+          nil, nil, nil, nil,
+          nil, nil, nil, nil,
+          nil, nil, nil, nil,
+          nil, nil, nil, nil,
+        ))
+        expect(@out.string).to eq(
+          "+---+---+---+---+\n" +
+          "| 0 | 1 | 2 | 3 |\n" +
+          "+---+---+---+---+\n" +
+          "| 4 | 5 | 6 | 7 |\n" +
+          "+---+---+---+---+\n" +
+          "| 8 | 9 | 10| 11|\n" +
+          "+---+---+---+---+\n" +
+          "| 12| 13| 14| 15|\n" +
+          "+---+---+---+---+\n"
         )
       end
     end

@@ -26,6 +26,10 @@ class State
     board.locations.select{|location| look_at(location).nil?}
   end
 
+  def cells
+    board.locations.zip marks
+  end
+
   private
   attr_reader :board, :marks
 
