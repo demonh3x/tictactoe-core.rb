@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'main'
+require 'game_runner'
 
-RSpec.describe "Integration" do
+RSpec.describe GameRunner do
   def format_for_stdin(commands)
     commands.push("").join("\n")
   end
@@ -10,7 +10,7 @@ RSpec.describe "Integration" do
     input = StringIO.new format_for_stdin commands
     output = StringIO.new
     random = spy(:rand => 0.0)
-    Main.new(input, output, random).run
+    described_class.new(input, output, random).run
     output.string
   end
 

@@ -3,5 +3,5 @@
 dirname = File.expand_path(File.dirname(File.dirname(__FILE__))) + "/lib"
 $LOAD_PATH.unshift(dirname) unless $LOAD_PATH.include?(dirname)
 
-require 'main'
-Main.new.run
+require 'game_runner'
+GameRunner.new.run

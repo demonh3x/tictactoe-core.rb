@@ -5,7 +5,7 @@ require 'options/play_again_option'
 require 'options/board_type_option'
 require 'options/players_option'
 
-class Main
+class GameRunner
   def initialize(input=$stdin, output=$stdout, random=Random.new)
     @output = output
 
