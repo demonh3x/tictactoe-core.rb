@@ -1,6 +1,6 @@
 require 'core/state'
 require 'boards/three_by_three_board'
-require 'minimax'
+require 'players/ai/minimax'
 require 'timeout'
 
 RSpec.describe Minimax do

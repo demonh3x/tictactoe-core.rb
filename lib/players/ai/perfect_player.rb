@@ -1,5 +1,5 @@
 require 'random_strategy_player'
-require 'minimax'
+require 'players/ai/minimax'
 
 class PerfectPlayer < RandomStrategyPlayer
   def initialize(my_mark, opponents_mark, random)
