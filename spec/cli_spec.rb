@@ -1,4 +1,4 @@
-require 'cli'
+require 'uis/cli'
 require 'core/state'
 require 'boards/three_by_three_board'
 require 'boards/four_by_four_board'
