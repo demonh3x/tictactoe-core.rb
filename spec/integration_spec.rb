@@ -35,10 +35,6 @@ RSpec.describe "Integration" do
       expect(@output).to include("x has won!")
     end
 
-    it "should have announced the winner" do
-      expect(@output).to include("x has won!")
-    end
-    
     it "should have asked to play again" do
       expect(@output).to include("play again?")
     end
