@@ -1,5 +1,5 @@
 require 'cli_options'
-require 'cli_player'
+require 'players/cli_player'
 require 'perfect_player'
 
 class PlayersSelection
