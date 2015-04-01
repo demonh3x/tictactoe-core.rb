@@ -1,4 +1,4 @@
-require 'random_strategy_player'
+require 'players/ai/random_strategy_player'
 
 RSpec.describe RandomStrategyPlayer do
   it "has a mark" do

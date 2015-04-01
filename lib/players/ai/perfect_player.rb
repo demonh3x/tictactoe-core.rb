@@ -1,4 +1,4 @@
-require 'random_strategy_player'
+require 'players/ai/random_strategy_player'
 require 'players/ai/minimax'
 
 class PerfectPlayer < RandomStrategyPlayer
