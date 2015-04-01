@@ -1,7 +1,7 @@
 require 'core/game'
 require 'uis/cli'
 require 'core/state'
-require 'play_again_option'
+require 'options/play_again_option'
 require 'board_type_option'
 require 'players_option'
 
