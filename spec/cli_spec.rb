@@ -1,6 +1,6 @@
 require 'cli'
 require 'core/state'
-require 'three_by_three_board'
+require 'boards/three_by_three_board'
 require 'four_by_four_board'
 
 RSpec.describe "CLI" do

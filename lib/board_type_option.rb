@@ -1,5 +1,5 @@
 require 'cli_options'
-require 'three_by_three_board'
+require 'boards/three_by_three_board'
 require 'four_by_four_board'
 
 class BoardTypeSelection

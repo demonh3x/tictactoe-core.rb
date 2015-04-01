@@ -1,4 +1,4 @@
-require 'three_by_three_board'
+require 'boards/three_by_three_board'
 
 RSpec.describe "3x3 board" do
   before(:each) do
