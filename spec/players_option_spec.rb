@@ -1,4 +1,4 @@
-require 'players_option'
+require 'options/players_option'
 
 RSpec.describe "Players option" do
   def create(i, o)

@@ -3,7 +3,7 @@ require 'uis/cli'
 require 'core/state'
 require 'options/play_again_option'
 require 'options/board_type_option'
-require 'players_option'
+require 'options/players_option'
 
 class Main
   def initialize(input=$stdin, output=$stdout, random=Random.new)
