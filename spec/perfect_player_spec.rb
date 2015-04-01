@@ -1,4 +1,4 @@
-require 'perfect_player'
+require 'players/ai/perfect_player'
 require 'core/state'
 require 'boards/three_by_three_board'
 

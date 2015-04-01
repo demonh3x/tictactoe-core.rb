@@ -1,6 +1,6 @@
 require 'cli_options'
 require 'players/cli_player'
-require 'perfect_player'
+require 'players/ai/perfect_player'
 
 class PlayersSelection
   def initialize(asker)
