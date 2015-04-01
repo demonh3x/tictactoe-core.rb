@@ -1,4 +1,4 @@
-require 'cli_options'
+require 'options/cli_options'
 
 RSpec.describe "CLI Options" do
   describe "given two options, when asking for a selection" do

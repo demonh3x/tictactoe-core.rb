@@ -1,4 +1,4 @@
-require 'cli_options'
+require 'options/cli_options'
 require 'players/cli_player'
 require 'players/ai/perfect_player'
 

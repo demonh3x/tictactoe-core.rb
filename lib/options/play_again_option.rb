@@ -1,4 +1,4 @@
-require 'cli_options'
+require 'options/cli_options'
 
 class PlayAgainOption
   def initialize(cli)
