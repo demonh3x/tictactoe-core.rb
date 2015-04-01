@@ -1,4 +1,4 @@
-require 'board_type_option'
+require 'options/board_type_option'
 
 RSpec.describe "Board type option" do
   def create(input, out)

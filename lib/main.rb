@@ -2,7 +2,7 @@ require 'core/game'
 require 'uis/cli'
 require 'core/state'
 require 'options/play_again_option'
-require 'board_type_option'
+require 'options/board_type_option'
 require 'players_option'
 
 class Main
