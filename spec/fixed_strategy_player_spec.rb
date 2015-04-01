@@ -1,4 +1,4 @@
-require 'fixed_strategy_player'
+require 'players/ai/fixed_strategy_player'
 
 RSpec.describe FixedStrategyPlayer do
   it 'has a mark' do
