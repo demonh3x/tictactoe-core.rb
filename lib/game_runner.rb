@@ -36,9 +36,9 @@ class GameRunner
     PlayAgainOption.new(cli)
   end
 
-  def create_players_option(cli, i, o, random)
+  def create_players_option(cli, input, output, random)
     players_selection = PlayersSelection.new(cli)
-    players_factory = PlayersFactory.new(i, o, random)
+    players_factory = PlayersFactory.new(input, output, random)
     PlayersOption.new(players_selection, players_factory)
   end
 
