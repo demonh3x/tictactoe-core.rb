@@ -1,4 +1,4 @@
-require 'game'
+require 'core/game'
 
 RSpec.describe "Game" do
   it 'is finished if the state is finished' do

@@ -1,4 +1,4 @@
-require 'game'
+require 'core/game'
 require 'cli'
 require 'state'
 require 'play_again_option'
