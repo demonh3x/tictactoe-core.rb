@@ -1,5 +1,6 @@
 require 'cli_options'
 require 'three_by_three_board'
+require 'four_by_four_board'
 
 class BoardTypeSelection
   def initialize(asker)
@@ -7,11 +8,14 @@ class BoardTypeSelection
   end
 
   def read
-    asker.ask_for_one(
+    response = asker.ask_for_one(
       "What will be the size of the board?",
-      {"3" => "3x3 board"})
+      {
+        "3" => "3x3 board",
+        "4" => "4x4 board",
+      })
 
-    :three_by_three
+    Integer(response)
   end
 
   private
@@ -19,8 +23,11 @@ class BoardTypeSelection
 end
 
 class BoardTypeFactory
-  def create(type)
-    ThreeByThreeBoard.new
+  def create(side_size)
+    case side_size
+    when 3 then ThreeByThreeBoard.new
+    when 4 then FourByFourBoard.new
+    end
   end
 end
 

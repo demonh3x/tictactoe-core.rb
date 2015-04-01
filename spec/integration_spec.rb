@@ -63,4 +63,24 @@ RSpec.describe "Integration" do
       expect(run_game %w(3 3 6 7 n)).to include("x has won!")
     end
   end
+
+  describe "full game with 4x4 board between two humans" do
+    before(:each) do
+      @output = run_game %w(4 1 0 4 1 5 2 6 3 n)
+    end
+
+    it "should have printed the initial state" do
+      expect(@output).to include(
+        "+---+---+---+---+\n"\
+        "| 0 | 1 | 2 | 3 |\n"\
+        "+---+---+---+---+\n"\
+        "| 4 | 5 | 6 | 7 |\n"\
+        "+---+---+---+---+\n"\
+        "| 8 | 9 | 10| 11|\n"\
+        "+---+---+---+---+\n"\
+        "| 12| 13| 14| 15|\n"\
+        "+---+---+---+---+\n"\
+      )
+    end
+  end
 end
