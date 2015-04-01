@@ -4,7 +4,7 @@ require 'minimax'
 class PerfectPlayer < FixedStrategyPlayer
   def initialize(my_mark, opponents_mark)
     strategy = lambda do |state|
-      Minimax.new(state, my_mark, opponents_mark, my_mark).best_options
+      Minimax.new(my_mark, opponents_mark, my_mark).strategies(state)[:best]
     end
 
     super(my_mark, strategy)

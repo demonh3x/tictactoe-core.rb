@@ -3,7 +3,7 @@ require 'three_by_three_board'
 require 'minimax'
 require 'timeout'
 
-RSpec.describe 'Minimax player' do
+RSpec.describe Minimax do
   def board(*marks)
     state = State.new(ThreeByThreeBoard.new)
     marks.each_with_index do |mark, location|
@@ -12,126 +12,117 @@ RSpec.describe 'Minimax player' do
     state
   end
 
-  it 'given a draw the score should be 0' do
+  it 'given a draw' do
     draw_state = board(
       :X, :O, :X,
       :O, :X, :X,
       :O, :X, :O
     )
-    minimax = Minimax.new(draw_state, :X, :O, :O)
-    expect(minimax.score).to eq 0
-    expect(minimax.best_options).to eq []
+    minimax = described_class.new(:O, :X, :O)
+    expect(minimax.strategies(draw_state)).to eq({:best => []})
   end
 
-  it 'given a won state, the score should be 1' do
+  it 'given a won state' do
     won_state = board(
       :X, :O, :X,
       :O, :X, :O,
       :O, :X, :X
     )
-    minimax = Minimax.new(won_state, :X, :O, :O)
-    expect(minimax.score).to eq 1
-    expect(minimax.best_options).to eq []
+    minimax = described_class.new(:O, :X, :O)
+    expect(minimax.strategies(won_state)).to eq({:best => []})
   end
 
-  it 'given a lost state, the score should be -1' do
+  it 'given a lost state' do
     lost_state = board(
       :O, :X, :X,
       :X, :O, :X,
       :O, :X, :O
     )
-    minimax = Minimax.new(lost_state, :X, :O, :O)
-    expect(minimax.score).to eq(-1)
-    expect(minimax.best_options).to eq []
+    minimax = described_class.new(:O, :X, :O)
+    expect(minimax.strategies(lost_state)).to eq({:best => []})
   end
 
-  it 'given a winnable state by X, the score should be 1' do
+  it 'given a winnable state by X' do
     winnable_state_by_x = board(
       :X, :O, :X,
       :O, :X, :O,
       :O, :X, nil
     )
-    minimax = Minimax.new(winnable_state_by_x, :X, :O, :X)
-    expect(minimax.score).to eq(1)
-    expect(minimax.best_options).to eq [8]
+    minimax = described_class.new(:X, :O, :X)
+    expect(minimax.strategies(winnable_state_by_x)).to eq({:win => [8], :best => [8]})
   end
 
-  it 'given a winnable state by O, the score should be 1' do
+  it 'given a winnable state by O' do
     winnable_state_by_o = board(
       :O, :X,  :X,
       :X, :O,  :O,
       :X, nil, nil
     )
-    minimax = Minimax.new(winnable_state_by_o, :O, :X, :O)
-    expect(minimax.score).to eq(1)
-    expect(minimax.best_options).to eq [8]
+    minimax = described_class.new(:O, :X, :O)
+    expect(minimax.strategies(winnable_state_by_o)).to eq({:win => [8], :draw => [7], :best => [8]})
   end
 
-  it 'given a winnable state by X, the score should be 1' do
-    winnable_state_by_o = board(
+  it 'given a winnable state by X' do
+    winnable_state_by_x = board(
       :O,  :X,  :X,
       :O,  :O,  :X,
       nil, nil, nil
     )
-    minimax = Minimax.new(winnable_state_by_o, :X, :O, :X)
-    expect(minimax.score).to eq(1)
-    expect(minimax.best_options).to eq [8]
+    minimax = described_class.new(:X, :O, :X)
+    expect(minimax.strategies(winnable_state_by_x)).to eq({:win => [8], :lose => [6, 7], :best => [8]})
   end
 
-  it 'given the possibility to end in a draw instead of losing, the score should be 0' do
+  it 'given the possibility to end in a draw instead of losing' do
     state = board(
       :O, :X,  :O,
       :X, :O,  :X,
       :X, nil, nil
     )
-    minimax = Minimax.new(state, :X, :O, :X)
-    expect(minimax.score).to eq(0)
-    expect(minimax.best_options).to eq [8]
+    minimax = described_class.new(:X, :O, :X)
+    expect(minimax.strategies(state)).to eq({:lose => [7], :draw => [8], :best => [8]})
   end
 
-  it 'given the possibility to lose if the opponent is choosing, the score should be -1' do
-    state = board(
-      :O,  :X,  :O,
-      nil, :O,  :X,
-      :X,  nil, nil
-    )
-    minimax = Minimax.new(state, :X, :O, :O)
-    expect(minimax.score).to eq(-1)
-    expect(minimax.best_options).to eq []
-  end
-
-  it 'given the posibility to double fork, the score should be 1' do
+  it 'given the posibility to double fork' do
     state = board(
       :X,  :O,  :X,
       nil, nil, nil,
       nil, nil, :O
     )
-    minimax = Minimax.new(state, :X, :O, :X)
-    expect(minimax.score).to eq(1)
-    expect(minimax.best_options).to eq [6]
+    minimax = described_class.new(:X, :O, :X)
+    expect(minimax.strategies(state)).to eq({:lose => [5], :draw => [3, 4, 7], :win => [6], :best => [6]})
   end
 
-  it 'given an empty state, should not take more than one second to have an answer' do
+  it 'given an empty state should not take more than one second to have an answer' do
     state = board(
       nil, nil, nil,
       nil, nil, nil,
       nil, nil, nil
     )
     Timeout::timeout(1) {
-      minimax = Minimax.new(state, :X, :O, :X)
-      minimax.score
-      minimax.best_options
+      minimax = described_class.new(:X, :O, :X)
+      minimax.strategies(state)
     }
   end
 
-  it 'given an empty state, all locations are a draw' do
+  xit 'given the second play should not take more than one second to have an answer' do
+    state = board(
+      nil, nil, nil,
+      nil, :X, nil,
+      nil, nil, nil
+    )
+    Timeout::timeout(1) {
+      minimax = described_class.new(:O, :X, :O)
+      minimax.strategies(state)
+    }
+  end
+
+  it 'given an empty state anything is a draw' do
     state = board(
       nil, nil, nil,
       nil, nil, nil,
       nil, nil, nil
     )
-    minimax = Minimax.new(state, :X, :O, :X)
-    expect(minimax.score).to eq(0)
-    expect(minimax.best_options).to eq [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    minimax = described_class.new(:X, :O, :X)
+    expect(minimax.strategies(state)).to eq({:draw => [0, 1, 2, 3, 4, 5, 6, 7, 8], :best => [0, 1, 2, 3, 4, 5, 6, 7, 8]})
   end
 end

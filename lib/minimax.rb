@@ -1,27 +1,46 @@
 class Minimax
-  def initialize(state, me, opponent, current_player)
-    @state = state
+  def initialize(me, opponent, current_player)
     @me = me
     @opponent = opponent
     @current_player = current_player
   end
 
+  def strategies(state)
+    @state = state
+
+    score_meanings = {1 => :win, 0 => :draw, -1 => :lose}
+
+    strategies = map_keys(scored_locations, score_meanings)
+    add_best(strategies)
+
+    strategies
+  end
+
+  protected
+  attr_accessor :state
+
   def score
-    return 0 if state.available_locations.size == 9
     state.is_finished?? leaf_score : node_score
   end
 
-  def best_options
-    return state.available_locations if state.available_locations.size == 9
-    if !state.is_finished? && is_my_turn?
-      locations_with_best_score
-    else
-      []
-    end
+  private
+  attr_reader :me, :opponent, :current_player
+
+  def map_keys(hash, mappings)
+    Hash[hash.map {|k, v| [mappings[k], v] }]
   end
 
-  private
-  attr_reader :state, :me, :current_player, :opponent
+  def add_best(strategies)
+    [:win, :draw, :lose].each do |outcome|
+      if strategies.has_key? outcome
+        strategies[:best] = strategies[outcome] 
+        return strategies
+      end
+    end
+
+    strategies[:best] = []
+    strategies
+  end
 
   def is_my_turn?
     current_player == me
@@ -39,24 +58,23 @@ class Minimax
   end
 
   def node_score
-    possibilities = node_options.map {|option| option[:score]}
-
-    is_my_turn?? possibilities.max : possibilities.min
+    scores = scored_locations.keys
+    is_my_turn?? scores.max : scores.min
   end
 
-  def locations_with_best_score
-    r = node_options.inject({:score => -1, :locations => []}) do |result, option|
-      if option[:score] == result[:score]
-        result[:locations] << option[:location]
-        result
-      elsif option[:score] > result[:score] 
-        {:score => option[:score], :locations => [option[:location]]}
-      else
-        result
-      end
+  def scored_locations
+    if state.available_locations.size == 9
+      return {0 => state.available_locations}
     end
 
-    r[:locations]
+    node_options.inject({}) do |result, option|
+      score = option[:score]
+      location = option[:location]
+
+      result[score] ||= []
+      result[score] << location
+      result
+    end
   end
 
   def node_options
@@ -66,8 +84,13 @@ class Minimax
   end
 
   def location_score(location)
-    next_state = state.put(location, current_player)
-    Minimax.new(next_state, me, opponent, next_player).score
+    mm = self.class.new(me, opponent, next_player)
+    mm.state = next_state(location)
+    mm.score
+  end
+
+  def next_state(location)
+    state.put(location, current_player)
   end
 
   def next_player
