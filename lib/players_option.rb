@@ -30,9 +30,10 @@ class PlayersSelection
 end
 
 class PlayersFactory
-  def initialize(input, output)
+  def initialize(input, output, random)
     @input = input
     @output = output
+    @random = random
   end
 
   def create(types)
@@ -42,7 +43,7 @@ class PlayersFactory
   end
 
   private
-  attr_reader :input, :output
+  attr_reader :input, :output, :random
 
   MARKS = [:x, :o]
   def marks
@@ -55,7 +56,7 @@ class PlayersFactory
         CliPlayer.new(mark, input, output)
       end,
       :computer => lambda do |mark|
-        PerfectPlayer.new(mark, opponent(mark))
+        PerfectPlayer.new(mark, opponent(mark), random)
       end
     }
   end

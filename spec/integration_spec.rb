@@ -9,7 +9,8 @@ RSpec.describe "Integration" do
   def run_game(commands)
     input = StringIO.new format_for_stdin commands
     output = StringIO.new
-    Main.new(input, output).run
+    random = spy(:rand => 0.0)
+    Main.new(input, output, random).run
     output.string
   end
 

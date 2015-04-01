@@ -12,7 +12,7 @@ RSpec.describe "Perfect player" do
   end
 
   before(:each) do
-    @player = PerfectPlayer.new(:x, :o)
+    @player = PerfectPlayer.new(:x, :o, spy(:rand => 0.0))
   end
 
   def play(state)

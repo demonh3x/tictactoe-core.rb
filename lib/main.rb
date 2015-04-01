@@ -6,13 +6,13 @@ require 'board_type_option'
 require 'players_option'
 
 class Main
-  def initialize(input=$stdin, output=$stdout)
+  def initialize(input=$stdin, output=$stdout, random=Random.new)
     @output = output
 
     cli = CliOptions.new(input, output)
     @board_type = create_board_option cli
     @play_again = create_play_again_option cli
-    @who_will_play = create_players_option cli, input, output
+    @who_will_play = create_players_option cli, input, output, random
   end
 
   def run
@@ -36,9 +36,9 @@ class Main
     PlayAgainOption.new(cli)
   end
 
-  def create_players_option(cli, i, o)
+  def create_players_option(cli, i, o, random)
     players_selection = PlayersSelection.new(cli)
-    players_factory = PlayersFactory.new(i, o)
+    players_factory = PlayersFactory.new(i, o, random)
     PlayersOption.new(players_selection, players_factory)
   end
 
