@@ -1,5 +1,5 @@
 require 'perfect_player'
-require 'state'
+require 'core/state'
 require 'three_by_three_board'
 
 RSpec.describe "Perfect player" do

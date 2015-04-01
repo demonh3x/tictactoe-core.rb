@@ -1,5 +1,5 @@
 require 'cli_player'
-require 'state'
+require 'core/state'
 require 'three_by_three_board'
 
 RSpec.describe "CLI Player" do

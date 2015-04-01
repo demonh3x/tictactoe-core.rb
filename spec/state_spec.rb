@@ -1,4 +1,4 @@
-require 'state'
+require 'core/state'
 
 RSpec.describe "Game state" do
   it "can look at a location" do

@@ -1,5 +1,5 @@
 require 'cli'
-require 'state'
+require 'core/state'
 require 'three_by_three_board'
 require 'four_by_four_board'
 

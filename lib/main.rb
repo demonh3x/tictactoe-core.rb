@@ -1,6 +1,6 @@
 require 'core/game'
 require 'cli'
-require 'state'
+require 'core/state'
 require 'play_again_option'
 require 'board_type_option'
 require 'players_option'
