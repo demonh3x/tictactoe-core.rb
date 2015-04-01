@@ -1,7 +1,7 @@
 require 'cli'
 require 'core/state'
 require 'boards/three_by_three_board'
-require 'four_by_four_board'
+require 'boards/four_by_four_board'
 
 RSpec.describe "CLI" do
   def state(board, *marks)

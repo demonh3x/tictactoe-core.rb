@@ -1,6 +1,6 @@
 require 'cli_options'
 require 'boards/three_by_three_board'
-require 'four_by_four_board'
+require 'boards/four_by_four_board'
 
 class BoardTypeSelection
   def initialize(asker)

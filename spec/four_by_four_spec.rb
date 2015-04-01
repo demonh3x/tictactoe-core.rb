@@ -1,4 +1,4 @@
-require "four_by_four_board"
+require 'boards/four_by_four_board'
 
 RSpec.describe "4x4 board" do
    it 'has the possible locations' do
