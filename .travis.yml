@@ -4,3 +4,6 @@ rvm:
   - "2.1.0"
   - "2.0.0-p598"
 script: "rspec spec/*"
+addons:
+  code_climate:
+      repo_token: davKSxBVGxp37TiMG2kn
