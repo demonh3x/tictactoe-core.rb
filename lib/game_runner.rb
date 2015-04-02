@@ -8,7 +8,7 @@ require 'options/play_again_option'
 
 require 'options/board_type_selection'
 require 'options/board_type_factory'
-require 'options/board_type_option'
+require 'options/option'
 
 require 'options/players_selection'
 require 'options/players_factory'
@@ -38,7 +38,7 @@ class GameRunner
   def create_board_option(cli)
     board_selection = BoardTypeSelection.new(cli)
     board_factory = BoardTypeFactory.new
-    BoardTypeOption.new(board_selection, board_factory)
+    Option.new(board_selection, board_factory)
   end
 
   def create_play_again_option(cli)

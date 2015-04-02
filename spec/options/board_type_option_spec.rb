@@ -1,6 +1,6 @@
-require 'options/board_type_option'
+require 'options/option'
 
-RSpec.describe BoardTypeOption do
+RSpec.describe Option do
   before(:each) do
     @selection = spy(:read => :selection_value)
     @factory = spy(:create => :created_value)

@@ -1,4 +1,4 @@
-class BoardTypeOption
+class Option
   def initialize(selection, factory)
     @selection = selection
     @factory = factory

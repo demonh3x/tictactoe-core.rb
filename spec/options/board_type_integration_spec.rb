@@ -2,14 +2,14 @@ require 'options/cli_options'
 
 require 'options/board_type_selection'
 require 'options/board_type_factory'
-require 'options/board_type_option'
+require 'options/option'
 
 RSpec.describe "Board type integration" do
   def create(input, out)
     cli_asker = CliOptions.new(input, out)
     selection = BoardTypeSelection.new(cli_asker)
     factory = BoardTypeFactory.new
-    BoardTypeOption.new(selection, factory)
+    Option.new(selection, factory)
   end
 
   def cli_output(commands)
