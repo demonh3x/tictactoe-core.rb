@@ -3,16 +3,15 @@ require 'uis/cli'
 require 'core/state'
 
 require 'options/cli_options'
+require 'options/option'
 
 require 'options/play_again_option'
 
 require 'options/board_type_selection'
 require 'options/board_type_factory'
-require 'options/option'
 
 require 'options/players_selection'
 require 'options/players_factory'
-require 'options/players_option'
 
 class GameRunner
   def initialize(input=$stdin, output=$stdout, random=Random.new)
@@ -48,7 +47,7 @@ class GameRunner
   def create_players_option(cli, input, output, random)
     players_selection = PlayersSelection.new(cli)
     players_factory = PlayersFactory.new(input, output, random)
-    PlayersOption.new(players_selection, players_factory)
+    Option.new(players_selection, players_factory)
   end
 
   def create_game

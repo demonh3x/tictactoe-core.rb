@@ -1,7 +1,7 @@
 require 'players/cli_player'
 require 'options/players_selection'
 require 'options/players_factory'
-require 'options/players_option'
+require 'options/option'
 
 RSpec.describe "Players option" do
   def create(i, o)
@@ -9,7 +9,7 @@ RSpec.describe "Players option" do
     selection = PlayersSelection.new(cli)
     factory = PlayersFactory.new(i, o, spy(:rand => 0.0))
 
-    PlayersOption.new(selection, factory)
+    Option.new(selection, factory)
   end
 
   def cli_output(commands)
