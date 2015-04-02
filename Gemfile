@@ -1,2 +1,2 @@
 source :rubygems
-gem "rspec" , "~> 3.1.7"
+gem "rspec" , "~> 3.1.0"
