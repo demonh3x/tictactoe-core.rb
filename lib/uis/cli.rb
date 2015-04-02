@@ -27,9 +27,10 @@ class Cli
   end
 
   def get_cells(state)
-    state.cells.map do |loc, mark|
+    state.locations.map do |loc|
+      mark = state.look_at(loc)
       mark == nil ? loc.to_s : mark.to_s
-    end 
+    end
   end
 
   def format_board(cells)

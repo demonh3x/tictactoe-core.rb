@@ -25,6 +25,10 @@ RSpec.describe "Game state" do
         end
     end
 
+    it 'can access to the board locations' do
+      expect(@state.locations).to equal(@board.locations)
+    end
+
     describe "with no moves" do
       it "should have an empty state" do
         expect_state([nil, nil, nil, nil, nil, nil, nil, nil, nil])

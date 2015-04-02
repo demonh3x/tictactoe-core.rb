@@ -26,8 +26,8 @@ class State
     board.locations.select{|location| look_at(location).nil?}
   end
 
-  def cells
-    board.locations.zip marks
+  def locations
+    board.locations
   end
 
   private
