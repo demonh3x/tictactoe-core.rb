@@ -1,6 +1,9 @@
 require 'core/game'
 require 'uis/cli'
 require 'core/state'
+
+require 'options/cli_options'
+
 require 'options/play_again_option'
 
 require 'options/board_type_selection'
