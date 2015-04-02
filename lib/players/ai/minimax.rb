@@ -20,7 +20,9 @@ class Minimax
   attr_accessor :state
 
   def score
-    state.is_finished?? leaf_score : node_score
+    with_cache(:score) do
+      state.is_finished?? leaf_score : node_score
+    end
   end
 
   private
@@ -63,18 +65,38 @@ class Minimax
   end
 
   def scored_locations
-    if state.available_locations.size == 9
-      return {0 => state.available_locations}
-    end
+    with_cache(:locations) do
+      @@calls ||= 0
+      puts @@calls
+      @@calls += 1
 
-    node_options.inject({}) do |result, option|
-      score = option[:score]
-      location = option[:location]
+      if state.available_locations.size == 9
+        return {0 => state.available_locations}
+      end
 
-      result[score] ||= []
-      result[score] << location
-      result
+      node_options.inject({}) do |result, option|
+        score = option[:score]
+        location = option[:location]
+
+        result[score] ||= []
+        result[score] << location
+        result
+      end
     end
+  end
+
+  def with_cache(id)
+    @@cache ||= {}
+    @@cache[id] ||= {}
+
+    cache = @@cache[id]
+    hash = state.cells
+    return cache[hash] if cache.has_key? hash 
+
+    result = yield
+
+    cache[hash] = result
+    result
   end
 
   def node_options
