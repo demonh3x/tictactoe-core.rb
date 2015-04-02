@@ -2,7 +2,7 @@ require 'core/game'
 require 'uis/cli'
 require 'core/state'
 
-require 'options/cli_options'
+require 'options/cli_asker'
 require 'options/option'
 
 require 'options/play_again_option'
@@ -17,7 +17,7 @@ class GameRunner
   def initialize(input=$stdin, output=$stdout, random=Random.new)
     @output = output
 
-    cli = CliOptions.new(input, output)
+    cli = CliAsker.new(input, output)
     @board_type = create_board_option cli
     @play_again = create_play_again_option cli
     @who_will_play = create_players_option cli, input, output, random

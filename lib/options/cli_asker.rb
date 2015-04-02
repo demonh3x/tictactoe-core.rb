@@ -1,4 +1,4 @@
-class CliOptions
+class CliAsker
   def initialize(input, output)
     @input = input
     @output = output

@@ -2,10 +2,11 @@ require 'players/cli_player'
 require 'options/players_selection'
 require 'options/players_factory'
 require 'options/option'
+require 'options/cli_asker'
 
 RSpec.describe "Players option" do
   def create(i, o)
-    cli = CliOptions.new(i, o)
+    cli = CliAsker.new(i, o)
     selection = PlayersSelection.new(cli)
     factory = PlayersFactory.new(i, o, spy(:rand => 0.0))
 
