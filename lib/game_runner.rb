@@ -2,7 +2,11 @@ require 'core/game'
 require 'uis/cli'
 require 'core/state'
 require 'options/play_again_option'
+
+require 'options/board_type_selection'
+require 'options/board_type_factory'
 require 'options/board_type_option'
+
 require 'options/players_option'
 
 class GameRunner

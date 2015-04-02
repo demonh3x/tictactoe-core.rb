@@ -1,3 +1,7 @@
+require 'options/cli_options'
+
+require 'options/board_type_selection'
+require 'options/board_type_factory'
 require 'options/board_type_option'
 
 RSpec.describe "Board type option" do
