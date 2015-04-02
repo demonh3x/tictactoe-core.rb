@@ -1,5 +1,3 @@
-require 'options/cli_options'
-
 class PlayAgainOption
   def initialize(cli)
     @option = cli

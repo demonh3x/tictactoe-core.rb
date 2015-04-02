@@ -1,4 +1,5 @@
 require 'options/play_again_option'
+require 'options/cli_options'
 
 RSpec.describe "Play again option" do
   def cli_output(commands)
