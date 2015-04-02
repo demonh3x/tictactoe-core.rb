@@ -1,3 +1,6 @@
+require 'players/cli_player'
+require 'options/players_selection'
+require 'options/players_factory'
 require 'options/players_option'
 
 RSpec.describe "Players option" do

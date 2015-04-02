@@ -7,6 +7,8 @@ require 'options/board_type_selection'
 require 'options/board_type_factory'
 require 'options/board_type_option'
 
+require 'options/players_selection'
+require 'options/players_factory'
 require 'options/players_option'
 
 class GameRunner
