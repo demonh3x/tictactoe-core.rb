@@ -9,7 +9,7 @@ class PlayersFactory
   end
 
   def create(types)
-    (marks.zip types).map do |mark, type|
+    (types.zip marks).map do |type, mark|
       constructors[type].call(mark)
     end
   end
