@@ -10,12 +10,8 @@ class State
     State.new(board, new_marks)
   end
 
-  def look_at(location)
-    marks[location]
-  end
-
   def is_finished?
-    winner != nil || is_full?
+    has_winner? || is_full?
   end
 
   def winner
@@ -23,15 +19,21 @@ class State
   end
 
   def available_locations
-    board.locations.select{|location| look_at(location).nil?}
+    board.locations.select{|location| marks[location].nil?}
   end
 
-  def locations
-    board.locations
+  def layout
+    board.locations.map do |location| 
+      [location, marks[location]]
+    end
   end
 
   private
   attr_reader :board, :marks
+
+  def has_winner?
+    winner != nil
+  end
 
   def is_full?
     available_locations.empty?
@@ -44,7 +46,7 @@ class State
   end
 
   def mark_fully_occupying(line)
-    marks = line.map {|location| look_at(location)}.uniq
-    marks.size == 1? marks.first : nil
+    marks_in_line = line.map {|location| marks[location]}.uniq
+    marks_in_line.size == 1? marks_in_line.first : nil
   end
 end

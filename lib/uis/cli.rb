@@ -27,9 +27,8 @@ class Cli
   end
 
   def get_cells(state)
-    state.locations.map do |loc|
-      mark = state.look_at(loc)
-      mark == nil ? loc.to_s : mark.to_s
+    state.layout.map do |loc, mark|
+      (mark || loc).to_s
     end
   end
 

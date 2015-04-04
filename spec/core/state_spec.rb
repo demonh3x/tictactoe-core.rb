@@ -1,16 +1,17 @@
 require 'core/state'
 
 RSpec.describe "Game state" do
-  it "can look at a location" do
-    initial_state = State.new(:board)
-    next_state = initial_state.put(3, :mark)
-    expect(next_state.look_at(3)).to eq(:mark)
+  def look_at(state, location)
+    state.layout
+      .select{|loc, mark| loc == location}
+      .map{|loc, mark| mark}
+      .first
   end
 
-  it "is immutable" do
-    initial_state = State.new(:board)
-    initial_state.put(2, :mark)
-    expect(initial_state.look_at(2)).to eq(nil)
+  def expect_state(marks)
+    marks.each_with_index do |mark, location|
+      expect(look_at(@state, location)).to eq(mark)
+    end
   end
 
   describe "given a 3x3 board" do
@@ -19,14 +20,24 @@ RSpec.describe "Game state" do
       @state = State.new(@board)
     end
 
-    def expect_state(marks)
-        marks.each_with_index do |mark, location|
-          expect(@state.look_at location).to eq(mark)
-        end
+    it "can put a mark in a location" do
+      next_state = @state.put(3, :mark)
+      expect(look_at(next_state, 3)).to eq(:mark)
+      expect(next_state.available_locations).not_to include(3)
     end
 
-    it 'can access to the board locations' do
-      expect(@state.locations).to equal(@board.locations)
+    it "is immutable" do
+      @state.put(2, :mark)
+      expect(look_at(@state, 2)).to eq(nil)
+      expect(@state.available_locations).to include(2)
+    end
+
+    it 'can access to the board layout' do
+      expect(@state.layout).to eq([
+        [0, nil], [1, nil], [2, nil],
+        [3, nil], [4, nil], [5, nil],
+        [6, nil], [7, nil], [8, nil],
+      ])
     end
 
     describe "with no moves" do
@@ -50,7 +61,7 @@ RSpec.describe "Game state" do
       end
 
       it "should contain that move" do
-        expect(@state.look_at(@loc)).to eq(:X)
+        expect(look_at(@state, @loc)).to eq(:X)
       end
     end
 
