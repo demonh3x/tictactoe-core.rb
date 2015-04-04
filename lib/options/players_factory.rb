@@ -10,7 +10,7 @@ class PlayersFactory
 
   def create(types)
     (marks.zip types).map do |mark, type|
-      constructor(type).call(mark)
+      constructors[type].call(mark)
     end
   end
 
@@ -33,13 +33,8 @@ class PlayersFactory
     }
   end
 
-  def constructor(type)
-    constructors[type]
-  end
-
   def opponent(mark)
     next_mark_index = (marks.index(mark) +1) % marks.length
     marks[next_mark_index]
   end
 end
-
