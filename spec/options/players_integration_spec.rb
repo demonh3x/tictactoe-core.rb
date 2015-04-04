@@ -4,7 +4,7 @@ require 'options/players_factory'
 require 'options/option'
 require 'options/cli_asker'
 
-RSpec.describe "Players option" do
+RSpec.describe "Players integration" do
   def create(i, o)
     cli = CliAsker.new(i, o)
     selection = PlayersSelection.new(cli)
