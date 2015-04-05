@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'players/cli_player'
 require 'core/state'
 require 'boards/three_by_three_board'

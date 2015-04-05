@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'core/state'
 require 'boards/three_by_three_board'
 require 'players/ai/minimax'

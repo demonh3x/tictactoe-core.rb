@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'options/players_factory'
 
 RSpec.describe PlayersFactory do

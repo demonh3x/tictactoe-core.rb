@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'boards/three_by_three_board'
 
 RSpec.describe "3x3 board" do

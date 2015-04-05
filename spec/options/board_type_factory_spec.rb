@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'options/board_type_factory'
 
 RSpec.describe BoardTypeFactory do

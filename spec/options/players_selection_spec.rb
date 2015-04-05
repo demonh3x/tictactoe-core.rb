@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'options/players_selection'
 
 RSpec.describe PlayersSelection do

@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'options/option'
 
 RSpec.describe Option do

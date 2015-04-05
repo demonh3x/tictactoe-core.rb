@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'players/cli_player'
 require 'options/players_selection'
 require 'options/players_factory'

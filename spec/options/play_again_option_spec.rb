@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'options/play_again_option'
 require 'options/cli_asker'
 

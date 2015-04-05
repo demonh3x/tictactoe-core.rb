@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'core/game'
 
 RSpec.describe "Game" do
