@@ -9,15 +9,18 @@ RSpec.describe "Game" do
   end
 
   it 'is finished if the state is finished' do
-    state = FinishedStateStub.new
-    game = Game.new state, spy, [spy, spy]
+    game = Game.new FinishedStateStub.new, spy, [spy, spy]
 
     expect(game.finished?).to eq(true)
   end
 
+  class NotFinishedStateStub
+    def when_finished
+    end
+  end
+
   it 'is not finished if the state is not finished' do
-    state = spy :is_finished? => false
-    game = Game.new state, spy, [spy, spy]
+    game = Game.new NotFinishedStateStub.new, spy, [spy, spy]
 
     expect(game.finished?).to eq(false)
   end
