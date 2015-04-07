@@ -1,13 +1,4 @@
 class State
-  def winner
-    board.lines
-      .map{|line| marks_in line}
-      .select{|line_marks| are_the_same? line_marks}
-      .map{|line_marks| line_marks.first}
-      .select{|mark| !mark.nil?}
-      .first
-  end
-
   def initialize(board, marks=[])
     @board = board
     @marks = marks
@@ -21,15 +12,6 @@ class State
     new_marks = marks.clone
     new_marks[location] = mark
     State.new(board, new_marks)
-  end
-
-  def winner
-    board.lines
-      .map{|line| marks_in line}
-      .select{|line_marks| are_the_same? line_marks}
-      .map{|line_marks| line_marks.first}
-      .select{|mark| !mark.nil?}
-      .first
   end
 
   def when_finished(&block)
@@ -46,15 +28,24 @@ class State
   attr_reader :board, :marks
 
   def is_finished?
-    has_winner? || is_full?
+    is_full? || has_winner?
+  end
+
+  def is_full?
+    available_moves.empty?
   end
 
   def has_winner?
     winner != nil
   end
 
-  def is_full?
-    available_moves.empty?
+  def winner
+    board.lines
+      .map{|line| marks_in line}
+      .select{|line_marks| are_the_same? line_marks}
+      .map{|line_marks| line_marks.first}
+      .select{|mark| !mark.nil?}
+      .first
   end
 
   def marks_in(line)

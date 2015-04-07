@@ -20,7 +20,7 @@ class Minimax
   attr_accessor :state
 
   def score
-    state.when_finished{leaf_score} || node_score
+    state.when_finished{|winner| leaf_score winner} || node_score
   end
 
   private
@@ -46,8 +46,8 @@ class Minimax
     current_player == me
   end
 
-  def leaf_score
-    case state.winner
+  def leaf_score(winner)
+    case winner
     when nil
       0
     when me

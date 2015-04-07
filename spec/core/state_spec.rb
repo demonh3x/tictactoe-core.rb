@@ -20,6 +20,11 @@ RSpec.describe "Game state" do
     expect(finished).to eq(expected)
   end
 
+  def expect_winner(expected)
+    actual_winner = @state.when_finished{|winner| winner}
+    expect(actual_winner).to eq(expected)
+  end
+
   describe "given a 3x3 board" do
     before(:each) do
       @board = ThreeByThreeBoard.new
@@ -56,7 +61,7 @@ RSpec.describe "Game state" do
       end
 
       it "should have no winner" do
-        expect(@state.winner).to eq(nil)
+        expect_winner(nil)
       end
     end
 
@@ -84,7 +89,7 @@ RSpec.describe "Game state" do
         end
 
         it "should have won" do
-          expect(@state.winner).to eq(:X)
+          expect_winner(:X)
         end
       end
     end
@@ -109,7 +114,7 @@ RSpec.describe "Game state" do
       end
 
       it "should have no winner" do
-        expect(@state.winner).to eq(nil)
+        expect_winner(nil)
       end
     end
 
@@ -127,7 +132,7 @@ RSpec.describe "Game state" do
       end
 
       it "should have no winner" do
-        expect(@state.winner).to eq(nil)
+        expect_winner(nil)
       end
     end
   end
