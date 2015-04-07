@@ -16,10 +16,7 @@ RSpec.describe "Game state" do
   end
 
   def expect_finished(expected)
-    finished = false
-    @state.when_finished do
-      finished = true
-    end
+    finished = @state.when_finished{true} || false
     expect(finished).to eq(expected)
   end
 
