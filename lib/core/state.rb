@@ -4,6 +4,10 @@ class State
     @marks = marks
   end
   
+  def available_moves
+    board.locations.select{|location| marks[location].nil?}
+  end
+
   def make_move(location, mark)
     new_marks = marks.clone
     new_marks[location] = mark
@@ -16,10 +20,6 @@ class State
 
   def winner
     marks_occupying_a_full_line.first
-  end
-
-  def available_moves
-    board.locations.select{|location| marks[location].nil?}
   end
 
   def layout
