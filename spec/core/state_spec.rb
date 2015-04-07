@@ -21,14 +21,14 @@ RSpec.describe "Game state" do
       @state = State.new(@board)
     end
 
-    it "can put a mark in a location" do
-      next_state = @state.put(3, :mark)
+    it "can make a move" do
+      next_state = @state.make_move(3, :mark)
       expect(look_at(next_state, 3)).to eq(:mark)
       expect(next_state.available_locations).not_to include(3)
     end
 
     it "is immutable" do
-      @state.put(2, :mark)
+      @state.make_move(2, :mark)
       expect(look_at(@state, 2)).to eq(nil)
       expect(@state.available_locations).to include(2)
     end
@@ -58,7 +58,7 @@ RSpec.describe "Game state" do
     describe "with the first move" do
       before(:each) do
         @loc = 0
-        @state = @state.put(@loc, :X)
+        @state = @state.make_move(@loc, :X)
       end
 
       it "should contain that move" do
@@ -70,7 +70,7 @@ RSpec.describe "Game state" do
       describe "with a line for player a" do
         before(:each) do
           line.each do |l|
-            @state = @state.put(l, :X)
+            @state = @state.make_move(l, :X)
           end
         end
 
@@ -86,7 +86,7 @@ RSpec.describe "Game state" do
 
     def set_state(*marks)
       marks.each_with_index do |mark, location|
-        @state = @state.put(location, mark)
+        @state = @state.make_move(location, mark)
       end
     end
 

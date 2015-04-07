@@ -45,11 +45,11 @@ RSpec.describe "Game" do
     game.start
     game.step
 
-    expect(state).to have_received(:put).with(:first_player_decision, :first_player_mark)
+    expect(state).to have_received(:make_move).with(:first_player_decision, :first_player_mark)
   end
 
   it 'at the first step, the UI is updated with the new state' do
-    state = spy :put => :new_state
+    state = spy :make_move => :new_state
     ui = spy
     game = Game.new state, ui, [spy, spy]
 
@@ -80,11 +80,11 @@ RSpec.describe "Game" do
     game.step
     game.step
 
-    expect(state).to have_received(:put).with(:second_player_decision, :second_player_mark)
+    expect(state).to have_received(:make_move).with(:second_player_decision, :second_player_mark)
   end
 
   it 'at the second step, the UI is updated with the new state' do
-    state = spy(:put => spy(:put => :new_state))
+    state = spy(:make_move => spy(:make_move => :new_state))
     ui = spy
     game = Game.new state, ui, [spy, spy]
 

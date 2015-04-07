@@ -75,7 +75,7 @@ RSpec.describe "CLI Player" do
 
     describe "given an already occupied location" do
       before(:each) do
-        @state = @state.put(0, @player.mark)
+        @state = @state.make_move(0, @player.mark)
       end
 
       it "should try again" do

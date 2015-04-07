@@ -27,7 +27,7 @@ class Game
     location = player.ask_for_location(state)
     mark = player.mark
 
-    self.state = state.put(location, mark)
+    self.state = state.make_move(location, mark)
   end
 
   def update_ui

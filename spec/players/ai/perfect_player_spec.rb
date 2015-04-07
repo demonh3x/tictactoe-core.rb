@@ -7,7 +7,7 @@ RSpec.describe "Perfect player" do
   def board(*marks)
     state = State.new(ThreeByThreeBoard.new)
     marks.each_with_index do |mark, location|
-      state = state.put(location, mark)
+      state = state.make_move(location, mark)
     end
     state
   end

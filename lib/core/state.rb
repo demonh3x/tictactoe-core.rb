@@ -4,7 +4,7 @@ class State
     @marks = marks
   end
   
-  def put(location, mark)
+  def make_move(location, mark)
     new_marks = marks.clone
     new_marks[location] = mark
     State.new(board, new_marks)

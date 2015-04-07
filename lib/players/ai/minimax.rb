@@ -85,12 +85,8 @@ class Minimax
 
   def location_score(location)
     mm = self.class.new(me, opponent, next_player)
-    mm.state = next_state(location)
+    mm.state = state.make_move(location, current_player)
     mm.score
-  end
-
-  def next_state(location)
-    state.put(location, current_player)
   end
 
   def next_player

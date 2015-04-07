@@ -8,7 +8,7 @@ RSpec.describe "CLI" do
   def state(board, *marks)
     state = State.new(board)
     marks.each_with_index {|mark, location|
-      state = state.put(location, mark)
+      state = state.make_move(location, mark)
     }
     state
   end
