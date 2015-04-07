@@ -14,12 +14,17 @@ class State
     State.new(board, new_marks)
   end
 
-  def is_finished?
-    has_winner? || is_full?
+  def winner
+    board.lines
+      .map{|line| marks_in line}
+      .select{|line_marks| are_the_same? line_marks}
+      .map{|line_marks| line_marks.first}
+      .select{|mark| !mark.nil?}
+      .first
   end
 
-  def winner
-    marks_occupying_a_full_line.first
+  def is_finished?
+    has_winner? || is_full?
   end
 
   def layout
@@ -39,14 +44,11 @@ class State
     available_moves.empty?
   end
 
-  def marks_occupying_a_full_line
-    board.lines
-      .map{|line| mark_fully_occupying(line)}
-      .select{|mark| mark != nil}
+  def marks_in(line)
+    line.map{|location| marks[location]}
   end
 
-  def mark_fully_occupying(line)
-    marks_in_line = line.map {|location| marks[location]}.uniq
-    marks_in_line.size == 1? marks_in_line.first : nil
+  def are_the_same?(line_marks)
+    line_marks.all?{|m| m == line_marks.first}
   end
 end
