@@ -20,7 +20,10 @@ class Minimax
   attr_accessor :state
 
   def score
-    state.is_finished?? leaf_score : node_score
+    state.when_finished do 
+      return leaf_score
+    end
+    node_score
   end
 
   private

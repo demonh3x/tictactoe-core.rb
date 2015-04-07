@@ -2,8 +2,14 @@ require 'spec_helper'
 require 'core/game'
 
 RSpec.describe "Game" do
+  class FinishedStateStub
+    def when_finished
+      yield
+    end
+  end
+
   it 'is finished if the state is finished' do
-    state = spy :is_finished? => true
+    state = FinishedStateStub.new
     game = Game.new state, spy, [spy, spy]
 
     expect(game.finished?).to eq(true)

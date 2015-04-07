@@ -5,7 +5,10 @@ class Cli
 
   def update(state)
     print_board state
-    announce_result state.winner if state.is_finished?
+
+    state.when_finished do |winner|
+      announce_result winner
+    end
   end
 
   private

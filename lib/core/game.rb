@@ -6,7 +6,10 @@ class Game
   end
 
   def finished?
-    state.is_finished?
+    state.when_finished do
+      return true
+    end
+    false
   end
 
   def start
