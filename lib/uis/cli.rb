@@ -4,10 +4,10 @@ class Cli
   end
 
   def update(state)
-    print_board state
+    output.puts representation_of state
 
     state.when_finished do |winner|
-      announce_result winner
+      output.puts announcement_of winner
     end
   end
 
@@ -15,18 +15,12 @@ class Cli
 
   attr_reader :output
 
-  def announce_result(winner)
-    if winner.nil?
-      print_draw
-    else
-      print_winner(winner)
-    end
+  def announcement_of(winner)
+    winner.nil?? "It is a draw." : "#{winner.to_s} has won!"
   end
 
-  def print_board(state)
-    cells = get_cells state
-    board = format_board cells
-    output.puts(board)
+  def representation_of(state)
+    format_board get_cells state
   end
 
   def get_cells(state)
@@ -71,13 +65,5 @@ class Cli
 
   def join_surrounding(elements, separator)
     separator + elements.join(separator) + separator
-  end
-
-  def print_draw
-    output.puts "It is a draw."
-  end
-
-  def print_winner(winner)
-    output.puts "#{winner.to_s} has won!"
   end
 end
