@@ -31,7 +31,7 @@ class CliPlayer
   end
 
   def available?(state, location)
-    state.available_locations.include? location
+    state.available_moves.include? location
   end
 
   def read_location

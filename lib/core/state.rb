@@ -18,7 +18,7 @@ class State
     marks_occupying_a_full_line.first
   end
 
-  def available_locations
+  def available_moves
     board.locations.select{|location| marks[location].nil?}
   end
 
@@ -36,7 +36,7 @@ class State
   end
 
   def is_full?
-    available_locations.empty?
+    available_moves.empty?
   end
 
   def marks_occupying_a_full_line

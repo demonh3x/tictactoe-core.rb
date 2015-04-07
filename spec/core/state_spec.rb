@@ -24,13 +24,13 @@ RSpec.describe "Game state" do
     it "can make a move" do
       next_state = @state.make_move(3, :mark)
       expect(look_at(next_state, 3)).to eq(:mark)
-      expect(next_state.available_locations).not_to include(3)
+      expect(next_state.available_moves).not_to include(3)
     end
 
     it "is immutable" do
       @state.make_move(2, :mark)
       expect(look_at(@state, 2)).to eq(nil)
-      expect(@state.available_locations).to include(2)
+      expect(@state.available_moves).to include(2)
     end
 
     it 'can access to the board layout' do

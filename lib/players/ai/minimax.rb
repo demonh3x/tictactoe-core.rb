@@ -10,7 +10,7 @@ class Minimax
 
     score_meanings = {1 => :win, 0 => :draw, -1 => :lose}
 
-    strategies = map_keys(scored_locations, score_meanings)
+    strategies = map_keys(scored_moves, score_meanings)
     add_best(strategies)
 
     strategies
@@ -58,13 +58,13 @@ class Minimax
   end
 
   def node_score
-    scores = scored_locations.keys
+    scores = scored_moves.keys
     is_my_turn?? scores.max : scores.min
   end
 
-  def scored_locations
-    if state.available_locations.size == 9
-      return {0 => state.available_locations}
+  def scored_moves
+    if state.available_moves.size == 9
+      return {0 => state.available_moves}
     end
 
     node_options.inject({}) do |result, option|
@@ -78,7 +78,7 @@ class Minimax
   end
 
   def node_options
-    state.available_locations.map do |location| 
+    state.available_moves.map do |location| 
       {:location => location, :score => location_score(location)}
     end
   end
