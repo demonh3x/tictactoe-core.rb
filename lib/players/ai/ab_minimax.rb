@@ -1,31 +1,25 @@
 class ABMinimax
+  def initialize(min_score)
+    @min_score = min_score
+  end
+
+  attr_reader :min_score
+
   def evaluate(tree)
-    if tree.childs.size == 0
-      return []
-    end
+    best_score = min_score
+    best_nodes = []
 
-    first = tree.childs[0]
-    if tree.childs.size == 1
-      return [first]
-    end
-
-    first = tree.childs[0]
-    second = tree.childs[1]
-    if tree.childs.size == 2
-      if first.score > second.score
-        return [first]
+    tree.childs.each do |child|
+      if child.score == best_score
+        best_nodes << child
       end
 
-      if first.score < second.score
-        return [second]
+      if child.score > best_score
+        best_score = child.score
+        best_nodes = [child]
       end
-
-      return [first, second]
     end
 
-    third = tree.childs[2]
-    if tree.childs.size == 3
-      return [second, third]
-    end
+    return best_nodes
   end
 end
