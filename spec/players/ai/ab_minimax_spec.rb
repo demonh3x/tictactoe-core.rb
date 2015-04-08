@@ -11,20 +11,22 @@ RSpec.describe ABMinimax do
     spy "leaf scored: #{score}", :childs => [], :score => score
   end
 
-  describe 'a leaf node has no strategy possible' do
-    it do
-      expect(strategy leaf 1)
+  describe 'given a leaf node' do
+    describe 'there is no strategy possible' do
+      it do
+        expect(strategy leaf 1)
         .to eq([])
-    end
+      end
 
-    it do
-      expect(strategy leaf(-1))
+      it do
+        expect(strategy leaf(-1))
         .to eq([])
-    end
+      end
 
-    it do
-      expect(strategy leaf 0)
+      it do
+        expect(strategy leaf 0)
         .to eq([])                    
+      end
     end
   end
 
@@ -32,80 +34,84 @@ RSpec.describe ABMinimax do
     spy "tree, childs: #{leaves.to_s}", :childs => leaves
   end
   
-  describe 'a one-branch, one-level tree has its leaf\'s node as the only strategy' do
-    it 'and does not ask the parent tree for the score' do
-      parent_tree = tree [leaf(1)]
-      strategy parent_tree
-      expect(parent_tree).not_to have_received(:score)
+  describe 'given a one-leaf one-level tree' do
+    it 'does not ask the root for the score' do
+      root = tree [leaf(1)]
+      strategy root
+      expect(root).not_to have_received(:score)
     end
 
-    it do
-      leaf = leaf(1)
-      expect(strategy tree [leaf])
+    describe 'has that leaf as the only strategy' do
+      it do
+        leaf = leaf(1)
+        expect(strategy tree [leaf])
         .to eq([leaf])
-    end
+      end
 
-    it do
-      leaf = leaf(-1)
-      expect(strategy tree [leaf])
+      it do
+        leaf = leaf(-1)
+        expect(strategy tree [leaf])
         .to eq([leaf])
-    end
+      end
 
-    it do
-      leaf = leaf(0)
-      expect(strategy tree [leaf])
+      it do
+        leaf = leaf(0)
+        expect(strategy tree [leaf])
         .to eq([leaf])
+      end
     end
   end
 
-  describe 'a one-level tree evaluates to the best nodes' do
-    it do
-      best_leaf = leaf(1)
-      expect(strategy tree [best_leaf, leaf(0)])
+  describe 'given a multiple-leaves one-level tree' do
+    describe 'chooses the best leaves' do
+      it do
+        best_leaf = leaf(1)
+        expect(strategy tree [best_leaf, leaf(0)])
         .to eq([best_leaf])
-    end
+      end
 
-    it do
-      best_leaf = leaf(0)
-      expect(strategy tree [best_leaf, leaf(-1)])
+      it do
+        best_leaf = leaf(0)
+        expect(strategy tree [best_leaf, leaf(-1)])
         .to eq([best_leaf])
-    end
+      end
 
-    it do
-      best_leaf = leaf(1)
-      expect(strategy tree [leaf(0), best_leaf])
+      it do
+        best_leaf = leaf(1)
+        expect(strategy tree [leaf(0), best_leaf])
         .to eq([best_leaf])
-    end
+      end
 
-    it do
-      best_leaf = leaf(0)
-      expect(strategy tree [leaf(-1), best_leaf])
+      it do
+        best_leaf = leaf(0)
+        expect(strategy tree [leaf(-1), best_leaf])
         .to eq([best_leaf])
-    end
+      end
 
-    it do
-      leaf1 = leaf(1)
-      leaf2 = leaf(1)
-      expect(strategy tree [leaf1, leaf2])
+      it do
+        leaf1 = leaf(1)
+        leaf2 = leaf(1)
+        expect(strategy tree [leaf1, leaf2])
         .to eq([leaf1, leaf2])
-    end
+      end
 
-    it do
-      leaf2 = leaf(1)
-      leaf3 = leaf(1)
-      expect(strategy tree [leaf(0), leaf2, leaf3])
+      it do
+        leaf2 = leaf(1)
+        leaf3 = leaf(1)
+        expect(strategy tree [leaf(0), leaf2, leaf3])
         .to eq([leaf2, leaf3])
-    end
+      end
 
-    it do
-      leaf1 = leaf(1)
-      leaf3 = leaf(1)
-      expect(strategy tree [leaf1, leaf(0), leaf3])
+      it do
+        leaf1 = leaf(1)
+        leaf3 = leaf(1)
+        expect(strategy tree [leaf1, leaf(0), leaf3])
         .to eq([leaf1, leaf3])
+      end
     end
   end
 
-  describe 'a two-level tree' do
+  describe 'given a one-leaf two-level tree' do
     it 'does not ask the subtree for the score' do
       subtree = tree [leaf(1)]
       strategy tree [subtree]
