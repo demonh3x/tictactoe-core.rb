@@ -8,23 +8,23 @@ RSpec.describe ABMinimax do
   end
 
   def leaf(score)
-    spy :score => score, :childs => []
+    spy "leaf scored: #{score}", :childs => [], :score => score
   end
 
   describe 'a leaf node has no strategy possible' do
     it do
       expect(strategy leaf 1)
-        .to eq(:score => 1, :options =>[])
+        .to eq([])
     end
 
     it do
       expect(strategy leaf(-1))
-        .to eq(:score => -1, :options => [])
+        .to eq([])
     end
 
     it do
       expect(strategy leaf 0)
-        .to eq(:score => 0, :options => [])                    
+        .to eq([])                    
     end
   end
 
@@ -36,19 +36,19 @@ RSpec.describe ABMinimax do
     it do
       leaf = leaf(1)
       expect(strategy one_level_tree leaf)
-        .to eq(:score => 1, :options => [leaf])
+        .to eq([leaf])
     end
 
     it do
       leaf = leaf(-1)
       expect(strategy one_level_tree leaf)
-        .to eq(:score => -1, :options => [leaf])
+        .to eq([leaf])
     end
 
     it do
       leaf = leaf(0)
       expect(strategy one_level_tree leaf)
-        .to eq(:score => 0, :options => [leaf])
+        .to eq([leaf])
     end
   end
 
@@ -56,32 +56,32 @@ RSpec.describe ABMinimax do
     it do
       best_leaf = leaf(1)
       expect(strategy one_level_tree best_leaf, leaf(0))
-        .to eq(:score => 1, :options => [best_leaf])
+        .to eq([best_leaf])
     end
 
     it do
       best_leaf = leaf(0)
       expect(strategy one_level_tree best_leaf, leaf(-1))
-        .to eq(:score => 0, :options => [best_leaf])
+        .to eq([best_leaf])
     end
 
     it do
       best_leaf = leaf(1)
       expect(strategy one_level_tree leaf(0), best_leaf)
-        .to eq(:score => 1, :options => [best_leaf])
+        .to eq([best_leaf])
     end
 
     it do
       best_leaf = leaf(0)
       expect(strategy one_level_tree leaf(-1), best_leaf)
-        .to eq(:score => 0, :options => [best_leaf])
+        .to eq([best_leaf])
     end
 
     it do
       leaf1 = leaf(1)
       leaf2 = leaf(1)
       expect(strategy one_level_tree leaf1, leaf2)
-        .to eq(:score => 1, :options => [leaf1, leaf2])
+        .to eq([leaf1, leaf2])
     end
   end
 end
