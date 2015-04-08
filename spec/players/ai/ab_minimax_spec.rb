@@ -104,4 +104,12 @@ RSpec.describe ABMinimax do
         .to eq([leaf1, leaf3])
     end
   end
+
+  describe 'a two-level tree' do
+    it 'does not ask the subtree for the score' do
+      subtree = tree [leaf(1)]
+      strategy tree [subtree]
+      expect(subtree).not_to have_received(:score)
+    end
+  end
 end
