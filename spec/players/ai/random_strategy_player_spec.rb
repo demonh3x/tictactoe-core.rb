@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'players/ai/random_strategy_player'
 
 RSpec.describe RandomStrategyPlayer do

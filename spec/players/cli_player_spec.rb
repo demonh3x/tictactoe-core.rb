@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'players/cli_player'
 require 'core/state'
 require 'boards/three_by_three_board'
@@ -74,7 +75,7 @@ RSpec.describe "CLI Player" do
 
     describe "given an already occupied location" do
       before(:each) do
-        @state = @state.put(0, @player.mark)
+        @state = @state.make_move(0, @player.mark)
       end
 
       it "should try again" do

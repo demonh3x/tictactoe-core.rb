@@ -10,7 +10,7 @@ class Minimax
 
     score_meanings = {1 => :win, 0 => :draw, -1 => :lose}
 
-    strategies = map_keys(scored_locations, score_meanings)
+    strategies = map_keys(scored_moves, score_meanings)
     add_best(strategies)
 
     strategies
@@ -20,9 +20,7 @@ class Minimax
   attr_accessor :state
 
   def score
-    with_cache(:score) do
-      state.is_finished?? leaf_score : node_score
-    end
+    state.when_finished{|winner| leaf_score winner} || node_score
   end
 
   private
@@ -48,8 +46,8 @@ class Minimax
     current_player == me
   end
 
-  def leaf_score
-    case state.winner
+  def leaf_score(winner)
+    case winner
     when nil
       0
     when me
@@ -60,59 +58,35 @@ class Minimax
   end
 
   def node_score
-    scores = scored_locations.keys
+    scores = scored_moves.keys
     is_my_turn?? scores.max : scores.min
   end
 
-  def scored_locations
-    with_cache(:locations) do
-      @@calls ||= 0
-      puts @@calls
-      @@calls += 1
+  def scored_moves
+    if state.available_moves.size == 9
+      return {0 => state.available_moves}
+    end
 
-      if state.available_locations.size == 9
-        return {0 => state.available_locations}
-      end
+    node_options.inject({}) do |result, option|
+      score = option[:score]
+      location = option[:location]
 
-      node_options.inject({}) do |result, option|
-        score = option[:score]
-        location = option[:location]
-
-        result[score] ||= []
-        result[score] << location
-        result
-      end
+      result[score] ||= []
+      result[score] << location
+      result
     end
   end
 
-  def with_cache(id)
-    @@cache ||= {}
-    @@cache[id] ||= {}
-
-    cache = @@cache[id]
-    hash = state.cells
-    return cache[hash] if cache.has_key? hash 
-
-    result = yield
-
-    cache[hash] = result
-    result
-  end
-
   def node_options
-    state.available_locations.map do |location| 
+    state.available_moves.map do |location| 
       {:location => location, :score => location_score(location)}
     end
   end
 
   def location_score(location)
     mm = self.class.new(me, opponent, next_player)
-    mm.state = next_state(location)
+    mm.state = state.make_move(location, current_player)
     mm.score
-  end
-
-  def next_state(location)
-    state.put(location, current_player)
   end
 
   def next_player

@@ -1,16 +1,28 @@
+require 'spec_helper'
 require 'core/state'
 
 RSpec.describe "Game state" do
-  it "can look at a location" do
-    initial_state = State.new(:board)
-    next_state = initial_state.put(3, :mark)
-    expect(next_state.look_at(3)).to eq(:mark)
+  def look_at(state, location)
+    state.layout
+      .select{|loc, mark| loc == location}
+      .map{|loc, mark| mark}
+      .first
   end
 
-  it "is immutable" do
-    initial_state = State.new(:board)
-    initial_state.put(2, :mark)
-    expect(initial_state.look_at(2)).to eq(nil)
+  def expect_state(marks)
+    marks.each_with_index do |mark, location|
+      expect(look_at(@state, location)).to eq(mark)
+    end
+  end
+
+  def expect_finished(expected)
+    finished = @state.when_finished{true} || false
+    expect(finished).to eq(expected)
+  end
+
+  def expect_winner(expected)
+    actual_winner = @state.when_finished{|winner| winner}
+    expect(actual_winner).to eq(expected)
   end
 
   describe "given a 3x3 board" do
@@ -19,10 +31,24 @@ RSpec.describe "Game state" do
       @state = State.new(@board)
     end
 
-    def expect_state(marks)
-        marks.each_with_index do |mark, location|
-          expect(@state.look_at location).to eq(mark)
-        end
+    it "can make a move" do
+      next_state = @state.make_move(3, :mark)
+      expect(look_at(next_state, 3)).to eq(:mark)
+      expect(next_state.available_moves).not_to include(3)
+    end
+
+    it "is immutable" do
+      @state.make_move(2, :mark)
+      expect(look_at(@state, 2)).to eq(nil)
+      expect(@state.available_moves).to include(2)
+    end
+
+    it 'can access to the board layout' do
+      expect(@state.layout).to eq([
+        [0, nil], [1, nil], [2, nil],
+        [3, nil], [4, nil], [5, nil],
+        [6, nil], [7, nil], [8, nil],
+      ])
     end
 
     describe "with no moves" do
@@ -31,22 +57,22 @@ RSpec.describe "Game state" do
       end
 
       it "should not be finished" do
-        expect(@state.is_finished?).to eq(false)
+        expect_finished(false)
       end
 
       it "should have no winner" do
-        expect(@state.winner).to eq(nil)
+        expect_winner(nil)
       end
     end
 
     describe "with the first move" do
       before(:each) do
         @loc = 0
-        @state = @state.put(@loc, :X)
+        @state = @state.make_move(@loc, :X)
       end
 
       it "should contain that move" do
-        expect(@state.look_at(@loc)).to eq(:X)
+        expect(look_at(@state, @loc)).to eq(:X)
       end
     end
 
@@ -54,23 +80,23 @@ RSpec.describe "Game state" do
       describe "with a line for player a" do
         before(:each) do
           line.each do |l|
-            @state = @state.put(l, :X)
+            @state = @state.make_move(l, :X)
           end
         end
 
         it "should be finished" do
-          expect(@state.is_finished?).to eq(true)
+          expect_finished(true)
         end
 
         it "should have won" do
-          expect(@state.winner).to eq(:X)
+          expect_winner(:X)
         end
       end
     end
 
     def set_state(*marks)
       marks.each_with_index do |mark, location|
-        @state = @state.put(location, mark)
+        @state = @state.make_move(location, mark)
       end
     end
 
@@ -84,11 +110,11 @@ RSpec.describe "Game state" do
       end
 
       it "should not be finished" do
-        expect(@state.is_finished?).to eq(false)
+        expect_finished(false)
       end
 
       it "should have no winner" do
-        expect(@state.winner).to eq(nil)
+        expect_winner(nil)
       end
     end
 
@@ -102,11 +128,11 @@ RSpec.describe "Game state" do
       end
 
       it "should be finished" do
-        expect(@state.is_finished?).to eq(true)
+        expect_finished(true)
       end
 
       it "should have no winner" do
-        expect(@state.winner).to eq(nil)
+        expect_winner(nil)
       end
     end
   end

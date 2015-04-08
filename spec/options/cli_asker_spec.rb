@@ -1,17 +1,18 @@
-require 'options/cli_options'
+require 'spec_helper'
+require 'options/cli_asker'
 
-RSpec.describe "CLI Options" do
+RSpec.describe CliAsker do
   describe "given two options, when asking for a selection" do
     before(:each) do
       @out = StringIO.new
       @in = StringIO.new("::selection_1::\n")
-      @cli_options = CliOptions.new(@in, @out)
+      @asker = described_class.new(@in, @out)
       message = "::selection_message::"
       options = {
         "::selection_1::" => "::option_1::",
         "::selection_2::" => "::option_2::",
       }
-      @response = @cli_options.ask_for_one message, options
+      @response = @asker.ask_for_one message, options
     end
 
     it "should ask to select one" do
@@ -34,12 +35,12 @@ RSpec.describe "CLI Options" do
     before(:each) do
       @out = StringIO.new
       @in = StringIO.new("::invalid_response::\n::selection_1::\n")
-      @cli_options = CliOptions.new(@in, @out)
+      @asker = described_class.new(@in, @out)
       options = {
         "::selection_1::" => "::option_1::",
         "::selection_2::" => "::option_2::",
       }
-      @response = @cli_options.ask_for_one "::message::", options
+      @response = @asker.ask_for_one "::message::", options
     end
 
     it "should say thats an invalid response and ask again" do

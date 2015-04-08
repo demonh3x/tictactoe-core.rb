@@ -4,47 +4,55 @@ class State
     @marks = marks
   end
   
-  def put(location, mark)
+  def available_moves
+    board.locations.select{|location| marks[location].nil?}
+  end
+
+  def make_move(location, mark)
     new_marks = marks.clone
     new_marks[location] = mark
     State.new(board, new_marks)
   end
 
-  def look_at(location)
-    marks[location]
+  def when_finished(&block)
+    yield winner if is_finished?
   end
 
-  def is_finished?
-    winner != nil || is_full?
-  end
-
-  def winner
-    marks_occupying_a_full_line.first
-  end
-
-  def available_locations
-    board.locations.select{|location| look_at(location).nil?}
-  end
-
-  def cells
-    board.locations.zip marks
+  def layout
+    board.locations.map do |location| 
+      [location, marks[location]]
+    end
   end
 
   private
   attr_reader :board, :marks
 
+  def is_finished?
+    is_full? || has_winner?
+  end
+
   def is_full?
-    available_locations.empty?
+    available_moves.empty?
   end
 
-  def marks_occupying_a_full_line
+  def has_winner?
+    winner != nil
+  end
+
+  def winner
     board.lines
-      .map{|line| mark_fully_occupying(line)}
-      .select{|mark| mark != nil}
+      .map{|line| marks_in line}
+      .select{|line_marks| are_the_same? line_marks}
+      .map{|line_marks| line_marks.first}
+      .select{|mark| !mark.nil?}
+      .first
   end
 
-  def mark_fully_occupying(line)
-    marks = line.map {|location| look_at(location)}.uniq
-    marks.size == 1? marks.first : nil
+  def marks_in(line)
+    line.map{|location| marks[location]}
+  end
+
+  def are_the_same?(line_marks)
+    line_marks.all?{|m| m == line_marks.first}
   end
 end

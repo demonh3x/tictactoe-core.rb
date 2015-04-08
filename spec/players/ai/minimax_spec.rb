@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'core/state'
 require 'boards/three_by_three_board'
 require 'players/ai/minimax'
@@ -7,7 +8,7 @@ RSpec.describe Minimax do
   def board(*marks)
     state = State.new(ThreeByThreeBoard.new)
     marks.each_with_index do |mark, location|
-      state = state.put(location, mark)
+      state = state.make_move(location, mark)
     end
     state
   end
@@ -104,13 +105,13 @@ RSpec.describe Minimax do
     }
   end
 
-  it 'given the second play should not take more than one second to have an answer' do
+  it 'given the second play should not take more than three seconds to have an answer' do
     state = board(
       nil, nil, nil,
       nil, :X, nil,
       nil, nil, nil
     )
-    Timeout::timeout(2) {
+    Timeout::timeout(3) {
       minimax = described_class.new(:O, :X, :O)
       minimax.strategies(state)
     }

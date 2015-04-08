@@ -1,12 +1,17 @@
-require 'options/players_option'
+require 'spec_helper'
+require 'players/cli_player'
+require 'options/players_selection'
+require 'options/players_factory'
+require 'options/option'
+require 'options/cli_asker'
 
-RSpec.describe "Players option" do
+RSpec.describe "Players integration" do
   def create(i, o)
-    cli = CliOptions.new(i, o)
+    cli = CliAsker.new(i, o)
     selection = PlayersSelection.new(cli)
     factory = PlayersFactory.new(i, o, spy(:rand => 0.0))
 
-    PlayersOption.new(selection, factory)
+    Option.new(selection, factory)
   end
 
   def cli_output(commands)

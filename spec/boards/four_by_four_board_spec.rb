@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'boards/four_by_four_board'
 
 RSpec.describe "4x4 board" do

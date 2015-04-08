@@ -1,10 +1,12 @@
+require 'spec_helper'
 require 'options/play_again_option'
+require 'options/cli_asker'
 
 RSpec.describe "Play again option" do
   def cli_output(commands)
     input = commands.push("").join("\n")
     out = StringIO.new
-    cli = CliOptions.new(StringIO.new(input), out)
+    cli = CliAsker.new(StringIO.new(input), out)
     option = PlayAgainOption.new(cli)
     option.get
     out.string
@@ -29,7 +31,7 @@ RSpec.describe "Play again option" do
   def play_again?(commands)
     input = commands.push("").join("\n")
     out = StringIO.new
-    cli = CliOptions.new(StringIO.new(input), out)
+    cli = CliAsker.new(StringIO.new(input), out)
     option = PlayAgainOption.new(cli)
     option.get
   end

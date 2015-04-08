@@ -1,18 +1,17 @@
-require 'options/cli_options'
-
 class PlayAgainOption
-  def initialize(cli)
-    @option = cli
+  QUESTION = "Do you want to play again?"
+  OPTIONS = {"y" => "Yes", "n" => "No"}
+
+  def initialize(asker)
+    @asker = asker
   end
 
   def get
-    response = option.ask_for_one(
-      "Do you want to play again?",
-      {"y" => "Yes", "n" => "No"})
+    response = asker.ask_for_one(QUESTION, OPTIONS)
 
     response === "y"
   end
 
   private
-  attr_accessor :option
+  attr_accessor :asker
 end

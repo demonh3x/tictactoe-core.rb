@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'players/ai/perfect_player'
 require 'core/state'
 require 'boards/three_by_three_board'
@@ -6,7 +7,7 @@ RSpec.describe "Perfect player" do
   def board(*marks)
     state = State.new(ThreeByThreeBoard.new)
     marks.each_with_index do |mark, location|
-      state = state.put(location, mark)
+      state = state.make_move(location, mark)
     end
     state
   end
