@@ -105,13 +105,13 @@ RSpec.describe Minimax do
     }
   end
 
-  xit 'given the second play should not take more than one second to have an answer' do
+  it 'given the second play should not take more than three seconds to have an answer' do
     state = board(
       nil, nil, nil,
       nil, :X, nil,
       nil, nil, nil
     )
-    Timeout::timeout(1) {
+    Timeout::timeout(3) {
       minimax = described_class.new(:O, :X, :O)
       minimax.strategies(state)
     }
