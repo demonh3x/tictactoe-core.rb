@@ -1,4 +1,8 @@
+require 'players/play_behaviour'
+
 class CliPlayer
+  include PlayBehaviour
+
   def initialize(mark, input, output)
     @input = input
     @output = output

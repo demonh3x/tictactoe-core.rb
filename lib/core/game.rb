@@ -24,10 +24,7 @@ class Game
 
   def give_turn
     player = turns.next
-    location = player.ask_for_location(state)
-    mark = player.mark
-
-    self.state = state.make_move(location, mark)
+    self.state = player.play(state)
   end
 
   def update_ui
