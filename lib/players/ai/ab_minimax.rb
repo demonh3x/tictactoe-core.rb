@@ -22,6 +22,10 @@ class ABMinimax
 
       return [first, second]
     end
-  end
 
+    third = tree.childs[2]
+    if tree.childs.size == 3
+      return [second, third]
+    end
+  end
 end

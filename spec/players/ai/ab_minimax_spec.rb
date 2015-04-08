@@ -52,7 +52,7 @@ RSpec.describe ABMinimax do
     end
   end
 
-  describe 'a two-branches, one-level tree evaluates to the best nodes' do
+  describe 'a one-level tree evaluates to the best nodes' do
     it do
       best_leaf = leaf(1)
       expect(strategy tree [best_leaf, leaf(0)])
@@ -82,6 +82,13 @@ RSpec.describe ABMinimax do
       leaf2 = leaf(1)
       expect(strategy tree [leaf1, leaf2])
         .to eq([leaf1, leaf2])
+    end
+
+    it do
+      leaf2 = leaf(1)
+      leaf3 = leaf(1)
+      expect(strategy tree [leaf(0), leaf2, leaf3])
+        .to eq([leaf2, leaf3])
     end
   end
 end
