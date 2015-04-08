@@ -33,6 +33,12 @@ RSpec.describe ABMinimax do
   end
   
   describe 'a one-branch, one-level tree has its leaf\'s node as the only strategy' do
+    it 'and does not ask the parent tree for the score' do
+      parent_tree = tree [leaf(1)]
+      strategy parent_tree
+      expect(parent_tree).not_to have_received(:score)
+    end
+
     it do
       leaf = leaf(1)
       expect(strategy tree [leaf])
