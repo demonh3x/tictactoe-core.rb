@@ -29,7 +29,7 @@ RSpec.describe ABMinimax do
   end
 
   def tree(leaves)
-    spy :childs => leaves
+    spy "tree, childs: #{leaves.to_s}", :childs => leaves
   end
   
   describe 'a one-branch, one-level tree has its leaf\'s node as the only strategy' do
