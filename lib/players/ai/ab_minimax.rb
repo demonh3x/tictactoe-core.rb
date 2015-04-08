@@ -9,13 +9,18 @@ class ABMinimax
       return s(first)
     end
 
+    first = tree.childs[0]
     second = tree.childs[1]
     if tree.childs.size == 2
       if first.score > second.score
         return s(first)
       end
 
-      return s(second)
+      if first.score < second.score
+        return s(second)
+      end
+
+      return s(first, second)
     end
   end
 
@@ -26,10 +31,10 @@ class ABMinimax
     }
   end
 
-  def s(node)
+  def s(*nodes)
     {
-      :score => node.score,
-      :options => [node]
+      :score => nodes.first.score,
+      :options => nodes
     }
   end
 end
