@@ -30,8 +30,8 @@ RSpec.describe ABMinimax do
     end
   end
 
-  def tree(leaves)
-    spy "tree, childs: #{leaves.to_s}", :childs => leaves
+  def tree(childs)
+    spy "tree, childs: #{childs.to_s}", :childs => childs
   end
   
   describe 'given a one-leaf one-level tree' do
