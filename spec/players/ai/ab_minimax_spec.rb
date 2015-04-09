@@ -117,5 +117,11 @@ RSpec.describe ABMinimax do
       strategy tree [subtree]
       expect(subtree).not_to have_received(:score)
     end
+
+    it do
+      subtree = tree [leaf(1)]
+      expect(strategy tree [subtree])
+      .to eq([subtree])
+    end
   end
 end
