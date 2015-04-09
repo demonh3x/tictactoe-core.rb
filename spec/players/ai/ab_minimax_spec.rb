@@ -181,6 +181,35 @@ RSpec.describe ABMinimax do
         .to eq([best_option])
       end
     end
+
+    describe 'chooses equivalent options even if they are at different levels' do
+      it do
+        option1 = tree([
+          leaf(1)
+        ])
+        option2 = leaf(1)
+        root = tree([
+          option1,
+          option2,
+        ])
+
+        expect(strategy root)
+        .to eq([option1, option2])
+      end
+
+      it do
+        option1 = tree([
+          leaf(0)
+        ])
+        option2 = leaf(0)
+        root = tree([
+          option1,
+          option2,
+        ])
+
+        expect(strategy root)
+        .to eq([option1, option2])
+      end
     end
   end
 end
