@@ -154,17 +154,33 @@ RSpec.describe ABMinimax do
       end
     end
 
-    it 'chooses a better option even if it is one-level deep' do
-      best_option = tree([
-        leaf(1)
-      ])
-      root = tree([
-        leaf(0),
-        best_option,
-      ])
+    describe 'chooses a better option even if it is one-level deep' do
+      it do
+        best_option = tree([
+          leaf(1)
+        ])
+        root = tree([
+          leaf(0),
+          best_option,
+        ])
 
-      expect(strategy root)
-      .to eq([best_option])
+        expect(strategy root)
+        .to eq([best_option])
+      end
+
+      it do
+        best_option = tree([
+          leaf(1)
+        ])
+        root = tree([
+          best_option,
+          leaf(0),
+        ])
+
+        expect(strategy root)
+        .to eq([best_option])
+      end
+    end
     end
   end
 end
