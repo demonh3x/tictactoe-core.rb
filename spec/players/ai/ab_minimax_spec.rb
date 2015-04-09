@@ -256,5 +256,49 @@ RSpec.describe ABMinimax do
         .to eq([best_option])
       end
     end
+
+    describe 'stops evaluating when the branch is going to be discarded' do
+      it do
+        not_evaluated_node = leaf(-1)
+        root = tree([
+          leaf(1),
+          tree([
+            leaf(0),
+            not_evaluated_node,
+          ]),
+        ])
+
+        strategy root
+        expect(not_evaluated_node).not_to have_received(:score)
+      end
+
+      it do
+        not_evaluated_node = leaf(1)
+        root = tree([
+          leaf(0),
+          tree([
+            leaf(-1),
+            not_evaluated_node,
+          ]),
+        ])
+
+        strategy root
+        expect(not_evaluated_node).not_to have_received(:score)
+      end
+
+      it do
+        evaluated_node = leaf(-1)
+        root = tree([
+          leaf(1),
+          tree([
+            leaf(1),
+            evaluated_node,
+          ]),
+        ])
+
+        strategy root
+        expect(evaluated_node).to have_received(:score)
+      end
+    end
   end
 end

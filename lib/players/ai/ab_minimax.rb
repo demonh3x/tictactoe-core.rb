@@ -17,6 +17,7 @@ class ABMinimax
           minimizing_score = grandchild.score
           worst_score ||= minimizing_score
           worst_score = minimizing_score if minimizing_score < worst_score
+          break if worst_score < best_score
         end
 
         score = worst_score
