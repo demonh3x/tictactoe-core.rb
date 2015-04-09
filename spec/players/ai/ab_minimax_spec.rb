@@ -126,7 +126,7 @@ RSpec.describe ABMinimax do
   end
 
   describe 'given complex tree' do
-    describe 'prefers an immediate better option' do
+    describe 'chooses an immediate better option' do
       it do
         best_option = leaf(1)
         root = tree([
