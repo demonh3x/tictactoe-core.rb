@@ -11,8 +11,15 @@ class ABMinimax
 
     tree.childs.each do |child|
       if has_childs?(child)
-        grandchild = child.childs[0]
-        score = grandchild.score
+        case child.childs.length
+        when 1
+          grandchild = child.childs[0]
+          score = grandchild.score
+        else
+          grandchild1 = child.childs[0]
+          grandchild2 = child.childs[1]
+          score = [grandchild1.score, grandchild2.score].min
+        end
       else
         score = child.score
       end

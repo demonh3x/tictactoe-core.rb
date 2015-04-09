@@ -211,5 +211,35 @@ RSpec.describe ABMinimax do
         .to eq([option1, option2])
       end
     end
+
+    describe 'assumes the opponent chooses the worst option' do
+      it do
+        best_option = leaf(0)
+        root = tree([
+          best_option,
+          tree([
+            leaf(1),
+            leaf(-1),
+          ]),
+        ])
+
+        expect(strategy root)
+        .to eq([best_option])
+      end
+
+      it do
+        best_option = tree([
+          leaf(0),
+          leaf(1),
+        ])
+        root = tree([
+          leaf(-1),
+          best_option,
+        ])
+
+        expect(strategy root)
+        .to eq([best_option])
+      end
+    end
   end
 end
