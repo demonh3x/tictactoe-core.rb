@@ -111,7 +111,7 @@ RSpec.describe ABMinimax do
     end
   end
 
-  describe 'given a one-leaf two-level tree' do
+  describe 'given a two-level one-leaf tree' do
     it 'does not ask the subtree for the score' do
       subtree = tree [leaf(1)]
       strategy tree [subtree]
@@ -122,6 +122,36 @@ RSpec.describe ABMinimax do
       subtree = tree [leaf(1)]
       expect(strategy tree [subtree])
       .to eq([subtree])
+    end
+  end
+
+  describe 'given complex tree' do
+    describe 'prefers an immediate better option' do
+      it do
+        best_option = leaf(1)
+        root = tree([
+          best_option,
+          tree([
+            leaf(0)
+          ]),
+        ])
+
+        expect(strategy root)
+        .to eq([best_option])
+      end
+
+      it do
+        best_option = leaf(1)
+        root = tree([
+          tree([
+            leaf(0)
+          ]),
+          best_option,
+        ])
+
+        expect(strategy root)
+        .to eq([best_option])
+      end
     end
   end
 end

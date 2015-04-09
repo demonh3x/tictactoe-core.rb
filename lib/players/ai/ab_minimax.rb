@@ -10,8 +10,20 @@ class ABMinimax
     best_nodes = []
 
     tree.childs.each do |child|
-      is_leaf = child.childs.empty?
-      return [child] if !is_leaf
+      if !is_leaf?(child)
+        if tree.childs.size == 1
+          a = tree.childs[0]
+          return [a]
+        end
+
+        if tree.childs.size == 2
+          a = tree.childs[0]
+          b = tree.childs[1]
+          choice = a if is_leaf? a
+          choice = b if is_leaf? b
+          return [choice]
+        end
+      end
 
       if child.score == best_score
         best_nodes << child
@@ -24,5 +36,9 @@ class ABMinimax
     end
 
     return best_nodes
+  end
+
+  def is_leaf?(tree)
+    tree.childs.empty?
   end
 end
