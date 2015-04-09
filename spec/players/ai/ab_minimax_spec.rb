@@ -330,5 +330,23 @@ RSpec.describe ABMinimax do
         expect(not_evaluated_node).not_to have_received(:score)
       end
     end
+
+    describe 'given tree-level deep tree with only maximizing choices' do
+      it 'goes in depth until the leaves' do
+        last_leaf = leaf(-1)
+        root = tree([
+          leaf(0),
+          tree([
+            tree([
+              leaf(1),
+              last_leaf,
+            ])
+          ]),
+        ])
+
+        strategy root
+        expect(last_leaf).to have_received(:score)
+      end
+    end
   end
 end

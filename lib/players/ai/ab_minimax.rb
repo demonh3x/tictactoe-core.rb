@@ -6,6 +6,10 @@ class ABMinimax
   attr_reader :min_score_possible
 
   def evaluate(tree)
+    _evaluate(tree)[:nodes]
+  end
+
+  def _evaluate(tree)
     my_best_score = min_score_possible
     best_nodes = []
 
@@ -16,7 +20,13 @@ class ABMinimax
         most_damaging_score = nil
 
         child.childs.each do |grandchild|
-          minimizing_score = grandchild.score
+          if is_final?(grandchild)
+            minimizing_score = grandchild.score
+          else
+            res = _evaluate(grandchild)
+            minimizing_score = res[:score]
+          end
+
           most_damaging_score ||= minimizing_score
 
           if minimizing_score < most_damaging_score
@@ -46,7 +56,10 @@ class ABMinimax
       end
     end
 
-    return best_nodes
+    return {
+      :score => my_best_score,
+      :nodes => best_nodes
+    }
   end
 
   def is_final?(tree)
