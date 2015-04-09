@@ -240,6 +240,21 @@ RSpec.describe ABMinimax do
         expect(strategy root)
         .to eq([best_option])
       end
+
+      it do
+        best_option = leaf(0)
+        root = tree([
+          best_option,
+          tree([
+            leaf(1),
+            leaf(1),
+            leaf(-1),
+          ]),
+        ])
+
+        expect(strategy root)
+        .to eq([best_option])
+      end
     end
   end
 end
