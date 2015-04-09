@@ -1,32 +1,39 @@
 class ABMinimax
   def evaluate(tree)
-    best_score = nil
+    my_best_score = nil
     best_nodes = []
 
     tree.childs.each do |child|
-      if has_childs?(child)
-        worst_score = nil
+      if is_final?(child)
+        score = child.score
+      else
+        most_damaging_score = nil
 
         child.childs.each do |grandchild|
           minimizing_score = grandchild.score
-          worst_score ||= minimizing_score
-          worst_score = minimizing_score if minimizing_score < worst_score
-          break if best_score && worst_score < best_score
+          most_damaging_score ||= minimizing_score
+
+          if minimizing_score < most_damaging_score
+            most_damaging_score = minimizing_score
+          end
+          
+          child_is_not_going_to_be_chosen =
+            my_best_score && most_damaging_score < my_best_score
+
+          break if child_is_not_going_to_be_chosen
         end
 
-        score = worst_score
-      else
-        score = child.score
+        score = most_damaging_score
       end
 
-      best_score ||= score
+      my_best_score ||= score
 
-      if score == best_score
+      if score == my_best_score
         best_nodes << child
       end
 
-      if score > best_score
-        best_score = score
+      if score > my_best_score
+        my_best_score = score
         best_nodes = [child]
       end
     end
@@ -34,7 +41,7 @@ class ABMinimax
     return best_nodes
   end
 
-  def has_childs?(tree)
-    !tree.childs.empty?
+  def is_final?(tree)
+    tree.childs.empty?
   end
 end
