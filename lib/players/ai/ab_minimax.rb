@@ -1,6 +1,12 @@
 class ABMinimax
+  def initialize(min_score_possible=nil)
+    @min_score_possible = min_score_possible
+  end
+
+  attr_reader :min_score_possible
+
   def evaluate(tree)
-    my_best_score = nil
+    my_best_score = min_score_possible
     best_nodes = []
 
     tree.childs.each do |child|
@@ -17,10 +23,12 @@ class ABMinimax
             most_damaging_score = minimizing_score
           end
           
-          child_is_not_going_to_be_chosen =
-            my_best_score && most_damaging_score < my_best_score
+          it_cant_be_worse = min_score_possible &&
+            most_damaging_score == min_score_possible
+          there_is_a_better_option = my_best_score &&
+            most_damaging_score < my_best_score
 
-          break if child_is_not_going_to_be_chosen
+          break if it_cant_be_worse || there_is_a_better_option
         end
 
         score = most_damaging_score

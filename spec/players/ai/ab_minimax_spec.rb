@@ -299,6 +299,36 @@ RSpec.describe ABMinimax do
         strategy root
         expect(evaluated_node).to have_received(:score)
       end
+
+      it do
+        evaluated_node = leaf(0)
+        root = tree([
+          leaf(-1),
+          tree([
+            leaf(-1),
+            evaluated_node,
+          ]),
+        ])
+
+        strategy root
+        expect(evaluated_node).to have_received(:score)
+      end
+    end
+
+    describe 'if the minimum score possible is provided' do
+      it 'can stop evaluating when the opponent has that possibility' do
+        not_evaluated_node = leaf(0)
+        root = tree([
+          leaf(-1),
+          tree([
+            leaf(-1),
+            not_evaluated_node,
+          ]),
+        ])
+
+        described_class.new(-1).evaluate root
+        expect(not_evaluated_node).not_to have_received(:score)
+      end
     end
   end
 end
