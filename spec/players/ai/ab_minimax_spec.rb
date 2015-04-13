@@ -396,6 +396,29 @@ RSpec.describe ABMinimax do
 
         expect(strategy root).to eq([best_option])
       end
+
+      it 'assumes the opponent is going to minimize my winnings' do
+        best_option = leaf(0)
+
+        root = tree([
+          #my choice
+          tree([
+            #other's choice
+            tree([
+              #my choice
+              leaf(-1),
+            ]),
+            tree([
+              #my choice
+              leaf(1),
+            ])
+          ]),
+          best_option,
+        ])
+
+        expect(strategy root).to eq([best_option])
+      end
+    end
     end
   end
 end
