@@ -354,7 +354,7 @@ RSpec.describe ABMinimax do
           ]),
         ])
 
-        described_class.new(-1).evaluate root
+        described_class.new(:min_score => -1).evaluate root
         expect(not_evaluated_node).not_to have_received(:score)
       end
     end

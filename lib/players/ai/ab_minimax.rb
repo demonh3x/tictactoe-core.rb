@@ -1,6 +1,6 @@
 class ABMinimax
-  def initialize(min_score_possible=nil)
-    @min_score_possible = min_score_possible
+  def initialize(options={})
+    @min_score_possible = options[:min_score]
   end
 
   attr_reader :min_score_possible
