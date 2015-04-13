@@ -378,6 +378,24 @@ RSpec.describe ABMinimax do
         strategy root
         expect(last_leaf).to have_received(:score)
       end
+
+      it 'and a better option at the last level, chooses it' do
+        best_option = tree([
+          #other's choice
+          tree([
+            #my choice
+            leaf(1)
+          ])
+        ])
+
+        root = tree([
+          #my choice
+          leaf(-1),
+          best_option,
+        ])
+
+        expect(strategy root).to eq([best_option])
+      end
     end
   end
 end
