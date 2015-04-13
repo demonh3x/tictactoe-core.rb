@@ -130,8 +130,10 @@ RSpec.describe ABMinimax do
       it do
         best_option = leaf(1)
         root = tree([
+          #my choice
           best_option,
           tree([
+            #other's choice
             leaf(0)
           ]),
         ])
@@ -143,7 +145,9 @@ RSpec.describe ABMinimax do
       it do
         best_option = leaf(1)
         root = tree([
+          #my choice
           tree([
+            #other's choice
             leaf(0)
           ]),
           best_option,
@@ -157,9 +161,11 @@ RSpec.describe ABMinimax do
     describe 'chooses the best option even if it is one-level deep' do
       it do
         best_option = tree([
+          #other's choice
           leaf(1)
         ])
         root = tree([
+          #my choice
           leaf(0),
           best_option,
         ])
@@ -170,9 +176,11 @@ RSpec.describe ABMinimax do
 
       it do
         best_option = tree([
+          #other's choice
           leaf(1)
         ])
         root = tree([
+          #my choice
           best_option,
           leaf(0),
         ])
@@ -185,10 +193,12 @@ RSpec.describe ABMinimax do
     describe 'chooses equivalent options even if they are at different levels' do
       it do
         option1 = tree([
+          #other's choice
           leaf(1)
         ])
         option2 = leaf(1)
         root = tree([
+          #my choice
           option1,
           option2,
         ])
@@ -199,10 +209,12 @@ RSpec.describe ABMinimax do
 
       it do
         option1 = tree([
+          #other's choice
           leaf(0)
         ])
         option2 = leaf(0)
         root = tree([
+          #my choice
           option1,
           option2,
         ])
@@ -216,8 +228,10 @@ RSpec.describe ABMinimax do
       it do
         best_option = leaf(0)
         root = tree([
+          #my choice
           best_option,
           tree([
+            #other's choice
             leaf(1),
             leaf(-1),
           ]),
@@ -229,10 +243,12 @@ RSpec.describe ABMinimax do
 
       it do
         best_option = tree([
+          #other's choice
           leaf(0),
           leaf(1),
         ])
         root = tree([
+          #my choice
           leaf(-1),
           best_option,
         ])
@@ -244,8 +260,10 @@ RSpec.describe ABMinimax do
       it do
         best_option = leaf(0)
         root = tree([
+          #my choice
           best_option,
           tree([
+            #other's choice
             leaf(1),
             leaf(1),
             leaf(-1),
@@ -261,8 +279,10 @@ RSpec.describe ABMinimax do
       it do
         not_evaluated_node = leaf(-1)
         root = tree([
+          #my choice
           leaf(1),
           tree([
+            #other's choice
             leaf(0),
             not_evaluated_node,
           ]),
@@ -275,8 +295,10 @@ RSpec.describe ABMinimax do
       it do
         not_evaluated_node = leaf(1)
         root = tree([
+          #my choice
           leaf(0),
           tree([
+            #other's choice
             leaf(-1),
             not_evaluated_node,
           ]),
@@ -289,8 +311,10 @@ RSpec.describe ABMinimax do
       it do
         evaluated_node = leaf(-1)
         root = tree([
+          #my choice
           leaf(1),
           tree([
+            #other's choice
             leaf(1),
             evaluated_node,
           ]),
@@ -303,8 +327,10 @@ RSpec.describe ABMinimax do
       it do
         evaluated_node = leaf(0)
         root = tree([
+          #my choice
           leaf(-1),
           tree([
+            #other's choice
             leaf(-1),
             evaluated_node,
           ]),
@@ -319,8 +345,10 @@ RSpec.describe ABMinimax do
       it 'can stop evaluating when the opponent has that possibility' do
         not_evaluated_node = leaf(0)
         root = tree([
+          #my choice
           leaf(-1),
           tree([
+            #other's choice
             leaf(-1),
             not_evaluated_node,
           ]),
@@ -335,9 +363,12 @@ RSpec.describe ABMinimax do
       it 'goes in depth until the leaves' do
         last_leaf = leaf(-1)
         root = tree([
+          # my choice
           leaf(0),
           tree([
+            #other's choice
             tree([
+              #my choice
               leaf(1),
               last_leaf,
             ])
