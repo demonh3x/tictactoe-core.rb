@@ -47,6 +47,8 @@ class ABMinimax
     child.childs.each do |grandchild|
       if is_final?(grandchild)
         minimizing_score = grandchild.score
+      elsif depth_limit == 1
+        minimizing_score = min_score_possible
       else
         res = most_beneficial_strategy(grandchild)
         minimizing_score = res[:score]

@@ -425,6 +425,32 @@ RSpec.describe ABMinimax do
           expect(evaluated_leaf).to have_received(:score)
           expect(not_evaluated_leaf).not_to have_received(:score)
         end
+
+        it do
+          evaluated_leaf = leaf(0)
+          not_evaluated_leaf = leaf(1)
+          option_perceived_as_best = tree([
+            #depth 1
+            evaluated_leaf,
+          ])
+
+          root = tree([
+            #depth 0
+            option_perceived_as_best,
+            tree([
+              #depth 1
+              tree([
+                #depth 2
+                not_evaluated_leaf
+              ])
+            ])
+          ])
+
+          minimax = described_class.new(-1, 1)
+          expect(minimax.evaluate root).to eq([option_perceived_as_best])
+          expect(evaluated_leaf).to have_received(:score)
+          expect(not_evaluated_leaf).not_to have_received(:score)
+        end
       end
     end
   end
