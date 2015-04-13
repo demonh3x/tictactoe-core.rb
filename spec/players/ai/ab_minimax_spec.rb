@@ -2,7 +2,7 @@ require 'players/ai/ab_minimax'
 
 RSpec.describe ABMinimax do
   def strategy(tree)
-    minimax = described_class.new(-1)
+    minimax = described_class.new(-1, 10)
     strategy = minimax.evaluate(tree)
     strategy
   end
@@ -403,6 +403,29 @@ RSpec.describe ABMinimax do
         expect(strategy root).to eq([best_option])
       end
     end
+
+    describe 'given a depth limit' do
+      describe 'supposes that the deeper trees have the minimum score possible' do
+        it do
+          evaluated_leaf = leaf(-1)
+          not_evaluated_leaf = leaf(1)
+          options_perceived_as_equivalent = [
+            #depth 0
+            evaluated_leaf,
+            tree([
+              #depth 1
+              not_evaluated_leaf
+            ])
+          ]
+
+          root = tree(options_perceived_as_equivalent)
+
+          minimax = described_class.new(-1, 0)
+          expect(minimax.evaluate root).to eq(options_perceived_as_equivalent)
+          expect(evaluated_leaf).to have_received(:score)
+          expect(not_evaluated_leaf).not_to have_received(:score)
+        end
+      end
     end
   end
 end

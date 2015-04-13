@@ -1,9 +1,10 @@
 class ABMinimax
-  def initialize(min_score)
+  def initialize(min_score, depth_limit)
     @min_score_possible = min_score
+    @depth_limit = depth_limit
   end
 
-  attr_reader :min_score_possible
+  attr_reader :min_score_possible, :depth_limit
 
   def evaluate(tree)
     most_beneficial_strategy(tree)[:nodes]
@@ -16,6 +17,8 @@ class ABMinimax
     tree.childs.each do |child|
       if is_final?(child)
         score = child.score
+      elsif depth_limit == 0
+        score = min_score_possible
       else
         score = most_damaging_score child, my_best_score
       end
