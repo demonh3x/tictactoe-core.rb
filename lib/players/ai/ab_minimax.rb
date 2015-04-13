@@ -1,15 +1,15 @@
 class ABMinimax
-  def initialize(options={})
-    @min_score_possible = options[:min_score]
+  def initialize(min_score)
+    @min_score_possible = min_score
   end
 
   attr_reader :min_score_possible
 
   def evaluate(tree)
-    _evaluate(tree)[:nodes]
+    most_beneficial_strategy(tree)[:nodes]
   end
 
-  def _evaluate(tree)
+  def most_beneficial_strategy(tree)
     my_best_score = min_score_possible
     best_nodes = []
 
@@ -17,31 +17,7 @@ class ABMinimax
       if is_final?(child)
         score = child.score
       else
-        most_damaging_score = nil
-
-        child.childs.each do |grandchild|
-          if is_final?(grandchild)
-            minimizing_score = grandchild.score
-          else
-            res = _evaluate(grandchild)
-            minimizing_score = res[:score]
-          end
-
-          most_damaging_score ||= minimizing_score
-
-          if minimizing_score < most_damaging_score
-            most_damaging_score = minimizing_score
-          end
-          
-          it_cant_be_worse = min_score_possible &&
-            most_damaging_score == min_score_possible
-          there_is_a_better_option = my_best_score &&
-            most_damaging_score < my_best_score
-
-          break if it_cant_be_worse || there_is_a_better_option
-        end
-
-        score = most_damaging_score
+        score = most_damaging_score child, my_best_score
       end
 
       my_best_score ||= score
@@ -60,6 +36,34 @@ class ABMinimax
       :score => my_best_score,
       :nodes => best_nodes
     }
+  end
+
+  def most_damaging_score(child, my_best_score)
+    most_damaging_score = nil
+
+    child.childs.each do |grandchild|
+      if is_final?(grandchild)
+        minimizing_score = grandchild.score
+      else
+        res = most_beneficial_strategy(grandchild)
+        minimizing_score = res[:score]
+      end
+
+      most_damaging_score ||= minimizing_score
+
+      if minimizing_score < most_damaging_score
+        most_damaging_score = minimizing_score
+      end
+
+      it_cant_be_worse = min_score_possible &&
+        most_damaging_score == min_score_possible
+      there_is_a_better_option = my_best_score &&
+        most_damaging_score < my_best_score
+
+      break if it_cant_be_worse || there_is_a_better_option
+    end
+
+    most_damaging_score
   end
 
   def is_final?(tree)

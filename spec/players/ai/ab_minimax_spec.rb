@@ -2,7 +2,7 @@ require 'players/ai/ab_minimax'
 
 RSpec.describe ABMinimax do
   def strategy(tree)
-    minimax = described_class.new
+    minimax = described_class.new(-1)
     strategy = minimax.evaluate(tree)
     strategy
   end
@@ -323,26 +323,10 @@ RSpec.describe ABMinimax do
         strategy root
         expect(evaluated_node).to have_received(:score)
       end
-
-      it do
-        evaluated_node = leaf(0)
-        root = tree([
-          #my choice
-          leaf(-1),
-          tree([
-            #other's choice
-            leaf(-1),
-            evaluated_node,
-          ]),
-        ])
-
-        strategy root
-        expect(evaluated_node).to have_received(:score)
-      end
     end
 
-    describe 'if the minimum score possible is provided' do
-      it 'can stop evaluating when the opponent has that possibility' do
+    describe 'stops evaluating when the opponent has the possibility to choose the minimum score' do
+      it do
         not_evaluated_node = leaf(0)
         root = tree([
           #my choice
@@ -354,7 +338,7 @@ RSpec.describe ABMinimax do
           ]),
         ])
 
-        described_class.new(:min_score => -1).evaluate root
+        strategy root
         expect(not_evaluated_node).not_to have_received(:score)
       end
     end
