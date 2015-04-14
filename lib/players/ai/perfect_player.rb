@@ -98,6 +98,7 @@ class PerfectPlayer < RandomStrategyPlayer
 
     strategy = lambda do |state|
       board_locations = state.board.locations
+      return board_locations if board_locations.length == state.available_moves.length
 
       if board_locations.length > 9
         ab_minimax.evaluate(node_factory.create state).map(&:transition)
