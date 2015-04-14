@@ -1,5 +1,6 @@
 require 'players/ai/random_strategy_player'
 require 'players/ai/ab_minimax'
+require 'players/ai/minimax'
 require 'players/play_behaviour'
 
 class PerfectPlayer < RandomStrategyPlayer
@@ -93,10 +94,16 @@ class PerfectPlayer < RandomStrategyPlayer
 
   def initialize(my_mark, opponents_mark, random)
     node_factory = TTT::NodeFactory.new(my_mark, opponents_mark)
-    minimax = ABMinimax.new(-1, 0, 5)
+    ab_minimax = ABMinimax.new(-1, 0, 3)
 
     strategy = lambda do |state|
-      minimax.evaluate(node_factory.create state).map(&:transition)
+      board_locations = state.board.locations
+
+      if board_locations.length > 9
+        ab_minimax.evaluate(node_factory.create state).map(&:transition)
+      else
+        Minimax.new(my_mark, opponents_mark, my_mark).strategies(state)[:best]
+      end
     end
 
     super(my_mark, strategy, random)

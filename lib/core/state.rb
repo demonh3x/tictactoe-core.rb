@@ -24,8 +24,10 @@ class State
     end
   end
 
+  attr_reader :board
+
   private
-  attr_reader :board, :marks
+  attr_reader :marks
 
   def is_finished?
     is_full? || has_winner?
