@@ -5,7 +5,7 @@ class State
   end
   
   def available_moves
-    board.locations.select{|location| marks[location].nil?}
+    @available ||= board.locations.select{|location| marks[location].nil?}
   end
 
   def make_move(location, mark)
@@ -40,10 +40,10 @@ class State
   end
 
   def winner
-    board.lines
+    @winner ||= board.lines
       .map{|line| marks_in line}
       .select{|line_marks| are_the_same? line_marks}
-      .map{|line_marks| line_marks.first}
+      .map(&:first)
       .select{|mark| !mark.nil?}
       .first
   end
