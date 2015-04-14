@@ -63,10 +63,6 @@ class Minimax
   end
 
   def scored_moves
-    if state.available_moves.size == 9
-      return {0 => state.available_moves}
-    end
-
     node_options.inject({}) do |result, option|
       score = option[:score]
       location = option[:location]
