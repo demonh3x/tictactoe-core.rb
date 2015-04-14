@@ -2,7 +2,7 @@ require 'players/ai/ab_minimax'
 
 RSpec.describe ABMinimax do
   def strategy(tree)
-    minimax = described_class.new(-1, 10)
+    minimax = described_class.new(-1, -1, 10)
     strategy = minimax.evaluate(tree)
     strategy
   end
@@ -420,7 +420,7 @@ RSpec.describe ABMinimax do
 
           root = tree(options_perceived_as_equivalent)
 
-          minimax = described_class.new(-1, 0)
+          minimax = described_class.new(-1, -1, 0)
           expect(minimax.evaluate root).to eq(options_perceived_as_equivalent)
           expect(evaluated_leaf).to have_received(:score)
           expect(not_evaluated_leaf).not_to have_received(:score)
@@ -446,7 +446,39 @@ RSpec.describe ABMinimax do
             ])
           ])
 
-          minimax = described_class.new(-1, 1)
+          minimax = described_class.new(-1, -1, 1)
+          expect(minimax.evaluate root).to eq([option_perceived_as_best])
+          expect(evaluated_leaf).to have_received(:score)
+          expect(not_evaluated_leaf).not_to have_received(:score)
+        end
+
+        it do
+          evaluated_leaf = leaf(0)
+          not_evaluated_leaf = leaf(1)
+          option_perceived_as_best = tree([
+            #depth 1
+            tree([
+              #depth 2
+              evaluated_leaf,
+            ]),
+          ])
+
+          root = tree([
+            #depth 0
+            option_perceived_as_best,
+            tree([
+              #depth 1
+              tree([
+                #depth 2
+                tree([
+                  #depth 3
+                  not_evaluated_leaf
+                ])
+              ])
+            ])
+          ])
+
+          minimax = described_class.new(-1, -1, 2)
           expect(minimax.evaluate root).to eq([option_perceived_as_best])
           expect(evaluated_leaf).to have_received(:score)
           expect(not_evaluated_leaf).not_to have_received(:score)

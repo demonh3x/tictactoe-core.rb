@@ -1,26 +1,27 @@
 class ABMinimax
-  def initialize(min_score, depth_limit)
+  def initialize(min_score, heuristic_score, depth_limit)
     @min_score_possible = min_score
+    @heuristic_score = heuristic_score
     @depth_limit = depth_limit
   end
 
-  attr_reader :min_score_possible, :depth_limit
+  attr_reader :min_score_possible, :heuristic_score, :depth_limit
 
   def evaluate(tree)
-    most_beneficial_strategy(tree)[:nodes]
+    most_beneficial_strategy(tree, depth_limit)[:nodes]
   end
 
-  def most_beneficial_strategy(tree)
+  def most_beneficial_strategy(tree, depth)
     my_best_score = min_score_possible
     best_nodes = []
 
     tree.childs.each do |child|
       if is_final?(child)
         score = child.score
-      elsif depth_limit == 0
-        score = min_score_possible
+      elsif depth == 0
+        score = heuristic_score
       else
-        score = most_damaging_score child, my_best_score
+        score = most_damaging_score child, my_best_score, depth-1
       end
 
       my_best_score ||= score
@@ -41,16 +42,16 @@ class ABMinimax
     }
   end
 
-  def most_damaging_score(child, my_best_score)
+  def most_damaging_score(child, my_best_score, depth)
     most_damaging_score = nil
 
     child.childs.each do |grandchild|
       if is_final?(grandchild)
         minimizing_score = grandchild.score
-      elsif depth_limit == 1
-        minimizing_score = min_score_possible
+      elsif depth == 0
+        minimizing_score = heuristic_score
       else
-        res = most_beneficial_strategy(grandchild)
+        res = most_beneficial_strategy grandchild, depth-1
         minimizing_score = res[:score]
       end
 
