@@ -93,30 +93,6 @@ RSpec.describe Minimax do
     expect(minimax.strategies(state)).to eq({:lose => [5], :draw => [3, 4, 7], :win => [6], :best => [6]})
   end
 
-  it 'given an empty state should not take more than one second to have an answer' do
-    state = board(
-      nil, nil, nil,
-      nil, nil, nil,
-      nil, nil, nil
-    )
-    Timeout::timeout(1) {
-      minimax = described_class.new(:X, :O, :X)
-      minimax.strategies(state)
-    }
-  end
-
-  it 'given the second play should not take more than three seconds to have an answer' do
-    state = board(
-      nil, nil, nil,
-      nil, :X, nil,
-      nil, nil, nil
-    )
-    Timeout::timeout(3) {
-      minimax = described_class.new(:O, :X, :O)
-      minimax.strategies(state)
-    }
-  end
-
   it 'given an empty state anything is a draw' do
     state = board(
       nil, nil, nil,
