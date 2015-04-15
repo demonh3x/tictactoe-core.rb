@@ -2,8 +2,9 @@ require 'players/ai/ab_minimax'
 require 'players/ai/minimax'
 
 class PerfectPlayer
-  DEPTH_LIMIT = 3
-  MINIMUM_SCORE_POSSIBLE = -2
+  MAXIMUM_SCORE = 2
+  MINIMUM_SCORE = -2
+  NEUTRAL_SCORE = 0
   SCORE_FOR_UNKNOWN_FUTURE = -1
 
   module TTT
@@ -41,11 +42,11 @@ class PerfectPlayer
         state.when_finished do |winner|
           case winner
           when me
-            2
+            MAXIMUM_SCORE
           when nil
-            0
+            NEUTRAL_SCORE
           else
-            -2
+            MINIMUM_SCORE
           end
         end
       end
@@ -53,9 +54,16 @@ class PerfectPlayer
   end
 
   def initialize(my_mark, opponents_mark)
-    ab_minimax = ABMinimax.new(MINIMUM_SCORE_POSSIBLE, SCORE_FOR_UNKNOWN_FUTURE, DEPTH_LIMIT)
-
     @strategy = lambda do |state|
+      played_moves = state.board.locations.length - state.available_moves.length
+      if state.board.locations.length == 16
+        depth = [7, played_moves].min
+      else
+        played_moves += 4
+        depth = [5, played_moves].min
+      end
+
+      ab_minimax = ABMinimax.new(MINIMUM_SCORE, SCORE_FOR_UNKNOWN_FUTURE, depth)
 
       locs = ab_minimax.evaluate(TTT::Node.new(state, my_mark, opponents_mark, my_mark)).map(&:transition)
 
