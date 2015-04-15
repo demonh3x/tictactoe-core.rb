@@ -1,3 +1,4 @@
+require 'players/ai/random_strategy_player'
 require 'players/cli_player'
 require 'players/ai/perfect_player'
 
@@ -28,7 +29,11 @@ class PlayersFactory
         CliPlayer.new(mark, input, output)
       end,
       :computer => lambda do |mark|
-        PerfectPlayer.new(mark, opponent(mark), random)
+        RandomStrategyPlayer.new(
+          mark, 
+          PerfectPlayer.new(mark, opponent(mark)),
+          random
+        )
       end
     }
   end

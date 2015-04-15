@@ -1,4 +1,8 @@
+require 'players/play_behaviour'
+
 class RandomStrategyPlayer
+  include PlayBehaviour
+
   attr_reader :mark
 
   def initialize(mark, strategy, random)

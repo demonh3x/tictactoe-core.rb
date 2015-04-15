@@ -1,48 +1,13 @@
-require 'players/ai/random_strategy_player'
 require 'players/ai/ab_minimax'
 require 'players/ai/minimax'
-require 'players/play_behaviour'
 
-class PerfectPlayer < RandomStrategyPlayer
+class PerfectPlayer
+  DEPTH_LIMIT = 3
+  MINIMUM_SCORE_POSSIBLE = -2
+  SCORE_FOR_UNKNOWN_FUTURE = -1
+
   module TTT
-    class Leaf
-      def initialize(state, me, transition = nil)
-        @state = state
-        @me = me
-        @transition = transition
-      end
-
-      def childs
-        NO_CHILDS
-      end
-
-      def score
-        @score ||= winner_score(state, me) || (raise "Not finished!")
-        @score
-      end
-
-      def transition
-        @transition || (raise "No transition!")
-      end
-
-      NO_CHILDS = []
-      attr_reader :state, :me
-
-      def winner_score(state, me)
-        state.when_finished do |winner|
-          case winner
-          when me
-            1
-          when nil
-            0
-          else
-            -1
-          end
-        end
-      end
-    end
-
-    class Tree
+    class Node
       def initialize(state, me, opponent, current_player, transition = nil)
         @state = state
         @me = me
@@ -50,13 +15,19 @@ class PerfectPlayer < RandomStrategyPlayer
         @current_player = current_player
         @transition = transition
       end
+      attr_reader :state, :me, :transition, :opponent, :current_player
+
+      def is_final?(state)
+        state.when_finished{true} || false
+      end
 
       def childs
+        return [] if is_final?(state)
+
         c = state.available_moves.lazy.map do |transition|
+          next_player = current_player == me ? opponent : me
           next_state = state.make_move transition, current_player
-          next_state.when_finished do |w|
-            Leaf.new(next_state, me, transition)
-          end || Tree.new(next_state, me, opponent, current_player == me ? opponent : me, transition)
+          Node.new(next_state, me, opponent, next_player, transition)
         end
 
         def c.empty?
@@ -66,47 +37,33 @@ class PerfectPlayer < RandomStrategyPlayer
         c
       end
 
-      def transition
-        @transition || (raise "No transition!")
+      def score
+        state.when_finished do |winner|
+          case winner
+          when me
+            2
+          when nil
+            0
+          else
+            -2
+          end
+        end
       end
-
-      attr_reader :state, :me, :opponent, :current_player
-    end
-
-    class NodeFactory
-      def initialize(me, opponent)
-        @me = me
-        @opponent = opponent
-      end
-
-      def create(state)
-        state.when_finished do |w|
-          Leaf.new(state, me)
-        end || Tree.new(state, me, opponent, me)
-      end
-
-      private
-      attr_reader :me, :opponent
     end
   end
 
-  include PlayBehaviour
+  def initialize(my_mark, opponents_mark)
+    ab_minimax = ABMinimax.new(MINIMUM_SCORE_POSSIBLE, SCORE_FOR_UNKNOWN_FUTURE, DEPTH_LIMIT)
 
-  def initialize(my_mark, opponents_mark, random)
-    node_factory = TTT::NodeFactory.new(my_mark, opponents_mark)
-    ab_minimax = ABMinimax.new(-1, 0, 3)
+    @strategy = lambda do |state|
 
-    strategy = lambda do |state|
-      board_locations = state.board.locations
-      return board_locations if board_locations.length == state.available_moves.length
+      locs = ab_minimax.evaluate(TTT::Node.new(state, my_mark, opponents_mark, my_mark)).map(&:transition)
 
-      if board_locations.length > 9
-        ab_minimax.evaluate(node_factory.create state).map(&:transition)
-      else
-        Minimax.new(my_mark, opponents_mark, my_mark).strategies(state)[:best]
-      end
+      locs
     end
+  end
 
-    super(my_mark, strategy, random)
+  def call(state)
+    @strategy.call(state)
   end
 end
