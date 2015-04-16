@@ -42,7 +42,7 @@ RSpec.describe "CLI" do
     describe "given a 4x4 empty state" do
       it "prints it without pieces" do
         @cli.update(state(
-          FourByFourBoard.new,
+          Boards::FourByFourBoard.new,
           nil, nil, nil, nil,
           nil, nil, nil, nil,
           nil, nil, nil, nil,

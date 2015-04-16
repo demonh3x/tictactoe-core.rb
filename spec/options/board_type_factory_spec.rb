@@ -11,6 +11,6 @@ RSpec.describe BoardTypeFactory do
   end
   
   it 'given 4 returns a FourByFourBoard' do
-    expect(create(4)).to be_an_instance_of(FourByFourBoard)
+    expect(create(4)).to be_an_instance_of(Boards::FourByFourBoard)
   end
 end
