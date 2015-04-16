@@ -7,7 +7,7 @@ RSpec.describe Boards::BoardTypeFactory do
   end
 
   it 'given 3 returns a ThreeByThreeBoard' do
-    expect(create(3)).to be_an_instance_of(ThreeByThreeBoard)
+    expect(create(3)).to be_an_instance_of(Boards::ThreeByThreeBoard)
   end
   
   it 'given 4 returns a FourByFourBoard' do

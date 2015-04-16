@@ -46,7 +46,7 @@ RSpec.describe "Board type integration" do
   end
 
   it "should return a ThreeByThreeBoard if answering 3" do
-    expect(ask_board_type %w(3)).to be_an_instance_of(ThreeByThreeBoard)
+    expect(ask_board_type %w(3)).to be_an_instance_of(Boards::ThreeByThreeBoard)
   end
 
   it "should return a FourByFourBoard if answering 4" do

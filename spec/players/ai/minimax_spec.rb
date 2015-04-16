@@ -6,7 +6,7 @@ require 'timeout'
 
 RSpec.describe Minimax do
   def board(*marks)
-    state = Core::State.new(ThreeByThreeBoard.new)
+    state = Core::State.new(Boards::ThreeByThreeBoard.new)
     marks.each_with_index do |mark, location|
       state = state.make_move(location, mark)
     end

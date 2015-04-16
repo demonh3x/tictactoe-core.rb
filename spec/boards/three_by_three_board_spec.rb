@@ -1,9 +1,9 @@
 require 'spec_helper'
 require 'boards/three_by_three_board'
 
-RSpec.describe "3x3 board" do
+RSpec.describe Boards::ThreeByThreeBoard do
   before(:each) do
-    @board = ThreeByThreeBoard.new
+    @board = described_class.new
   end
 
   it "should know the available locations" do

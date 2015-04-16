@@ -22,7 +22,7 @@ RSpec.describe "CLI" do
     describe "given a 3x3 empty state" do
       it "prints it without pieces" do
         @cli.update(state(
-          ThreeByThreeBoard.new,
+          Boards::ThreeByThreeBoard.new,
           nil, nil, nil,
           nil, nil, nil,
           nil, nil, nil,
@@ -65,7 +65,7 @@ RSpec.describe "CLI" do
     describe "given a state with some moves" do
       it "prints it with the pieces at the correct position" do
         @cli.update(state(
-          ThreeByThreeBoard.new,
+          Boards::ThreeByThreeBoard.new,
           :X,  nil, :O,
           nil, :O,  :X,
           nil, nil, nil,
@@ -85,7 +85,7 @@ RSpec.describe "CLI" do
     describe "given a finished state" do
       it "with a winner, prints it announcing the winner" do
         @cli.update(state(
-          ThreeByThreeBoard.new,
+          Boards::ThreeByThreeBoard.new,
           :X,  nil, :O,
           nil, :O,  :X,
           :O,  :X,  nil,
@@ -104,7 +104,7 @@ RSpec.describe "CLI" do
       
       it "with a draw, prints it announcing the draw" do
         @cli.update(state(
-          ThreeByThreeBoard.new,
+          Boards::ThreeByThreeBoard.new,
           :X, :O, :X,
           :O, :O, :X,
           :X, :X, :O,

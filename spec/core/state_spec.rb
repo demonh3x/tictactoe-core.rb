@@ -27,7 +27,7 @@ RSpec.describe Core::State do
 
   describe "given a 3x3 board" do
     before(:each) do
-      @board = ThreeByThreeBoard.new
+      @board = Boards::ThreeByThreeBoard.new
       @state = described_class.new(@board)
     end
 
@@ -76,7 +76,7 @@ RSpec.describe Core::State do
       end
     end
 
-    ThreeByThreeBoard.new.lines.each do |line|
+    Boards::ThreeByThreeBoard.new.lines.each do |line|
       describe "with a line for player a" do
         before(:each) do
           line.each do |l|

@@ -7,7 +7,7 @@ RSpec.describe "CLI Player" do
   before(:each) do
     @in = StringIO.new
     @out = StringIO.new
-    @board = ThreeByThreeBoard.new
+    @board = Boards::ThreeByThreeBoard.new
     @state = Core::State.new(@board)
     @player = CliPlayer.new(:mark, @in, @out)
   end
