@@ -1,29 +1,33 @@
 require 'players/play_behaviour'
 
-class RandomStrategyPlayer
-  include PlayBehaviour
+module Players
+  module AI
+    class RandomStrategyPlayer
+      include PlayBehaviour
 
-  attr_reader :mark
+      attr_reader :mark
 
-  def initialize(mark, strategy, random)
-    @mark = mark
-    @strategy = strategy
-    @random = random
-  end
+      def initialize(mark, strategy, random)
+        @mark = mark
+        @strategy = strategy
+        @random = random
+      end
 
-  def ask_for_location(state)
-    select_random strategy.call(state)
-  end
+      def ask_for_location(state)
+        select_random strategy.call(state)
+      end
 
-  private
-  attr_accessor :random, :strategy
+      private
+      attr_accessor :random, :strategy
 
-  def select_random(list)
-    index = bounded_random list.size
-    list[index]
-  end
+      def select_random(list)
+        index = bounded_random list.size
+        list[index]
+      end
 
-  def bounded_random(outer_bound)
-    (random.rand * outer_bound).to_i
+      def bounded_random(outer_bound)
+        (random.rand * outer_bound).to_i
+      end
+    end
   end
 end

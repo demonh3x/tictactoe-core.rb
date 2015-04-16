@@ -55,7 +55,7 @@ RSpec.describe "Players integration" do
   end
 
   def expect_computer_with_mark(player, mark)
-    expect(player).to be_an_instance_of RandomStrategyPlayer
+    expect(player).to be_an_instance_of Players::AI::RandomStrategyPlayer
     expect(player.mark).to eq(mark)
   end
 

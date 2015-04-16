@@ -13,7 +13,7 @@ RSpec.describe PlayersFactory do
   end
 
   it 'can create a computer player' do
-    expect(create_single(:computer)).to be_an_instance_of RandomStrategyPlayer
+    expect(create_single(:computer)).to be_an_instance_of Players::AI::RandomStrategyPlayer
   end
 
   def create(types)

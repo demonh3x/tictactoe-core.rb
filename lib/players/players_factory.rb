@@ -29,7 +29,7 @@ class PlayersFactory
         CliPlayer.new(mark, input, output)
       end,
       :computer => lambda do |mark|
-        RandomStrategyPlayer.new(
+        Players::AI::RandomStrategyPlayer.new(
           mark, 
           Players::AI::PerfectPlayer.new(mark, opponent(mark)),
           random

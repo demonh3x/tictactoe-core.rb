@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'players/ai/random_strategy_player'
 
-RSpec.describe RandomStrategyPlayer do
+RSpec.describe Players::AI::RandomStrategyPlayer do
   it "has a mark" do
     expect(described_class.new(:x, nil, nil).mark).to eq(:x)
     expect(described_class.new(:o, nil, nil).mark).to eq(:o)
