@@ -3,7 +3,7 @@ require 'players/play_behaviour'
 module Players
   module AI
     class RandomStrategyPlayer
-      include PlayBehaviour
+      include Players::PlayBehaviour
 
       attr_reader :mark
 
