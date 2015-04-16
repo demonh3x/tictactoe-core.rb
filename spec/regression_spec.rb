@@ -57,9 +57,7 @@ RSpec.describe "Regression" do
       random.print
       puts n
 
-      Timeout::timeout(60) {
-        expect(game_winner FourByFourBoard.new random).to eq(nil)
-      }
+      expect(game_winner FourByFourBoard.new, random).to eq(nil)
     end
   end
 
