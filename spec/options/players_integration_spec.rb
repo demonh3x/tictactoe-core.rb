@@ -11,7 +11,7 @@ RSpec.describe "Players integration" do
     selection = PlayersSelection.new(cli)
     factory = PlayersFactory.new(i, o, spy(:rand => 0.0))
 
-    Option.new(selection, factory)
+    Options::Option.new(selection, factory)
   end
 
   def cli_output(commands)

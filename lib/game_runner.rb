@@ -37,7 +37,7 @@ class GameRunner
   def create_board_option(cli)
     board_selection = Options::BoardTypeSelection.new(cli)
     board_factory = Boards::BoardTypeFactory.new
-    Option.new(board_selection, board_factory)
+    Options::Option.new(board_selection, board_factory)
   end
 
   def create_play_again_option(cli)
@@ -47,7 +47,7 @@ class GameRunner
   def create_players_option(cli, input, output, random)
     players_selection = PlayersSelection.new(cli)
     players_factory = PlayersFactory.new(input, output, random)
-    Option.new(players_selection, players_factory)
+    Options::Option.new(players_selection, players_factory)
   end
 
   def create_game

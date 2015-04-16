@@ -10,7 +10,7 @@ RSpec.describe "Board type integration" do
     cli_asker = Options::CliAsker.new(input, out)
     selection = Options::BoardTypeSelection.new(cli_asker)
     factory = Boards::BoardTypeFactory.new
-    Option.new(selection, factory)
+    Options::Option.new(selection, factory)
   end
 
   def cli_output(commands)

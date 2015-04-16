@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'options/option'
 
-RSpec.describe Option do
+RSpec.describe Options::Option do
   before(:each) do
     @selection = spy(:read => :selection_value)
     @factory = spy(:create => :created_value)
