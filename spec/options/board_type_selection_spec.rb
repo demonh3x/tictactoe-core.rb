@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'options/board_type_selection'
 
-RSpec.describe BoardTypeSelection do
+RSpec.describe Options::BoardTypeSelection do
   it 'when reading, asks the question' do
     asker = spy()
     described_class.new(asker).read

@@ -35,7 +35,7 @@ class GameRunner
   attr_accessor :output, :play_again, :board_type, :who_will_play
 
   def create_board_option(cli)
-    board_selection = BoardTypeSelection.new(cli)
+    board_selection = Options::BoardTypeSelection.new(cli)
     board_factory = Boards::BoardTypeFactory.new
     Option.new(board_selection, board_factory)
   end
