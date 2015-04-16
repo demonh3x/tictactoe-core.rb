@@ -55,7 +55,7 @@ class GameRunner
     players = who_will_play.get
     Core::Game.new(
       Core::State.new(board),
-      Cli.new(output),
+      UIs::Cli.new(output),
       players
     )
   end

@@ -4,7 +4,7 @@ require 'core/state'
 require 'boards/three_by_three_board'
 require 'boards/four_by_four_board'
 
-RSpec.describe "CLI" do
+RSpec.describe UIs::Cli do
   def state(board, *marks)
     state = Core::State.new(board)
     marks.each_with_index {|mark, location|
@@ -15,7 +15,7 @@ RSpec.describe "CLI" do
 
   before(:each) do
     @out = StringIO.new
-    @cli = Cli.new(@out)
+    @cli = described_class.new(@out)
   end
 
   describe "when updating" do
