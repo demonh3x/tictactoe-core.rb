@@ -1,6 +1,6 @@
 require 'players/ai/ab_minimax'
 
-RSpec.describe ABMinimax do
+RSpec.describe Players::AI::ABMinimax do
   def strategy(tree)
     minimax = described_class.new(-1, -1, 10)
     strategy = minimax.evaluate(tree)

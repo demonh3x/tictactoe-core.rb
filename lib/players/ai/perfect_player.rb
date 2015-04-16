@@ -63,7 +63,7 @@ class PerfectPlayer
         depth = [5, played_moves].min
       end
 
-      ab_minimax = ABMinimax.new(MINIMUM_SCORE, SCORE_FOR_UNKNOWN_FUTURE, depth)
+      ab_minimax = Players::AI::ABMinimax.new(MINIMUM_SCORE, SCORE_FOR_UNKNOWN_FUTURE, depth)
 
       locs = ab_minimax.evaluate(TTT::Node.new(state, my_mark, opponents_mark, my_mark)).map(&:transition)
 
