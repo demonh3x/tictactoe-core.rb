@@ -56,13 +56,7 @@ module Players
 
       def initialize(my_mark, opponents_mark)
         @strategy = lambda do |state|
-          played_moves = state.board.locations.length - state.available_moves.length
-          if state.board.locations.length == 16
-            depth = [7, played_moves].min
-          else
-            played_moves += 4
-            depth = [5, played_moves].min
-          end
+          depth = dynamic_depth_for state
 
           ab_minimax = Players::AI::ABMinimax.new(MINIMUM_SCORE, SCORE_FOR_UNKNOWN_FUTURE, depth)
 
@@ -70,6 +64,19 @@ module Players
 
           locs
         end
+      end
+
+      def dynamic_depth_for(state)
+        played_moves = state.board.locations.length - state.available_moves.length
+
+        if state.board.locations.length == 16
+          depth = [7, played_moves].min
+        else
+          played_moves += 4
+          depth = [5, played_moves].min
+        end
+
+        depth
       end
 
       def call(state)
