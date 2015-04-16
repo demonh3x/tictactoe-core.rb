@@ -26,7 +26,7 @@ class PlayersFactory
   def constructors
     @constructors ||= {
       :human => lambda do |mark|
-        CliPlayer.new(mark, input, output)
+        Players::CliPlayer.new(mark, input, output)
       end,
       :computer => lambda do |mark|
         Players::AI::RandomStrategyPlayer.new(

@@ -3,13 +3,13 @@ require 'players/cli_player'
 require 'core/state'
 require 'boards/three_by_three_board'
 
-RSpec.describe "CLI Player" do
+RSpec.describe Players::CliPlayer do
   before(:each) do
     @in = StringIO.new
     @out = StringIO.new
     @board = Boards::ThreeByThreeBoard.new
     @state = Core::State.new(@board)
-    @player = CliPlayer.new(:mark, @in, @out)
+    @player = described_class.new(:mark, @in, @out)
   end
 
   def human_will_send(str)

@@ -9,7 +9,7 @@ RSpec.describe PlayersFactory do
   end
 
   it 'can create a human player' do
-    expect(create_single(:human)).to be_an_instance_of CliPlayer
+    expect(create_single(:human)).to be_an_instance_of Players::CliPlayer
   end
 
   it 'can create a computer player' do

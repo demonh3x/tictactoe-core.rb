@@ -50,7 +50,7 @@ RSpec.describe "Players integration" do
   end
 
   def expect_human_with_mark(player, mark)
-    expect(player).to be_an_instance_of CliPlayer
+    expect(player).to be_an_instance_of Players::CliPlayer
     expect(player.mark).to eq(mark)
   end
 
