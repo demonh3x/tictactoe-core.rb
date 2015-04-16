@@ -1,5 +1,4 @@
 require 'players/ai/ab_minimax'
-require 'players/ai/minimax'
 
 class PerfectPlayer
   MAXIMUM_SCORE = 2
