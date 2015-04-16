@@ -8,7 +8,7 @@ require 'options/cli_asker'
 RSpec.describe "Players integration" do
   def create(i, o)
     cli = Options::CliAsker.new(i, o)
-    selection = PlayersSelection.new(cli)
+    selection = Options::PlayersSelection.new(cli)
     factory = PlayersFactory.new(i, o, spy(:rand => 0.0))
 
     Options::Option.new(selection, factory)

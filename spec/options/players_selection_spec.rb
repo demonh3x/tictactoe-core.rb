@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'options/players_selection'
 
-RSpec.describe PlayersSelection do
+RSpec.describe Options::PlayersSelection do
   it 'when reading, asks the question' do
     asker = spy()
     described_class.new(asker).read
