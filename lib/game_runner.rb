@@ -41,7 +41,7 @@ class GameRunner
   end
 
   def create_play_again_option(cli)
-    PlayAgainOption.new(cli)
+    Options::PlayAgainOption.new(cli)
   end
 
   def create_players_option(cli, input, output, random)
