@@ -36,7 +36,7 @@ class GameRunner
 
   def create_board_option(cli)
     board_selection = BoardTypeSelection.new(cli)
-    board_factory = BoardTypeFactory.new
+    board_factory = Boards::BoardTypeFactory.new
     Option.new(board_selection, board_factory)
   end
 

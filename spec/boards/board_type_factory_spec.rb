@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'boards/board_type_factory'
 
-RSpec.describe BoardTypeFactory do
+RSpec.describe Boards::BoardTypeFactory do
   def create(side_size)
     described_class.new.create(side_size)
   end

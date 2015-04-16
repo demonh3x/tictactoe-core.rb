@@ -9,7 +9,7 @@ RSpec.describe "Board type integration" do
   def create(input, out)
     cli_asker = CliAsker.new(input, out)
     selection = BoardTypeSelection.new(cli_asker)
-    factory = BoardTypeFactory.new
+    factory = Boards::BoardTypeFactory.new
     Option.new(selection, factory)
   end
 
