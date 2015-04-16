@@ -46,7 +46,7 @@ class GameRunner
 
   def create_players_option(cli, input, output, random)
     players_selection = Options::PlayersSelection.new(cli)
-    players_factory = PlayersFactory.new(input, output, random)
+    players_factory = Players::PlayersFactory.new(input, output, random)
     Options::Option.new(players_selection, players_factory)
   end
 

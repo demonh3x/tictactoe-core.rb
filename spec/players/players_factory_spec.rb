@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'players/players_factory'
 
-RSpec.describe PlayersFactory do
+RSpec.describe Players::PlayersFactory do
   let(:factory) { described_class.new(:input, :output, :random) }
 
   def create_single(type)
