@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'players/cli_player'
 require 'options/players_selection'
-require 'options/players_factory'
+require 'players/players_factory'
 require 'options/option'
 require 'options/cli_asker'
 

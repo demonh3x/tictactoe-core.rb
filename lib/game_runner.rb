@@ -11,7 +11,7 @@ require 'options/board_type_selection'
 require 'boards/board_type_factory'
 
 require 'options/players_selection'
-require 'options/players_factory'
+require 'players/players_factory'
 
 class GameRunner
   def initialize(input=$stdin, output=$stdout, random=Random.new)

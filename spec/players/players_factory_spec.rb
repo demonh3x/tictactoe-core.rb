@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'options/players_factory'
+require 'players/players_factory'
 
 RSpec.describe PlayersFactory do
   let(:factory) { described_class.new(:input, :output, :random) }
