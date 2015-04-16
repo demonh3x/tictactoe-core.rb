@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'core/state'
 
-RSpec.describe "Game state" do
+RSpec.describe Core::State do
   def look_at(state, location)
     state.layout
       .select{|loc, mark| loc == location}
@@ -28,7 +28,7 @@ RSpec.describe "Game state" do
   describe "given a 3x3 board" do
     before(:each) do
       @board = ThreeByThreeBoard.new
-      @state = State.new(@board)
+      @state = described_class.new(@board)
     end
 
     it "can make a move" do

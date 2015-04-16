@@ -6,7 +6,7 @@ require 'boards/four_by_four_board'
 
 RSpec.describe "CLI" do
   def state(board, *marks)
-    state = State.new(board)
+    state = Core::State.new(board)
     marks.each_with_index {|mark, location|
       state = state.make_move(location, mark)
     }
