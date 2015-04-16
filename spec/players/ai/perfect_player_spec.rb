@@ -3,7 +3,7 @@ require 'players/ai/perfect_player'
 require 'core/state'
 require 'boards/three_by_three_board'
 
-RSpec.describe "Perfect player" do
+RSpec.describe Players::AI::PerfectPlayer do
   def board(*marks)
     state = Core::State.new(Boards::ThreeByThreeBoard.new)
     marks.each_with_index do |mark, location|
@@ -13,7 +13,7 @@ RSpec.describe "Perfect player" do
   end
 
   before(:each) do
-    @player = PerfectPlayer.new(:x, :o)
+    @player = described_class.new(:x, :o)
   end
 
   def play(state)
@@ -30,7 +30,7 @@ RSpec.describe "Perfect player" do
   end
 
   it 'given the possibility to lose, should prefer a draw' do
-    player = PerfectPlayer.new(:o, :x)
+    player = described_class.new(:o, :x)
     state = board(
       :x, nil, :o,
       :o, :x,  :x,

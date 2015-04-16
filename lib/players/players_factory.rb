@@ -31,7 +31,7 @@ class PlayersFactory
       :computer => lambda do |mark|
         RandomStrategyPlayer.new(
           mark, 
-          PerfectPlayer.new(mark, opponent(mark)),
+          Players::AI::PerfectPlayer.new(mark, opponent(mark)),
           random
         )
       end
