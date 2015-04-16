@@ -8,7 +8,7 @@ require 'options/option'
 require 'options/play_again_option'
 
 require 'options/board_type_selection'
-require 'options/board_type_factory'
+require 'boards/board_type_factory'
 
 require 'options/players_selection'
 require 'options/players_factory'

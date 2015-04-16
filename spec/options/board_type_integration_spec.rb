@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'options/cli_asker'
 
 require 'options/board_type_selection'
-require 'options/board_type_factory'
+require 'boards/board_type_factory'
 require 'options/option'
 
 RSpec.describe "Board type integration" do
