@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'options/cli_asker'
 
-RSpec.describe CliAsker do
+RSpec.describe Options::CliAsker do
   describe "given two options, when asking for a selection" do
     before(:each) do
       @out = StringIO.new

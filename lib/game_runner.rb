@@ -17,7 +17,7 @@ class GameRunner
   def initialize(input=$stdin, output=$stdout, random=Random.new)
     @output = output
 
-    cli = CliAsker.new(input, output)
+    cli = Options::CliAsker.new(input, output)
     @board_type = create_board_option cli
     @play_again = create_play_again_option cli
     @who_will_play = create_players_option cli, input, output, random
