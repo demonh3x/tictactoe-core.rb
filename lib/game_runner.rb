@@ -53,7 +53,7 @@ class GameRunner
   def create_game
     board = board_type.get
     players = who_will_play.get
-    Game.new(
+    Core::Game.new(
       State.new(board),
       Cli.new(output),
       players

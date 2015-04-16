@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'core/game'
 
-RSpec.describe "Game" do
+RSpec.describe Core::Game do
   class FinishedStateStub
     def when_finished
       yield
@@ -9,7 +9,7 @@ RSpec.describe "Game" do
   end
 
   it 'is finished if the state is finished' do
-    game = Game.new FinishedStateStub.new, spy, [spy, spy]
+    game = described_class.new FinishedStateStub.new, spy, [spy, spy]
 
     expect(game.finished?).to eq(true)
   end
@@ -20,7 +20,7 @@ RSpec.describe "Game" do
   end
 
   it 'is not finished if the state is not finished' do
-    game = Game.new NotFinishedStateStub.new, spy, [spy, spy]
+    game = described_class.new NotFinishedStateStub.new, spy, [spy, spy]
 
     expect(game.finished?).to eq(false)
   end
@@ -28,7 +28,7 @@ RSpec.describe "Game" do
   it 'when starting, updates the UI with the initial state' do
     initial_state = spy
     ui = spy
-    game = Game.new initial_state, ui, [spy, spy]
+    game = described_class.new initial_state, ui, [spy, spy]
 
     game.start
 
@@ -38,7 +38,7 @@ RSpec.describe "Game" do
   it 'at the first step, asks the first player' do
     initial_state = spy
     first_player = spy
-    game = Game.new initial_state, spy, [first_player, spy]
+    game = described_class.new initial_state, spy, [first_player, spy]
 
     game.start
     game.step
@@ -49,7 +49,7 @@ RSpec.describe "Game" do
   it 'the state after the first player is sent to the next player' do
     first_player = spy :play => :state_after_first_player
     second_player = spy
-    game = Game.new spy, spy, [first_player, second_player]
+    game = described_class.new spy, spy, [first_player, second_player]
 
     game.start
     game.step
@@ -61,7 +61,7 @@ RSpec.describe "Game" do
   it 'the UI is updated with the first player state' do
     first_player = spy :play => :state_after_first_player
     ui = spy
-    game = Game.new spy, ui, [first_player, spy]
+    game = described_class.new spy, ui, [first_player, spy]
 
     game.start
     game.step
@@ -72,7 +72,7 @@ RSpec.describe "Game" do
   it 'the state after the second player is sent to the next player' do
     first_player = spy 
     second_player = spy :play => :state_after_second_player
-    game = Game.new spy, spy, [first_player, second_player]
+    game = described_class.new spy, spy, [first_player, second_player]
 
     game.start
     game.step
@@ -85,7 +85,7 @@ RSpec.describe "Game" do
   it 'at the second step, the UI is updated with the new state' do
     second_player = spy :play => :state_after_second_player
     ui = spy
-    game = Game.new spy, ui, [spy, second_player]
+    game = described_class.new spy, ui, [spy, second_player]
 
     game.start
     game.step
