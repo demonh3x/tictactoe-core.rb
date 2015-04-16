@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'game_runner'
 
-RSpec.describe GameRunner do
+RSpec.describe GameRunner, :integration => true do
   def format_for_stdin(commands)
     commands.push("").join("\n")
   end
@@ -55,7 +55,7 @@ RSpec.describe GameRunner do
     end
   end
 
-  describe "full game with 3x3 board between computer and human" do
+  describe "full game with 3x3 board between computer and human", :slow => true do
     it "should have announced the winner" do
       expect(run_game %w(3 3 6 7 n)).to include("x has won!")
     end

@@ -93,7 +93,7 @@ RSpec.describe Minimax do
     expect(minimax.strategies(state)).to eq({:lose => [5], :draw => [3, 4, 7], :win => [6], :best => [6]})
   end
 
-  it 'given an empty state anything is a draw' do
+  it 'given an empty state anything is a draw', :slow => true do
     state = board(
       nil, nil, nil,
       nil, nil, nil,
