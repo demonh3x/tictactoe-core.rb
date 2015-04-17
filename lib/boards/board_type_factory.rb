@@ -5,7 +5,7 @@ module Boards
   class BoardTypeFactory
     def create(side_size)
       case side_size
-      when 3 then ThreeByThreeBoard.new
+      when 3 then Boards::ThreeByThreeBoard.new
       when 4 then Boards::FourByFourBoard.new
       end
     end
