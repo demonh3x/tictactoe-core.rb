@@ -11,8 +11,8 @@ module Players
     end
 
     def create(types)
-      (types.zip marks).map do |type, mark|
-        constructors[type].call(mark)
+      (types.zip MARKS).map do |type, mark|
+        constructors(type, mark)
       end
     end
 
@@ -20,28 +20,23 @@ module Players
     attr_reader :input, :output, :random
 
     MARKS = [:x, :o]
-    def marks
-      MARKS
-    end
-
-    def constructors
-      @constructors ||= {
-        :human => lambda do |mark|
+    
+    def constructors(type, mark)
+      case type
+      when :human
         Players::CliPlayer.new(mark, input, output)
-        end,
-          :computer => lambda do |mark|
-          Players::AI::RandomStrategyPlayer.new(
-            mark, 
-            Players::AI::PerfectPlayer.new(mark, opponent(mark)),
-            random
-          )
-          end
-      }
+      when :computer
+        Players::AI::RandomStrategyPlayer.new(
+          mark, 
+          Players::AI::PerfectPlayer.new(mark, opponent(mark)),
+          random
+        )
+      end
     end
 
     def opponent(mark)
-      next_mark_index = (marks.index(mark) +1) % marks.length
-      marks[next_mark_index]
+      next_mark_index = (MARKS.index(mark) +1) % MARKS.length
+      MARKS[next_mark_index]
     end
   end
 end
