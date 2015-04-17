@@ -44,11 +44,11 @@ module Core
 
     def winner
       @winner ||= board.lines
-      .map{|line| marks_in line}
-      .select{|line_marks| are_the_same? line_marks}
-      .map(&:first)
-      .select{|mark| !mark.nil?}
-      .first
+        .map{|line| marks_in line}
+        .select{|line_marks| are_the_same? line_marks}
+        .map(&:first)
+        .select{|mark| !mark.nil?}
+        .first
     end
 
     def marks_in(line)
