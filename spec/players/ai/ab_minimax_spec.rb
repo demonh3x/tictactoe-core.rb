@@ -8,7 +8,7 @@ RSpec.describe Players::AI::ABMinimax do
   end
 
   def leaf(score)
-    spy "leaf scored: #{score}", :childs => [], :score => score
+    spy "leaf scored: #{score}", :is_leaf? => true, :score => score
   end
 
   describe 'given a leaf node' do
@@ -31,7 +31,7 @@ RSpec.describe Players::AI::ABMinimax do
   end
 
   def tree(childs)
-    spy "tree, childs: #{childs.to_s}", :childs => childs
+    spy "tree, childs: #{childs.to_s}", :is_leaf? => false, :childs => childs
   end
   
   describe 'given a one-leaf one-level tree' do

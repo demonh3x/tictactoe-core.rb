@@ -18,7 +18,7 @@ module Players
         best_nodes = []
 
         tree.childs.each do |child|
-          if is_final?(child)
+          if child.is_leaf?
             score = child.score
           elsif depth == 0
             score = heuristic_score
@@ -50,7 +50,7 @@ module Players
         most_damaging_score = nil
 
         child.childs.each do |grandchild|
-          if is_final?(grandchild)
+          if grandchild.is_leaf?
             minimizing_score = grandchild.score
           elsif depth == 0
             minimizing_score = heuristic_score
@@ -74,10 +74,6 @@ module Players
         end
 
         most_damaging_score
-      end
-
-      def is_final?(tree)
-        tree.childs.empty?
       end
     end
   end
