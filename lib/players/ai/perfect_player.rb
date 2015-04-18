@@ -8,14 +8,13 @@ module Players
 
       module TTT
         class Node
-          def initialize(state, me, opponent, current_player, transition = nil)
+          def initialize(state, me, opponent, current_player)
             @state = state
             @me = me
             @opponent = opponent
             @current_player = current_player
-            @transition = transition
           end
-          attr_reader :state, :me, :transition, :opponent, :current_player
+          attr_reader :state, :me, :opponent, :current_player
 
           def is_final?(state)
             state.when_finished{true} || false
@@ -27,7 +26,7 @@ module Players
             c = state.available_moves.lazy.map do |transition|
               next_player = current_player == me ? opponent : me
               next_state = state.make_move transition, current_player
-              Node.new(next_state, me, opponent, next_player, transition)
+              Node.new(next_state, me, opponent, next_player)
             end
 
             def c.empty?
@@ -61,8 +60,7 @@ module Players
       attr_accessor :mark, :opponents_mark
 
       def play(state)
-        locs = find_best_locations state
-        state.make_move(@chooser.choose_one(locs), mark)
+        @chooser.choose_one(find_best_locations state)
       end
 
       def find_best_locations(state)
@@ -70,7 +68,7 @@ module Players
 
         ab_minimax = Players::AI::ABMinimax.new(MINIMUM_SCORE, SCORE_FOR_UNKNOWN_FUTURE, depth)
 
-        locs = ab_minimax.evaluate(TTT::Node.new(state, mark, opponents_mark, mark)).map(&:transition)
+        locs = ab_minimax.evaluate(TTT::Node.new(state, mark, opponents_mark, mark)).map(&:state)
 
         locs
       end
