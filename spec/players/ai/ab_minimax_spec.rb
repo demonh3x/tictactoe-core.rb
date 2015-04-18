@@ -275,7 +275,7 @@ RSpec.describe Players::AI::ABMinimax do
       end
     end
 
-    describe 'stops evaluating when the branch is going to be discarded' do
+    describe 'stops evaluating when the branch is going to be discarded by my decision' do
       it do
         not_evaluated_node = leaf(-1)
         root = tree([
@@ -322,6 +322,27 @@ RSpec.describe Players::AI::ABMinimax do
 
         strategy root
         expect(evaluated_node).to have_received(:score)
+      end
+    end
+
+    describe 'stops evaluating when the branch is going to be discarded by the opponents decision' do
+      it do
+        not_evaluated_node = leaf(-1)
+        root = tree([
+          #my choice
+          tree([
+            #other's choice
+            leaf(0),
+            tree([
+              #my choice
+              leaf(1),
+              not_evaluated_node,
+            ]),
+          ]),
+        ])
+
+        strategy root
+        expect(not_evaluated_node).not_to have_received(:score)
       end
     end
 

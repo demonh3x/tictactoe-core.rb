@@ -10,10 +10,10 @@ module Players
       attr_reader :min_score_possible, :heuristic_score, :depth_limit
 
       def evaluate(tree)
-        most_beneficial_strategy(tree, depth_limit)[:nodes]
+        most_beneficial_strategy(tree, nil, depth_limit)[:nodes]
       end
 
-      def most_beneficial_strategy(tree, depth)
+      def most_beneficial_strategy(tree, most_damaging_score, depth)
         my_best_score = min_score_possible
         best_nodes = []
 
@@ -36,6 +36,8 @@ module Players
             my_best_score = score
             best_nodes = [child]
           end
+
+          break if most_damaging_score && most_damaging_score <= score
         end
 
         return {
@@ -53,7 +55,7 @@ module Players
           elsif depth == 0
             minimizing_score = heuristic_score
           else
-            res = most_beneficial_strategy grandchild, depth-1
+            res = most_beneficial_strategy grandchild, most_damaging_score, depth-1
             minimizing_score = res[:score]
           end
 
