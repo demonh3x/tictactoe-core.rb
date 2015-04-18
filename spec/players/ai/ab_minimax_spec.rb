@@ -332,10 +332,10 @@ RSpec.describe Players::AI::ABMinimax do
           #my choice
           tree([
             #other's choice
-            leaf(0),
+            leaf(-1),
             tree([
               #my choice
-              leaf(1),
+              leaf(0),
               not_evaluated_node,
             ]),
           ]),
