@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'players/ai/random_chooser'
 
-RSpec.describe Players::AI::RandomChooser, :ignored => true do
+RSpec.describe Players::AI::RandomChooser do
   def choose_with(random_value, list)
     random = spy :rand => random_value
     described_class.new(random).choose_one list
