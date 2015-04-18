@@ -1,3 +1,5 @@
+require 'players/ai/ab_minimax'
+
 module Players
   module AI
     class PerfectPlayer

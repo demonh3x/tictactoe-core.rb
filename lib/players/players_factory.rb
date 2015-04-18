@@ -1,5 +1,6 @@
 require 'players/cli_player'
 require 'players/ai/perfect_player'
+require 'players/ai/random_chooser'
 
 module Players
   class PlayersFactory
