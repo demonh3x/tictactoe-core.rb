@@ -1,10 +1,6 @@
-require 'players/play_behaviour'
-
 module Players
   module AI
     class RandomStrategyPlayer
-      include Players::PlayBehaviour
-
       attr_reader :mark
 
       def initialize(mark, strategy, random)
@@ -15,6 +11,10 @@ module Players
 
       def ask_for_location(state)
         select_random strategy.call(state)
+      end
+
+      def play(state)
+        state.make_move(ask_for_location(state), mark)
       end
 
       private

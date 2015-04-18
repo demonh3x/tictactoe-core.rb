@@ -1,9 +1,5 @@
-require 'players/play_behaviour'
-
 module Players
   class CliPlayer
-    include PlayBehaviour
-
     def initialize(mark, input, output)
       @input = input
       @output = output
@@ -13,6 +9,10 @@ module Players
     def ask_for_location(state)
       print_turn
       read_valid_location(state)
+    end
+
+    def play(state)
+      state.make_move(ask_for_location(state), mark)
     end
 
     attr_reader :mark
