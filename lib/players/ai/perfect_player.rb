@@ -1,5 +1,3 @@
-require 'players/ai/ab_minimax'
-
 module Players
   module AI
     class PerfectPlayer
@@ -54,16 +52,27 @@ module Players
         end
       end
 
-      def initialize(my_mark, opponents_mark)
-        @strategy = lambda do |state|
-          depth = dynamic_depth_for state
+      def initialize(mark, opponents_mark, chooser)
+        @mark = mark
+        @opponents_mark = opponents_mark
+        @chooser = chooser
+      end
 
-          ab_minimax = Players::AI::ABMinimax.new(MINIMUM_SCORE, SCORE_FOR_UNKNOWN_FUTURE, depth)
+      attr_accessor :mark, :opponents_mark
 
-          locs = ab_minimax.evaluate(TTT::Node.new(state, my_mark, opponents_mark, my_mark)).map(&:transition)
+      def play(state)
+        locs = find_best_locations state
+        state.make_move(@chooser.choose_one(locs), mark)
+      end
 
-          locs
-        end
+      def find_best_locations(state)
+        depth = dynamic_depth_for state
+
+        ab_minimax = Players::AI::ABMinimax.new(MINIMUM_SCORE, SCORE_FOR_UNKNOWN_FUTURE, depth)
+
+        locs = ab_minimax.evaluate(TTT::Node.new(state, mark, opponents_mark, mark)).map(&:transition)
+
+        locs
       end
 
       def dynamic_depth_for(state)
@@ -77,10 +86,6 @@ module Players
         end
 
         depth
-      end
-
-      def call(state)
-        @strategy.call(state)
       end
     end
   end

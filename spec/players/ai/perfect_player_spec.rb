@@ -12,12 +12,16 @@ RSpec.describe Players::AI::PerfectPlayer do
     state
   end
 
-  before(:each) do
-    @player = described_class.new(:x, :o)
+  class ChoosesFirst
+    def choose_one(list)
+      list.first
+    end
   end
 
-  def play(state)
-    @player.call(state)
+  def play(player, state)
+    opponent = player == :x ? :o : :x
+    @player = described_class.new(player, opponent, ChoosesFirst.new)
+    @player.play(state)
   end
 
   it 'given only one possible play, should do it' do
@@ -26,17 +30,24 @@ RSpec.describe Players::AI::PerfectPlayer do
       :o, :x, :x,
       :x, :o, :o
     )
-    expect(play(state)).to eq [2]
+    expect(play(:x, state)).to eq board(
+      :x, :o, :x,
+      :o, :x, :x,
+      :x, :o, :o
+    )
   end
 
   it 'given the possibility to lose, should prefer a draw' do
-    player = described_class.new(:o, :x)
     state = board(
       :x, nil, :o,
       :o, :x,  :x,
       :x, :o,  nil 
     )
-    expect(player.call(state)).to eq [8]
+    expect(play(:o, state)).to eq board(
+      :x, nil, :o,
+      :o, :x,  :x,
+      :x, :o,  :o 
+    )
   end
   
   it 'given the possibility to win, should do it' do
@@ -45,7 +56,11 @@ RSpec.describe Players::AI::PerfectPlayer do
       :o,  :x,  :o,
       nil, nil, :o 
     )
-    expect(play(state)).to eq [6]
+    expect(play(:x, state)).to eq board(
+      :x,  :o,  :x,
+      :o,  :x,  :o,
+      :x,  nil, :o 
+    )
   end
 
   it 'given the possibility to fork, should do it' do
@@ -54,7 +69,11 @@ RSpec.describe Players::AI::PerfectPlayer do
       nil, nil, :o,
       :o,  nil, :x
     )
-    expect(play(state)).to eq [0]
+    expect(play(:x, state)).to eq board(
+      :x,  nil, :x,
+      nil, nil, :o,
+      :o,  nil, :x
+    )
   end
 
   it 'having a possibility of a fork against, should attack to avoid it' do
@@ -63,6 +82,10 @@ RSpec.describe Players::AI::PerfectPlayer do
       :x, nil, nil,
       :o, nil, nil 
     )
-    expect(play(state)).to eq [4]
+    expect(play(:x, state)).to eq board(
+      :o, nil, nil,
+      :x, :x,  nil,
+      :o, nil, nil 
+    )
   end
 end

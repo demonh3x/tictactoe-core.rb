@@ -25,10 +25,17 @@ module Core
       end
     end
 
+    def ==(other)
+      return false if other.class != self.class
+      self.marks == other.marks
+    end
+
     attr_reader :board
 
-    private
+    protected
     attr_reader :marks
+
+    private
 
     def is_finished?
       is_full? || has_winner?

@@ -1,4 +1,3 @@
-require 'players/ai/random_strategy_player'
 require 'players/cli_player'
 require 'players/ai/perfect_player'
 
@@ -26,10 +25,10 @@ module Players
       when :human
         Players::CliPlayer.new(mark, input, output)
       when :computer
-        Players::AI::RandomStrategyPlayer.new(
+        Players::AI::PerfectPlayer.new(
           mark, 
-          Players::AI::PerfectPlayer.new(mark, opponent(mark)),
-          random
+          opponent(mark),
+          Players::AI::RandomChooser.new(random)
         )
       end
     end

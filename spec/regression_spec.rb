@@ -4,7 +4,6 @@ require 'core/state'
 require 'boards/four_by_four_board'
 require 'boards/three_by_three_board'
 require 'players/ai/perfect_player'
-require 'players/ai/random_strategy_player'
 
 RSpec.describe "Regression" do
   class UI
@@ -33,7 +32,7 @@ RSpec.describe "Regression" do
   end
 
   def player(mark, opponent, random)
-    Players::AI::RandomStrategyPlayer.new(mark, Players::AI::PerfectPlayer.new(mark, opponent), random)
+    Players::AI::PerfectPlayer.new(mark, opponent, Players::AI::RandomChooser.new(random))
   end
 
   def game_winner(board, random)
