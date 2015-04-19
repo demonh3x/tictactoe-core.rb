@@ -94,29 +94,8 @@ module Core
       is_full? || has_winner?
     end
 
-    def is_full?
-      available_moves.empty?
-    end
-
     def has_winner?
       winner != nil
-    end
-
-    def winner
-      @winner ||= board.lines
-        .map{|line| marks_in line}
-        .select{|line_marks| are_the_same? line_marks}
-        .map(&:first)
-        .select{|mark| !mark.nil?}
-        .first
-    end
-
-    def marks_in(line)
-      line.map{|location| marks[location]}
-    end
-
-    def are_the_same?(line_marks)
-      line_marks.all?{|m| m == line_marks.first}
     end
   end
 end
