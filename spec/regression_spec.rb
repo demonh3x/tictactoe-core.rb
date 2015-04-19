@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'core/game'
 require 'uis/cli'
 require 'core/state'

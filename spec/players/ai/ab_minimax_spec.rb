@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'players/ai/ab_minimax'
 
 RSpec.describe Players::AI::ABMinimax do
