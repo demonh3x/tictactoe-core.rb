@@ -94,8 +94,16 @@ module Core
       is_full? || has_winner?
     end
 
+    def is_full?
+      #this method is optimized dynamically by State.new(board)
+    end
+
     def has_winner?
       winner != nil
+    end
+
+    def winner?
+      #this method is optimized dynamically by State.new(board)
     end
   end
 end
