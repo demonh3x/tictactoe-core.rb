@@ -45,6 +45,24 @@ module Core
             @is_full ||= #{get_is_full_code board}
           end
         })
+
+        def self.get_available_moves_code(board)
+          board.locations
+            .map{|location| "moves << #{location} if marks[#{location}] == nil"}
+            .join("\n")
+        end
+
+        class_eval(%Q{
+          def available_moves
+            @available_moves ||= _available_moves
+          end
+
+          def _available_moves
+            moves = []
+            #{get_available_moves_code(board)}
+            moves
+          end
+        })
       end
 
       optimized_class.new(board)
@@ -59,7 +77,7 @@ module Core
     end
 
     def available_moves
-      @available ||= board.locations.select{|location| marks[location].nil?}
+      #this method is optimized dynamically by State.new(board)
     end
 
     def make_move(location, mark)
