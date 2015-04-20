@@ -5,6 +5,7 @@ require 'core/state'
 require 'boards/four_by_four_board'
 require 'boards/three_by_three_board'
 require 'players/ai/perfect_player'
+require 'players/ai/random_chooser'
 
 RSpec.describe "Regression" do
   class UI
