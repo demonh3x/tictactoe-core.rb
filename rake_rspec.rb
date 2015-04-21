@@ -5,16 +5,25 @@ class RSpecTask
     @task = task
   end
 
-  def include_tags(*tags)
-    tags = tags.flatten
+  def add_opts(opts)
     @task.rspec_opts ||= ""
-    @task.rspec_opts += tags.map{|tag| "--tag #{tag.to_s}"}.join(" ")
+    @task.rspec_opts += " #{opts}"
+  end
+
+  def include_tag(tag)
+    add_opts "--tag #{tag.to_s}"
+  end
+
+  def exclude_tag(tag)
+    add_opts "--tag ~#{tag.to_s}"
+  end
+
+  def include_tags(*tags)
+    tags.flatten.each {|t| include_tag t}
   end
 
   def exclude_tags(*tags)
-    tags = tags.flatten
-    @task.rspec_opts ||= ""
-    @task.rspec_opts += tags.map{|tag| "--tag ~#{tag.to_s}"}.join(" ")
+    tags.flatten.each {|t| exclude_tag t}
   end
 
   def eval(&block)
