@@ -1,0 +1,19 @@
+namespace :spec do
+  require './rake_rspec'
+
+  rspec_task(:unit) do
+    exclude_tags :integration, :regression, :properties
+  end
+
+  rspec_task(:develop) do
+    exclude_tags :regression, :properties
+  end
+
+  rspec_task(:ci) do
+    exclude_tags :properties
+  end
+
+  rspec_task(:properties) do
+    include_tags :properties
+  end
+end

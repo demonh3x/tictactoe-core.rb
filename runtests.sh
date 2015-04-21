@@ -1,1 +1,1 @@
-rspec --color -fd spec/*
+rake spec:develop
