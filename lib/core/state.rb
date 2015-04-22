@@ -120,7 +120,7 @@ module Core
       winner != nil
     end
 
-    def winner?
+    def winner
       #this method is optimized dynamically by State.new(board)
     end
   end
