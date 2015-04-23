@@ -2,35 +2,24 @@ module Core
   class State
     def self.new(board)
       optimized_class = Class.new(BaseState) do
-        def self.each_group_of(count, collection)
-          last_index = collection.size - (count - 1) - 1
-          (0..last_index).each do |index|
-            group = collection.slice index, count
-            yield group
-          end
-        end
-
         def self.get_code_for_winner_in(line)
-          first = line.first
-          code = "(marks[#{first}] != nil) && "
-          each_group_of(2, line) do |a, b|
-            code += "(marks[#{a}] == marks[#{b}]) && "
+          code = "(marks[#{line.first}] != nil) && "
+          line.drop(1).each do |location|
+            code += "(marks[#{line.first}] == marks[#{location}]) && "
           end
-          code += "marks[#{first}]"
-          code = "(#{code})"
+          code += "marks[#{line.first}]"
           code
         end
 
         def self.get_winner_code(board)
           board.lines
-            .map{|line| get_code_for_winner_in line}
+            .map{|line| "(#{get_code_for_winner_in line})"}
             .join(" || ")
         end
 
         class_eval(%Q{
           def winner
-            @winner ||= #{get_winner_code board}
-            @winner ? @winner : nil
+            @winner ||= (#{get_winner_code board}) || nil
           end
         })
 
