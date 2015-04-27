@@ -1,72 +1,12 @@
 module Core
   class State
-    def self.new(board)
-      optimized_class = Class.new(BaseState) do
-        def self.get_code_for_winner_in(line)
-          code = "(marks[#{line.first}] != nil) && "
-          line.drop(1).each do |location|
-            code += "(marks[#{line.first}] == marks[#{location}]) && "
-          end
-          code += "marks[#{line.first}]"
-          code
-        end
-
-        def self.get_winner_code(board)
-          board.lines
-            .map{|line| "(#{get_code_for_winner_in line})"}
-            .join(" || ")
-        end
-
-        class_eval(%Q{
-          def winner
-            @winner ||= (#{get_winner_code board}) || nil
-          end
-        })
-
-        def self.get_is_full_code(board)
-          board.locations
-            .map{|location| "(marks[#{location}] != nil)"}
-            .join(" && ")
-        end
-
-        class_eval(%Q{
-          def is_full?
-            @is_full ||= #{get_is_full_code board}
-          end
-        })
-
-        def self.get_available_moves_code(board)
-          board.locations
-            .map{|location| "moves << #{location} if marks[#{location}] == nil"}
-            .join("\n")
-        end
-
-        class_eval(%Q{
-          def available_moves
-            @available_moves ||= _available_moves
-          end
-
-          def _available_moves
-            moves = []
-            #{get_available_moves_code(board)}
-            moves
-          end
-        })
-      end
-
-      optimized_class.new(board)
-    end
-  end
-
-  private
-  class BaseState
     def initialize(board, marks=[])
       @board = board
       @marks = marks
     end
 
     def available_moves
-      #this method is optimized dynamically by State.new(board)
+      @available ||= board.locations.select{|location| marks[location].nil?}
     end
 
     def make_move(location, mark)
@@ -86,7 +26,7 @@ module Core
     end
 
     def ==(other)
-      return false if other.class <= self.class
+      return false if other.class != self.class
       self.marks == other.marks
     end
 
@@ -102,7 +42,7 @@ module Core
     end
 
     def is_full?
-      #this method is optimized dynamically by State.new(board)
+      available_moves.empty?
     end
 
     def has_winner?
@@ -110,7 +50,26 @@ module Core
     end
 
     def winner
-      #this method is optimized dynamically by State.new(board)
+      @winner ||= find_winner
+    end
+
+    def find_winner
+      for line in board.lines
+        first_mark_in_line = nil
+        is_winner = true
+
+        for location in line
+          mark = marks[location]
+          first_mark_in_line ||= mark
+
+          is_winner = mark != nil && mark == first_mark_in_line
+          break if !is_winner
+        end
+
+        return first_mark_in_line if is_winner
+      end
+
+      nil
     end
   end
 end
