@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'core/state'
+require 'boards/three_by_three_board'
 
 RSpec.describe Core::State do
   def look_at(state, location)
