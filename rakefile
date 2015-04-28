@@ -1,5 +1,5 @@
 namespace :spec do
-  require './rake_rspec'
+  require './spec/rake_rspec'
 
   rspec_task(:unit) do
     exclude_tags :integration, :regression, :properties
