@@ -3,7 +3,9 @@ module Core
     def initialize(state, ui, players)
       @state = state
       @ui = ui
+      @players = players
       @turns = players.cycle
+      advance_player
     end
 
     def finished?
@@ -11,25 +13,30 @@ module Core
     end
 
     def start
-      update_ui
+      update
     end
 
     def step
-      give_turn
-      update_ui
+      if current_player.is_ready_to_move?
+        self.state = current_player.play
+        update
+        advance_player
+      end
     end
 
     private
 
-    attr_accessor :state, :ui, :turns
+    attr_accessor :state, :ui, :players, :turns, :current_player
 
-    def give_turn
-      player = turns.next
-      self.state = player.play(state)
+    def advance_player
+      self.current_player = turns.next
     end
 
-    def update_ui
+    def update
       ui.update(state)
+      players.each do |player|
+        player.update(state)
+      end
     end
   end
 end

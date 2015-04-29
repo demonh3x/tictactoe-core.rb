@@ -51,9 +51,17 @@ module Players
         @chooser = chooser
       end
 
-      attr_accessor :mark, :opponents_mark
+      attr_accessor :mark, :opponents_mark, :state
 
-      def play(state)
+      def is_ready_to_move?
+        true
+      end
+
+      def update(state)
+        self.state = state
+      end
+
+      def play
         @chooser.choose_one(find_best_locations state)
       end
 

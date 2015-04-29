@@ -16,45 +16,54 @@ RSpec.describe Players::CliPlayer do
     @in.string += "#{str}\n"
   end
 
-  def ask_for_location
-    @player.ask_for_location(@state)
+  def play
+    @player.update(@state)
+    @player.play
+  end
+
+  def expect_location_played(location)
+    expect(play).to eq(@state.make_move(location, @player.mark))
   end
 
   it "should have a mark" do
     expect(@player.mark).to eq(:mark)
   end
 
+  it "should be ready to move" do
+    expect(@player.is_ready_to_move?).to eq(true)
+  end
+
   describe "when asking for a location" do
     it "prints the message doing it" do
       human_will_send("1")
-      ask_for_location
+      play
       expect(@out.string).to include("Your turn! Where do you want to play?\n")
     end
 
     describe "given no input" do
       it "raises an error" do
-        expect{ask_for_location}.to raise_error("No data readed from the CLI input!")
+        expect{play}.to raise_error("No data readed from the CLI input!")
       end
     end
 
     describe "given an input with no whitespaces" do
       it "reads the location" do
         human_will_send("7")
-        expect(ask_for_location).to eq(7)
+        expect_location_played(7)
       end
     end
 
     describe "given an input with some whitespaces" do
       it "reads the location" do
         human_will_send("  \t 2 \t ")
-        expect(ask_for_location).to eq(2)
+        expect_location_played(2)
       end
     end
 
     def expect_invalid_input(invalid_input)
       human_will_send(invalid_input)
       human_will_send("4")
-      expect(ask_for_location).to eq(4)
+      expect_location_played(4)
       expect(@out.string).to include("Don't understand \"#{invalid_input}\". Please, make sure you use a number.\n")
     end
 
@@ -68,7 +77,7 @@ RSpec.describe Players::CliPlayer do
       it "should try again" do
         human_will_send("9")
         human_will_send("4")
-        expect(ask_for_location).to eq(4)
+        expect_location_played(4)
         expect(@out.string).to include("That location is not available. Please, try another one.\n")
       end
     end
@@ -81,7 +90,7 @@ RSpec.describe Players::CliPlayer do
       it "should try again" do
         human_will_send("0")
         human_will_send("4")
-        expect(ask_for_location).to eq(4)
+        expect_location_played(4)
         expect(@out.string).to include("That location is not available. Please, try another one.\n")
       end
     end

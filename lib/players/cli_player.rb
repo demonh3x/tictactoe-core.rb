@@ -6,13 +6,17 @@ module Players
       @mark = mark
     end
 
-    def ask_for_location(state)
-      print_turn
-      read_valid_location(state)
+    def is_ready_to_move?
+      true
     end
 
-    def play(state)
-      state.make_move(ask_for_location(state), mark)
+    def update(state)
+      self.state = state
+    end
+
+    def play
+      print_turn
+      state.make_move(read_valid_location(state), mark)
     end
 
     attr_reader :mark
@@ -20,6 +24,7 @@ module Players
     private
 
     attr_reader :input, :output
+    attr_accessor :state
 
     def print_turn
       output.puts "Your turn! Where do you want to play?"
