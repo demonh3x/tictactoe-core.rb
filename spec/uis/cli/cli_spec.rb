@@ -1,10 +1,10 @@
 require 'spec_helper'
-require 'uis/cli'
+require 'uis/cli/cli'
 require 'core/state'
 require 'boards/three_by_three_board'
 require 'boards/four_by_four_board'
 
-RSpec.describe UIs::Cli do
+RSpec.describe UIs::Cli::Cli do
   def state(board, *marks)
     state = Core::State.new(board)
     marks.each_with_index {|mark, location|

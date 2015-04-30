@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'game_runner'
+require 'uis/cli/game_runner'
 
-RSpec.describe GameRunner, :integration => true do
+RSpec.describe UIs::Cli::GameRunner, :integration => true do
   def format_for_stdin(commands)
     commands.push("").join("\n")
   end
