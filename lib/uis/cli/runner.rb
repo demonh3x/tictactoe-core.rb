@@ -15,7 +15,7 @@ require 'players/players_factory'
 
 module UIs
   module Cli
-    class GameRunner
+    class Runner
       def initialize(input=$stdin, output=$stdout, random=Random.new)
         @output = output
 
