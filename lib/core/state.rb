@@ -31,8 +31,6 @@ module Core
     end
 
     attr_reader :board
-
-    protected
     attr_reader :marks
 
     private
