@@ -13,7 +13,6 @@ module Core
         :x => Players::AI::PerfectPlayer.new(:x, :o, chooser),
         :o => Players::AI::PerfectPlayer.new(:o, :x, chooser)
       }
-      @ai_moves = [8, 7, 6, 5]
     end
 
     def set_board_size(size)
@@ -32,7 +31,11 @@ module Core
 
     def tick(player)
       move = get_move(player)
-      @state = @state.make_move(move[:move], move[:mark]) if move != nil
+
+      if move != nil
+        @state = @state.make_move(move, current_mark)
+        @players.next
+      end
     end
 
     def is_finished?
@@ -47,24 +50,36 @@ module Core
       @state.layout.map{|loc, mark| mark}
     end
 
-    private
-    def get_move(player)
-      mark = @players.peek
-      type = @types[mark]
+    def available
+      @state.available_moves
+    end
 
-      case type
-      when :human
-        move = player.move
-        return nil if move == nil
-        @players.next
-        {:mark => mark, :move => player.move}
-      when :computer
-        @players.next
-        ai = @ais[mark]
-        ai.update(@state)
-        move = ai.play_location
-        {:mark => mark, :move => move}
+    private
+    def current_mark
+      @players.peek
+    end
+
+    def is_human_turn?
+      type = @types[current_mark]
+      type == :human
+    end
+
+    def get_move(player)
+      if is_human_turn?
+        get_human_move(player)
+      else
+        get_computer_move
       end
+    end
+
+    def get_human_move(player)
+      player.move
+    end
+
+    def get_computer_move
+      ai = @ais[current_mark]
+      ai.update(@state)
+      ai.play_location
     end
   end
 end

@@ -68,6 +68,44 @@ RSpec.describe Core::TicTacToe do
     end
   end
   
+  describe 'has the available locations' do
+    it do
+      ttt.set_board_size(3)
+      ttt.set_player_x(:human)
+      ttt.set_player_o(:human)
+      expect(ttt.available).to eq([
+        0, 1, 2,
+        3, 4, 5,
+        6, 7, 8
+      ])
+    end
+
+    it do
+      ttt.set_board_size(3)
+      ttt.set_player_x(:human)
+      ttt.set_player_o(:human)
+      human_tick_playing_to(0)
+      expect(ttt.available).to eq([
+           1, 2,
+        3, 4, 5,
+        6, 7, 8
+      ])
+    end
+
+    it do
+      ttt.set_board_size(4)
+      ttt.set_player_x(:human)
+      ttt.set_player_o(:human)
+      human_tick_playing_to(15)
+      expect(ttt.available).to eq([
+        0, 1, 2, 3,
+        4, 5, 6, 7,
+        8, 9,10,11,
+       12,13,14
+      ])
+    end
+  end
+
   describe 'is not finished if no player has a line' do
     it do
       ttt.set_board_size(4)
@@ -134,8 +172,10 @@ RSpec.describe Core::TicTacToe do
       human_tick_playing_to(6)
       human_tick_playing_to(3)
       expect(ttt.is_finished?).to eq(true)
+      expect(ttt.winner).to eq(:x)
     end
   end
+
 
   describe 'is finished when the board is full' do
     it do
@@ -160,25 +200,38 @@ RSpec.describe Core::TicTacToe do
     end
   end
 
-  it 'if the human has no move ignores the ticks' do
-    ttt.set_board_size(3)
-    ttt.set_player_x(:human)
-    ttt.set_player_o(:human)
-    ttt.tick(spy(:move => nil))
-    ttt.tick(spy(:move => nil))
-    ttt.tick(spy(:move => nil))
-    expect_amount_of_marks(:x, 0)
-  end
+  describe 'if the human has no move ignores the ticks' do
+    it do
+      ttt.set_board_size(3)
+      ttt.set_player_x(:human)
+      ttt.set_player_o(:human)
+      ttt.tick(spy(:move => nil))
+      ttt.tick(spy(:move => nil))
+      ttt.tick(spy(:move => nil))
+      expect_amount_of_marks(:x, 0)
+    end
 
-  it 'when the human has a move is played' do
-    ttt.set_board_size(3)
-    ttt.set_player_x(:human)
-    ttt.set_player_o(:human)
-    ttt.tick(spy(:move => nil))
-    ttt.tick(spy(:move => nil))
-    ttt.tick(spy(:move => nil))
-    ttt.tick(spy(:move => 0))
-    expect_amount_of_marks(:x, 1)
+    it do
+      ttt.set_board_size(3)
+      ttt.set_player_x(:human)
+      ttt.set_player_o(:human)
+      ttt.tick(spy(:move => nil))
+      ttt.tick(spy(:move => nil))
+      ttt.tick(spy(:move => nil))
+      ttt.tick(spy(:move => 0))
+      expect_amount_of_marks(:x, 1)
+    end
+
+    it do
+      ttt.set_board_size(3)
+      ttt.set_player_x(:human)
+      ttt.set_player_o(:human)
+      ttt.tick(spy(:move => 0))
+      ttt.tick(spy(:move => nil))
+      ttt.tick(spy(:move => nil))
+      ttt.tick(spy(:move => nil))
+      expect_amount_of_marks(:o, 0)
+    end
   end
 
   describe 'the computer plays' do
