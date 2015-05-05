@@ -1,65 +1,133 @@
-require 'core/game'
-require 'uis/cli/cli'
-require 'core/state'
-
+require 'core/tictactoe'
 require 'options/cli_asker'
-require 'options/option'
-
 require 'options/play_again_option'
-
 require 'options/board_type_selection'
-require 'boards/board_type_factory'
-
 require 'options/players_selection'
-require 'players/players_factory'
 
 module UIs
   module Cli
     class Runner
-      def initialize(input=$stdin, output=$stdout, random=Random.new)
-        @output = output
+      attr_reader :input, :output, :random, :ttt, :asker, :board_type, :who_will_play, :play_again
 
-        cli = Options::CliAsker.new(input, output)
-        @board_type = create_board_option cli
-        @play_again = create_play_again_option cli
-        @who_will_play = create_players_option cli, input, output, random
+      def initialize(input=$stdin, output=$stdout, random=Random.new)
+        @input = input
+        @output = output
+        @random = random
+
+        @asker = Options::CliAsker.new(input, output)
+        @board_type = Options::BoardTypeSelection.new(asker)
+        @who_will_play = Options::PlayersSelection.new(asker)
+        @play_again = Options::PlayAgainOption.new(asker)
       end
 
       def run
         begin 
-          game = create_game
-          game.start
-          game.step until game.finished?
-        end while play_again.get
+          reset_game
+          set_board_size
+          set_players
+
+          print_board
+
+          begin
+            make_move
+            print_board
+          end until is_game_finished?
+
+          print_result
+        end while play_again?
       end
 
       private
-      attr_accessor :output, :play_again, :board_type, :who_will_play
-
-      def create_board_option(cli)
-        board_selection = Options::BoardTypeSelection.new(cli)
-        board_factory = Boards::BoardTypeFactory.new
-        Options::Option.new(board_selection, board_factory)
+      def reset_game
+        @ttt = Core::TicTacToe.new(random)
       end
 
-      def create_play_again_option(cli)
-        Options::PlayAgainOption.new(cli)
+      def set_board_size
+        ttt.set_board_size(board_type.read)
       end
 
-      def create_players_option(cli, input, output, random)
-        players_selection = Options::PlayersSelection.new(cli)
-        players_factory = Players::PlayersFactory.new(input, output, random)
-        Options::Option.new(players_selection, players_factory)
+      def set_players
+        players = who_will_play.read
+        ttt.set_player_x(players[0])
+        ttt.set_player_o(players[1])
       end
 
-      def create_game
-        board = board_type.get
-        players = who_will_play.get
-        Core::Game.new(
-          Core::State.new(board),
-          UIs::Cli::Cli.new(output),
-          players
-        )
+      def print_board
+        output.puts BoardFormatter.new.format(ttt.marks)
+      end
+
+      def make_move
+        ttt.tick(MoveReader.new(input, output, ttt))
+      end
+
+      def is_game_finished?
+        ttt.is_finished?
+      end
+
+      def print_result
+        output.puts announcement_of ttt.winner if ttt.is_finished?
+      end
+
+      def announcement_of(winner)
+        winner.nil?? "It is a draw." : "#{winner.to_s} has won!"
+      end
+
+      def play_again?
+        play_again.get
+      end
+    end
+
+    class BoardFormatter
+      def format(marks)
+        format_board(get_cells(marks))
+      end
+
+      private
+      def get_cells(marks)
+        cells = []
+        marks.each_with_index do |mark, index|
+          cell = (mark || index).to_s
+          cells.push(cell)
+        end
+        cells
+      end
+
+      def format_board(cells)
+        side_size = Math.sqrt(cells.size)
+        cells_grouped_by_row = cells.each_slice(side_size).to_a
+
+        rows = cells_grouped_by_row.map {|row_cells| row(row_cells) + "\n" }
+        separator = horizontal_separator(side_size) + "\n"
+
+        join_surrounding(rows, separator)
+      end
+
+      def row(cells)
+        cells_with_fixed_width = cells.map{|cell_text| grow(cell_text, cell_width)}
+        join_surrounding(cells_with_fixed_width, "|")
+      end
+
+      def horizontal_separator(size)
+        cell_line = "-" * cell_width
+        cell_lines = [cell_line] * size
+        join_surrounding(cell_lines, "+")
+      end
+
+      def cell_width
+        3
+      end
+
+      def grow(text, width)
+        while text.length < width
+          text = " " + text if text.length < width
+          text = text + " " if text.length < width
+        end
+
+        text
+      end
+
+      def join_surrounding(elements, separator)
+        separator + elements.join(separator) + separator
       end
     end
   end
