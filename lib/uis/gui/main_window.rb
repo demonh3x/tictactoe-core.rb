@@ -9,6 +9,8 @@ module UIs
         @ttt.set_player_x(:human)
         @ttt.set_player_o(:human)
 
+        @moves = Moves.new
+
         @app = Qt::Application.new(ARGV)
         super(nil)
 
@@ -73,7 +75,8 @@ module UIs
       end
 
       def make_move(move)
-        @ttt.tick(move)
+        @moves.add(move)
+        @ttt.tick(@moves)
       end
 
       def refresh_board
@@ -95,6 +98,20 @@ module UIs
             @result.text = "#{winner.to_s} has won"
           end
         end
+      end
+    end
+
+    class Moves
+      def initialize()
+        @moves = []
+      end
+
+      def add(move)
+        @moves.push(move)
+      end
+
+      def get_move!
+        @moves.pop
       end
     end
 

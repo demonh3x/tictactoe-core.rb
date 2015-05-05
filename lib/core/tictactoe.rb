@@ -7,6 +7,12 @@ module Core
   class TicTacToe
     def initialize()
       @players = [:x, :o].cycle
+      @types = {}
+      chooser = Players::AI::RandomChooser.new(Random.new)
+      @ais = {
+        :x => Players::AI::PerfectPlayer.new(:x, :o, chooser),
+        :o => Players::AI::PerfectPlayer.new(:o, :x, chooser),
+      }
     end
 
     def set_board_size(size)
@@ -16,12 +22,15 @@ module Core
     end
 
     def set_player_x(type)
+      @types[:x] = type
     end
 
     def set_player_o(type)
+      @types[:o] = type
     end
 
-    def tick(move)
+    def tick(user)
+      move = get_move(user)
       if is_valid?(move) && !is_finished?
         @state = @state.make_move(move, current_mark)
         @players.next
@@ -51,6 +60,21 @@ module Core
 
     def current_mark
       @players.peek
+    end
+
+    def get_move(user)
+      if is_users_turn?
+        user.get_move!
+      else
+        ai = @ais[current_mark]
+        ai.update(@state)
+        ai.play_location
+      end
+    end
+
+    def is_users_turn?
+      type = @types[current_mark]
+      type == :human
     end
   end
 end

@@ -6,7 +6,7 @@ RSpec.describe Core::TicTacToe do
   }
   
   def human_tick_playing_to(loc)
-    ttt.tick(loc)
+    ttt.tick(spy(:get_move! => loc))
   end
   
   def computer_tick
@@ -269,6 +269,39 @@ RSpec.describe Core::TicTacToe do
       human_tick_playing_to(nil)
       expect_amount_of_marks(:x, 1)
       expect_amount_of_marks(:o, 0)
+    end
+  end
+
+  describe 'the computer plays' do
+    it 'the first turn' do
+      ttt.set_board_size(3)
+      ttt.set_player_x(:computer)
+      ttt.set_player_o(:human)
+      computer_tick
+      expect_amount_of_marks(:x, 1)
+      expect_amount_of_marks(:o, 0)
+    end
+
+    it 'the second turn' do
+      ttt.set_board_size(3)
+      ttt.set_player_x(:human)
+      ttt.set_player_o(:computer)
+      human_tick_playing_to(0)
+      computer_tick
+      expect_amount_of_marks(:x, 1)
+      expect_amount_of_marks(:o, 1)
+    end
+
+    it 'four consecutive turns' do
+      ttt.set_board_size(3)
+      ttt.set_player_x(:computer)
+      ttt.set_player_o(:computer)
+      computer_tick
+      computer_tick
+      computer_tick
+      computer_tick
+      expect_amount_of_marks(:x, 2)
+      expect_amount_of_marks(:o, 2)
     end
   end
 end
