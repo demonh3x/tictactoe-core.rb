@@ -199,6 +199,43 @@ RSpec.describe Core::TicTacToe do
     end
   end
 
+  describe 'cant play twice to the same location' do
+    it 'second play' do
+      ttt.set_board_size(3)
+      ttt.set_player_x(:human)
+      ttt.set_player_o(:human)
+      human_tick_playing_to(0)
+      human_tick_playing_to(0)
+      expect(ttt.marks).to eq([
+        :x,  nil, nil,
+        nil, nil, nil,
+        nil, nil, nil
+      ])
+    end
+  end
+
+  describe 'cant be played when finished' do
+    it do
+      ttt.set_board_size(3)
+      ttt.set_player_x(:human)
+      ttt.set_player_o(:human)
+
+      human_tick_playing_to(0)
+      human_tick_playing_to(3)
+      human_tick_playing_to(1)
+      human_tick_playing_to(4)
+      human_tick_playing_to(2)
+
+      human_tick_playing_to(5)
+
+      expect(ttt.marks).to eq([
+        :x,  :x,  :x,
+        :o,  :o,  nil,
+        nil, nil, nil
+      ])
+    end
+  end
+
   describe 'if the human has no move ignores the ticks' do
     it do
       ttt.set_board_size(3)

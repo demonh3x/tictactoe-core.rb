@@ -22,7 +22,7 @@ module Core
     end
 
     def tick(move)
-      if move != nil
+      if is_valid?(move) && !is_finished?
         @state = @state.make_move(move, current_mark)
         @players.next
       end
@@ -45,6 +45,10 @@ module Core
     end
 
     private
+    def is_valid?(move)
+      move != nil && @state.available_moves.include?(move)
+    end
+
     def current_mark
       @players.peek
     end
