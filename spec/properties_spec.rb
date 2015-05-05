@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'core/game'
-require 'uis/cli/cli'
 require 'core/state'
 require 'boards/four_by_four_board'
 require 'boards/three_by_three_board'
