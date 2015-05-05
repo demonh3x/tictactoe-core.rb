@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'uis/gui/runner'
 
 RSpec.describe UIs::Gui::MainWindow do
