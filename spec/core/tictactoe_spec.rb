@@ -61,13 +61,13 @@ RSpec.describe Core::TicTacToe do
       human_tick_playing_to(0)
       human_tick_playing_to(1)
       expect(ttt.marks).to eq([
-        :x,  :o, nil,
+        :x,  :o,  nil,
         nil, nil, nil,
         nil, nil, nil
       ])
     end
   end
-  
+
   describe 'has the available locations' do
     it do
       ttt.set_board_size(3)
@@ -175,7 +175,6 @@ RSpec.describe Core::TicTacToe do
       expect(ttt.winner).to eq(:x)
     end
   end
-
 
   describe 'is finished when the board is full' do
     it do
