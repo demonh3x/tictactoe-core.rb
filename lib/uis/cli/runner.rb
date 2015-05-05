@@ -3,6 +3,8 @@ require 'options/cli_asker'
 require 'options/play_again_option'
 require 'options/board_type_selection'
 require 'options/players_selection'
+require 'uis/cli/move_reader'
+require 'uis/cli/board_formatter'
 
 module UIs
   module Cli
@@ -53,11 +55,11 @@ module UIs
       end
 
       def print_board
-        output.puts BoardFormatter.new.format(ttt.marks)
+        output.puts UIs::Cli::BoardFormatter.new.format(ttt.marks)
       end
 
       def make_move
-        ttt.tick(MoveReader.new(input, output, ttt))
+        ttt.tick(UIs::Cli::MoveReader.new(input, output, ttt))
       end
 
       def is_game_finished?
