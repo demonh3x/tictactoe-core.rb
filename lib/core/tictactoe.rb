@@ -5,10 +5,10 @@ require 'players/ai/random_chooser'
 
 module Core
   class TicTacToe
-    def initialize()
+    def initialize(random=Random.new)
       @players = [:x, :o].cycle
       @types = {}
-      chooser = Players::AI::RandomChooser.new(Random.new)
+      chooser = Players::AI::RandomChooser.new(random)
       @ais = {
         :x => Players::AI::PerfectPlayer.new(:x, :o, chooser),
         :o => Players::AI::PerfectPlayer.new(:o, :x, chooser),
