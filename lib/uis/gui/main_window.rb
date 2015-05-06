@@ -21,6 +21,7 @@ module UIs
         setup_cells
         setup_board
         setup_result
+        setup_timer
       end
       
       def run
@@ -65,6 +66,19 @@ module UIs
         @result.object_name = "result"
 
         @main_layout.add_widget(@result, 1, 0, 1, 1)
+      end
+
+      def setup_timer
+        timer = Qt::Timer.new(self)
+        timer.object_name = 'timer'
+        Qt::Object.connect(timer, SIGNAL('timeout()'), self, SLOT('tick()'))
+        timer.start
+      end
+
+      slots :tick
+      def tick
+        @ttt.tick(@moves)
+        refresh_board
       end
 
       slots :cell_clicked

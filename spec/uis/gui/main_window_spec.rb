@@ -131,4 +131,45 @@ RSpec.describe UIs::Gui::MainWindow do
       expect_result_text(gui, 'it is a draw')
     end
   end
+
+  describe 'the timer' do
+    it 'exists' do
+      gui = described_class.new(spy())
+      expect(gui).to have_widged_named 'timer'
+      expect(find(gui, 'timer')).to be_an_instance_of Qt::Timer
+    end
+
+    it 'has the shortest update interval' do
+      gui = described_class.new(spy())
+      expect(find(gui, 'timer').interval).to eq(0)
+    end
+
+    it 'is active' do
+      gui = described_class.new(spy())
+      expect(find(gui, 'timer').active).to eq(true)
+    end
+
+    describe 'when timing out' do
+      it 'calls tick on tictactoe' do
+        tictactoe = spy()
+        gui = described_class.new(tictactoe)
+
+        expect(tictactoe).not_to have_received(:tick)
+        find(gui, 'timer').timeout
+        expect(tictactoe).to have_received(:tick)
+      end
+
+      it 'updates the board' do
+        tictactoe = spy(:marks => [
+          :x,  nil, nil,
+          nil, nil, nil,
+          nil, nil, nil
+        ])
+        gui = described_class.new(tictactoe)
+        find(gui, 'timer').timeout
+
+        expect(find_cell(gui, 0).text).to eq('x')
+      end
+    end
+  end
 end

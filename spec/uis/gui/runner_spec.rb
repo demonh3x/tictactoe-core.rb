@@ -1,13 +1,18 @@
 require 'spec_helper'
 
 RSpec.describe UIs::Gui::Runner, :integration => true do
-  it 'running a full game' do
+  def click_cell(gui, index)
+    find(gui, "timer").timeout
+    find(gui, "cell_#{index}").click
+  end
+
+  it 'running a full game between two humans' do
     gui = UIs::Gui::Runner.new.gui
-    find(gui, "cell_0").click
-    find(gui, "cell_3").click
-    find(gui, "cell_1").click
-    find(gui, "cell_4").click
-    find(gui, "cell_2").click
+    click_cell(gui, 0)
+    click_cell(gui, 3)
+    click_cell(gui, 1)
+    click_cell(gui, 4)
+    click_cell(gui, 2)
     expect(find(gui, "result").text).to eq('x has won')
   end
 end
