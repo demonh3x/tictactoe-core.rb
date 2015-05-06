@@ -95,7 +95,7 @@ module UIs
 
         @cells.each_with_index do |cell, index|
           mark = marks[index]
-          cell.text = mark == nil ? index.to_s : mark.to_s
+          cell.text = mark.to_s
         end
       end
 
@@ -133,7 +133,6 @@ module UIs
 
         i = move.to_s
         self.objectName = "cell_#{i}"
-        self.text = i
       end
 
       attr_reader :move
