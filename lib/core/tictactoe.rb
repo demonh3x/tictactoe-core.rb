@@ -73,8 +73,7 @@ module Core
     end
 
     def is_users_turn?
-      type = @types[current_mark]
-      type == :human
+      @types[current_mark] == :human
     end
   end
 end
