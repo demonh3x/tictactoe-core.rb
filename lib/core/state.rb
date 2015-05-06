@@ -30,8 +30,7 @@ module Core
       self.marks == other.marks
     end
 
-    attr_reader :board
-    attr_reader :marks
+    attr_reader :board, :marks
 
     private
 
