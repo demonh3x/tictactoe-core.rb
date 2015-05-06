@@ -1,20 +1,7 @@
 require 'spec_helper'
-require 'core/game'
-require 'core/state'
-require 'boards/four_by_four_board'
-require 'boards/three_by_three_board'
-require 'players/ai/perfect_player'
-require 'players/ai/random_chooser'
+require 'core/tictactoe'
 
 RSpec.describe "Properties", :properties => true do
-  class UI
-    attr_accessor :state
-
-    def update(state)
-      @state = state
-    end
-  end
-
   class RepeteableRandom
     attr_accessor :sequence, :progress
 
@@ -32,22 +19,14 @@ RSpec.describe "Properties", :properties => true do
     end
   end
 
-  def player(mark, opponent, random)
-    Players::AI::PerfectPlayer.new(mark, opponent, Players::AI::RandomChooser.new(random))
-  end
+  def game_winner(board_size, random)
+    ttt = Core::TicTacToe.new(random)
+    ttt.set_board_size(board_size)
+    ttt.set_player_x(:computer)
+    ttt.set_player_o(:computer)
 
-  def game_winner(board, random)
-    ui = UI.new()
-    game = Core::Game.new(
-      Core::State.new(board),
-      ui,
-      [player(:x, :o, random), player(:o, :x, random)] 
-    )
-
-    game.start
-    game.step until game.finished?
-
-    ui.state.when_finished {|w| w}
+    ttt.tick(nil) until ttt.is_finished?
+    ttt.winner
   end
 
   1000.times do |n|
@@ -57,7 +36,7 @@ RSpec.describe "Properties", :properties => true do
       random.print
       puts n
 
-      expect(game_winner Boards::FourByFourBoard.new, random).to eq(nil)
+      expect(game_winner 4, random).to eq(nil)
     end
   end
 
@@ -68,7 +47,7 @@ RSpec.describe "Properties", :properties => true do
       random.print
       puts n
 
-      expect(game_winner Boards::ThreeByThreeBoard.new, random).to eq(nil)
+      expect(game_winner 3, random).to eq(nil)
     end
   end
 end
