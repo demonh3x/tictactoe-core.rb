@@ -35,7 +35,6 @@ RSpec.describe UIs::Gui::MainWindow do
     expect(find(gui, 'result').text).to eq(text)
   end
 
-
   it 'has the board cells' do
     tictactoe = spy(:marks => [
       nil, nil, nil,
