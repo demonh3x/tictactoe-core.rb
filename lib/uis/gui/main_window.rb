@@ -3,18 +3,14 @@ require 'Qt'
 module UIs
   module Gui
     class MainWindow < Qt::Widget
-      def initialize(tictactoe)
-        @side_size = 3
+      def initialize(tictactoe, side_size)
         @dimensions = 2
+        @side_size = side_size
 
         @ttt = tictactoe
-        @ttt.set_board_size(@side_size)
-        @ttt.set_player_x(:human)
-        @ttt.set_player_o(:human)
 
         @moves = Moves.new
 
-        @app = Qt::Application.new(ARGV)
         super(nil)
 
         setup_window
@@ -23,11 +19,6 @@ module UIs
         setup_result
         setup_timer
       end
-      
-      def run
-        self.show
-        @app.exec
-      end
 
       private
       def setup_window
@@ -35,7 +26,7 @@ module UIs
         self.resize(240, 220)
 
         @main_layout = Qt::GridLayout.new(self)
-        @main_layout.objectName = "main_layout"
+        @main_layout.object_name = "main_layout"
       end
 
       def setup_cells
@@ -44,7 +35,7 @@ module UIs
       end
 
       def setup_board
-        board_layout = Qt::GridLayout.new(self)
+        board_layout = Qt::GridLayout.new()
         board_layout.object_name = "board_layout"
         expanding_policy = Qt::SizePolicy.new(Qt::SizePolicy::Expanding, Qt::SizePolicy::Expanding)
 
@@ -58,27 +49,33 @@ module UIs
           Qt::Object.connect(cell, SIGNAL('clicked()'), self, SLOT("cell_clicked()"))
         end
 
-        @main_layout.add_layout(board_layout, 0, 0, 1, 1)
+        @main_layout.add_layout(board_layout, 3, 0, 1, 1)
       end
       
       def setup_result
         @result = Qt::Label.new(self)
         @result.object_name = "result"
 
-        @main_layout.add_widget(@result, 1, 0, 1, 1)
+        @main_layout.add_widget(@result, 4, 0, 1, 1)
       end
 
       def setup_timer
-        timer = Qt::Timer.new(self)
-        timer.object_name = 'timer'
-        Qt::Object.connect(timer, SIGNAL('timeout()'), self, SLOT('tick()'))
-        timer.start
+        @timer = Qt::Timer.new(self)
+        @timer.object_name = 'timer'
+        Qt::Object.connect(@timer, SIGNAL('timeout()'), self, SLOT('tick()'))
+        @timer.start
       end
 
       slots :tick
       def tick
         @ttt.tick(@moves)
         refresh_board
+        refresh_result
+      end
+
+      slots :start
+      def start
+        @timer.start
       end
 
       slots :cell_clicked
