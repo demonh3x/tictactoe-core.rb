@@ -4,8 +4,11 @@ module UIs
   module Gui
     class MainWindow < Qt::Widget
       def initialize(tictactoe)
+        @side_size = 3
+        @dimensions = 2
+
         @ttt = tictactoe
-        @ttt.set_board_size(3)
+        @ttt.set_board_size(@side_size)
         @ttt.set_player_x(:human)
         @ttt.set_player_o(:human)
 
@@ -13,9 +16,6 @@ module UIs
 
         @app = Qt::Application.new(ARGV)
         super(nil)
-
-        @side_size = 3
-        @dimensions = 2
 
         setup_window
         setup_cells
