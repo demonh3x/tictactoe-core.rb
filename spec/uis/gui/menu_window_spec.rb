@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'uis/gui/runner'
 
-RSpec.describe UIs::Gui::MenuWindow, :integration => true do
+RSpec.describe UIs::Gui::MenuWindow, :integration => true, :gui => true do
   before(:each) do
     Qt::Application.new(ARGV)
   end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe UIs::Gui::Runner, :integration => true do
+RSpec.describe UIs::Gui::Runner, :integration => true, :gui => true do
   def tick(gui)
     find(gui, "timer").timeout
   end
