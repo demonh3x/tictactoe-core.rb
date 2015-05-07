@@ -100,9 +100,9 @@ module UIs
       end
 
       def refresh_result
-        winner = @ttt.winner
-
         if @ttt.is_finished?
+          winner = @ttt.winner
+
           if winner == nil
             @result.text = "it is a draw"
           else
