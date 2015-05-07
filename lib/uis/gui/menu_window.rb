@@ -20,8 +20,6 @@ module UIs
         @main_layout.add_widget(widget_o_selector, 0, 1, 1, 1)
         @main_layout.add_widget(widget_board_selector, 0, 2, 1, 1)
         @main_layout.add_widget(widget_start, 1, 0, 1, 3)
-
-
       end
       
       private

@@ -6,8 +6,7 @@ require 'uis/gui/main_window'
 module UIs
   module Gui
     class Runner
-      attr_accessor :menu
-      attr_accessor :games
+      attr_reader :menu, :games
 
       def initialize()
         @running = false
@@ -27,7 +26,7 @@ module UIs
       def run
         @running = true
         @menu.show
-        games.each do |game|
+        @games.each do |game|
           game.show
         end
         @app.exec
