@@ -10,6 +10,7 @@ module UIs
       attr_accessor :games
 
       def initialize()
+        @running = false
         @app = Qt::Application.new(ARGV)
         @games = []
         @menu = UIs::Gui::MenuWindow.new(lambda{|options|
@@ -19,12 +20,16 @@ module UIs
           ttt.set_player_o(options[:o])
           game = UIs::Gui::MainWindow.new(ttt, options[:board])
           @games.push(game)
-          game.show
+          game.show if @running
         })
       end
 
       def run
+        @running = true
         @menu.show
+        games.each do |game|
+          game.show
+        end
         @app.exec
       end
     end
