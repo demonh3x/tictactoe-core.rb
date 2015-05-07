@@ -12,7 +12,7 @@ namespace :spec do
   end
 
   rspec_task(:ci) do
-    exclude_tags :properties, :gui
+    exclude_tags :properties
   end
 
   rspec_task(:properties) do
