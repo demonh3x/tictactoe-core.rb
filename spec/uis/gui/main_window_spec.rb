@@ -17,12 +17,6 @@ RSpec.describe UIs::Gui::MainWindow, :integration => true, :gui => true do
     expect(gui.object_name).to eq("main_window")
   end
 
-  it 'creates a Qt application' do
-    create(spy())
-    app_count = ObjectSpace.each_object(Qt::Application).count
-    expect(app_count).to be > 0
-  end
-
   RSpec::Matchers.define :have_widged_named do |expected|
     match do |widget|
       widget.children.any? do |child|

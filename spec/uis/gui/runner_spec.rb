@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'uis/gui/runner'
 
 RSpec.describe UIs::Gui::Runner, :integration => true, :gui => true do
   def tick(gui)
@@ -7,6 +8,12 @@ RSpec.describe UIs::Gui::Runner, :integration => true, :gui => true do
 
   def click_cell(gui, index)
     find(gui, "cell_#{index}").click
+  end
+
+  it 'creates a Qt application' do
+    UIs::Gui::Runner.new
+    app_count = ObjectSpace.each_object(Qt::Application).count
+    expect(app_count).to be > 0
   end
 
   it 'running a full game between two humans on a 3 by 3 board' do
