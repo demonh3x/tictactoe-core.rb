@@ -1,3 +1,5 @@
+task :default => ["spec:develop"]
+
 namespace :spec do
   require './spec/rake_rspec'
 

@@ -21,7 +21,8 @@ RSpec.describe Players::AI::PerfectPlayer do
   def play(player, state)
     opponent = player == :x ? :o : :x
     @player = described_class.new(player, opponent, ChoosesFirst.new)
-    @player.play(state)
+    @player.update(state)
+    @player.play
   end
 
   it 'given only one possible play, should do it' do

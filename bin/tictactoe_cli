@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+dirname = File.expand_path(File.dirname(File.dirname(__FILE__))) + "/lib"
+$LOAD_PATH.unshift(dirname) unless $LOAD_PATH.include?(dirname)
+
+require 'uis/cli/runner'
+begin
+  UIs::Cli::Runner.new.run
+rescue Interrupt 
+end

@@ -1,33 +1,20 @@
 require 'spec_helper'
-require 'uis/cli'
-require 'core/state'
-require 'boards/three_by_three_board'
-require 'boards/four_by_four_board'
+require 'uis/cli/board_formatter'
 
-RSpec.describe UIs::Cli do
-  def state(board, *marks)
-    state = Core::State.new(board)
-    marks.each_with_index {|mark, location|
-      state = state.make_move(location, mark)
-    }
-    state
-  end
-
-  before(:each) do
-    @out = StringIO.new
-    @cli = described_class.new(@out)
+RSpec.describe UIs::Cli::BoardFormatter do
+  def format(marks)
+    described_class.new.format(marks)
   end
 
   describe "when updating" do
     describe "given a 3x3 empty state" do
       it "prints it without pieces" do
-        @cli.update(state(
-          Boards::ThreeByThreeBoard.new,
+        marks = [
           nil, nil, nil,
           nil, nil, nil,
           nil, nil, nil,
-        ))
-        expect(@out.string).to eq(
+        ]
+        expect(format(marks)).to eq(
           "+---+---+---+\n" +
           "| 0 | 1 | 2 |\n" +
           "+---+---+---+\n" +
@@ -41,14 +28,13 @@ RSpec.describe UIs::Cli do
 
     describe "given a 4x4 empty state" do
       it "prints it without pieces" do
-        @cli.update(state(
-          Boards::FourByFourBoard.new,
+        marks = [
           nil, nil, nil, nil,
           nil, nil, nil, nil,
           nil, nil, nil, nil,
           nil, nil, nil, nil,
-        ))
-        expect(@out.string).to eq(
+        ]
+        expect(format(marks)).to eq(
           "+---+---+---+---+\n" +
           "| 0 | 1 | 2 | 3 |\n" +
           "+---+---+---+---+\n" +
@@ -64,13 +50,12 @@ RSpec.describe UIs::Cli do
 
     describe "given a state with some moves" do
       it "prints it with the pieces at the correct position" do
-        @cli.update(state(
-          Boards::ThreeByThreeBoard.new,
+        marks = [
           :X,  nil, :O,
           nil, :O,  :X,
           nil, nil, nil,
-        ))
-        expect(@out.string).to eq(
+        ]
+        expect(format(marks)).to eq(
           "+---+---+---+\n" +
           "| X | 1 | O |\n" +
           "+---+---+---+\n" +
@@ -84,40 +69,36 @@ RSpec.describe UIs::Cli do
 
     describe "given a finished state" do
       it "with a winner, prints it announcing the winner" do
-        @cli.update(state(
-          Boards::ThreeByThreeBoard.new,
+        marks = [
           :X,  nil, :O,
           nil, :O,  :X,
           :O,  :X,  nil,
-        ))
-        expect(@out.string).to eq(
+        ]
+        expect(format(marks)).to eq(
           "+---+---+---+\n" +
           "| X | 1 | O |\n" +
           "+---+---+---+\n" +
           "| 3 | O | X |\n" +
           "+---+---+---+\n" +
           "| O | X | 8 |\n" +
-          "+---+---+---+\n" +
-          "O has won!\n"
+          "+---+---+---+\n"
         )
       end
       
       it "with a draw, prints it announcing the draw" do
-        @cli.update(state(
-          Boards::ThreeByThreeBoard.new,
+        marks = [
           :X, :O, :X,
           :O, :O, :X,
           :X, :X, :O,
-        ))
-        expect(@out.string).to eq(
+        ]
+        expect(format(marks)).to eq(
           "+---+---+---+\n" +
           "| X | O | X |\n" +
           "+---+---+---+\n" +
           "| O | O | X |\n" +
           "+---+---+---+\n" +
           "| X | X | O |\n" +
-          "+---+---+---+\n" +
-          "It is a draw.\n"
+          "+---+---+---+\n"
         )
       end
     end

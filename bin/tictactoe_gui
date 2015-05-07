@@ -3,8 +3,5 @@
 dirname = File.expand_path(File.dirname(File.dirname(__FILE__))) + "/lib"
 $LOAD_PATH.unshift(dirname) unless $LOAD_PATH.include?(dirname)
 
-require 'game_runner'
-begin
-  GameRunner.new.run
-rescue Interrupt 
-end
+require 'uis/gui/runner'
+UIs::Gui::Runner.new.run
