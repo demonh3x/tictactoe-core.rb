@@ -48,6 +48,13 @@ RSpec.describe UIs::Cli::Runner, :integration => true do
     end
   end
   
+  describe "full game with 3x3 board between two humans ending in a draw" do
+    it 'prints the message of a draw' do
+      output = run_game %w(3 1 4 2 5 3 7 1 0 8 6 n)
+      expect(output).to include("It is a draw.")
+    end
+  end
+
   describe "two full games with 3x3 board between two humans" do
     it "should have announced the winner of the second game" do
       commands = %w(3 1 0 1 3 4 6 y 3 1 0 1 3 4 2 7 n)
