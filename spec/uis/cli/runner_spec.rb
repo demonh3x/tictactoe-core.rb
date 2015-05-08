@@ -32,7 +32,7 @@ RSpec.describe UIs::Cli::Runner, :integration => true do
     end
 
     it "should have announced the winner" do
-      expect(@output).to include("x has won!")
+      expect(@output).to include("Player X has won!")
     end
 
     it "should have asked to play again" do
@@ -51,13 +51,13 @@ RSpec.describe UIs::Cli::Runner, :integration => true do
   describe "two full games with 3x3 board between two humans" do
     it "should have announced the winner of the second game" do
       commands = %w(3 1 0 1 3 4 6 y 3 1 0 1 3 4 2 7 n)
-      expect(run_game commands).to include("o has won!")
+      expect(run_game commands).to include("Player O has won!")
     end
   end
 
   describe "full game with 3x3 board between computer and human", :slow => true do
     it "should have announced the winner" do
-      expect(run_game %w(3 3 6 7 n)).to include("x has won!")
+      expect(run_game %w(3 3 6 7 n)).to include("Player X has won!")
     end
   end
 

@@ -71,7 +71,7 @@ module UIs
       end
 
       def announcement_of(winner)
-        winner.nil?? "It is a draw." : "#{winner.to_s} has won!"
+        winner.nil?? "It is a draw." : "Player #{winner.to_s.upcase} has won!"
       end
 
       def play_again?
