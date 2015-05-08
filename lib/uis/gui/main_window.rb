@@ -104,9 +104,9 @@ module UIs
           winner = @ttt.winner
 
           if winner == nil
-            @result.text = "it is a draw"
+            @result.text = "It is a draw."
           else
-            @result.text = "#{winner.to_s} has won"
+            @result.text = "Player #{winner.to_s.upcase} has won."
           end
         end
       end

@@ -108,7 +108,7 @@ RSpec.describe UIs::Gui::MainWindow, :integration => true, :gui => true do
       })
       gui = create(tictactoe)
       find_cell(gui, 0).click
-      expect_result_text(gui, 'x has won')
+      expect_result_text(gui, 'Player X has won.')
     end
 
     it 'of winner o' do
@@ -119,7 +119,7 @@ RSpec.describe UIs::Gui::MainWindow, :integration => true, :gui => true do
       })
       gui = create(tictactoe)
       find_cell(gui, 0).click
-      expect_result_text(gui, 'o has won')
+      expect_result_text(gui, 'Player O has won.')
     end
 
     it 'of a draw' do
@@ -130,7 +130,7 @@ RSpec.describe UIs::Gui::MainWindow, :integration => true, :gui => true do
       })
       gui = create(tictactoe)
       find_cell(gui, 0).click
-      expect_result_text(gui, 'it is a draw')
+      expect_result_text(gui, 'It is a draw.')
     end
   end
 

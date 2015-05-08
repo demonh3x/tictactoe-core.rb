@@ -31,7 +31,7 @@ RSpec.describe UIs::Gui::Runner, :integration => true, :gui => true do
     click_cell(game, 4) #o
     expect(find(game, "result").text).to eq(nil)
     click_cell(game, 2) #x
-    expect(find(game, "result").text).to eq('x has won')
+    expect(find(game, "result").text).to eq('Player X has won.')
   end
 
   it 'running a full game between two humans on a 4 by 4 board' do
@@ -51,7 +51,7 @@ RSpec.describe UIs::Gui::Runner, :integration => true, :gui => true do
     click_cell(game, 6) #o
     expect(find(game, "result").text).to eq(nil)
     click_cell(game, 3) #x
-    expect(find(game, "result").text).to eq('x has won')
+    expect(find(game, "result").text).to eq('Player X has won.')
   end
 
   it 'running a full game between two computers on a 3 by 3 board' do
@@ -68,6 +68,6 @@ RSpec.describe UIs::Gui::Runner, :integration => true, :gui => true do
     end
     expect(find(game, "result").text).to eq(nil)
     tick(game)
-    expect(find(game, "result").text).to eq('it is a draw')
+    expect(find(game, "result").text).to eq('It is a draw.')
   end
 end
