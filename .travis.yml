@@ -3,9 +3,6 @@ rvm:
   - "2.2.0"
   - "2.1.0"
   - "2.0.0-p598"
-before_install:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
 script: "rake spec:ci"
 addons:
   code_climate:
