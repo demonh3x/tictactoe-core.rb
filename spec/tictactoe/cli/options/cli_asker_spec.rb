@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'options/cli_asker'
+require 'tictactoe/cli/options/cli_asker'
 
-RSpec.describe Options::CliAsker do
+RSpec.describe Tictactoe::Cli::Options::CliAsker do
   describe "given two options, when asking for a selection" do
     before(:each) do
       @out = StringIO.new

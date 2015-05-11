@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'options/board_type_selection'
+require 'tictactoe/cli/options/board_type_selection'
 
-RSpec.describe Options::BoardTypeSelection do
+RSpec.describe Tictactoe::Cli::Options::BoardTypeSelection do
   it 'when reading, asks the question' do
     asker = spy()
     described_class.new(asker).read

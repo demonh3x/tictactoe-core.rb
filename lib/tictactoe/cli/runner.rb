@@ -1,8 +1,8 @@
 require 'tictactoe/game'
-require 'options/cli_asker'
-require 'options/play_again_option'
-require 'options/board_type_selection'
-require 'options/players_selection'
+require 'tictactoe/cli/options/cli_asker'
+require 'tictactoe/cli/options/play_again_option'
+require 'tictactoe/cli/options/board_type_selection'
+require 'tictactoe/cli/options/players_selection'
 require 'tictactoe/cli/move_reader'
 require 'tictactoe/cli/board_formatter'
 

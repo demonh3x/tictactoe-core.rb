@@ -1,12 +1,12 @@
 require 'spec_helper'
-require 'options/play_again_option'
-require 'options/cli_asker'
+require 'tictactoe/cli/options/play_again_option'
+require 'tictactoe/cli/options/cli_asker'
 
-RSpec.describe Options::PlayAgainOption do
+RSpec.describe Tictactoe::Cli::Options::PlayAgainOption do
   def cli_output(commands)
     input = commands.push("").join("\n")
     out = StringIO.new
-    cli = Options::CliAsker.new(StringIO.new(input), out)
+    cli = Tictactoe::Cli::Options::CliAsker.new(StringIO.new(input), out)
     option = described_class.new(cli)
     option.get
     out.string
@@ -31,7 +31,7 @@ RSpec.describe Options::PlayAgainOption do
   def play_again?(commands)
     input = commands.push("").join("\n")
     out = StringIO.new
-    cli = Options::CliAsker.new(StringIO.new(input), out)
+    cli = Tictactoe::Cli::Options::CliAsker.new(StringIO.new(input), out)
     option = described_class.new(cli)
     option.get
   end

@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'options/option'
+require 'tictactoe/cli/options/option'
 
 RSpec.describe Options::Option do
   before(:each) do

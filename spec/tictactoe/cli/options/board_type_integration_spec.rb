@@ -1,14 +1,13 @@
 require 'spec_helper'
-require 'options/cli_asker'
-
-require 'options/board_type_selection'
+require 'tictactoe/cli/options/cli_asker'
+require 'tictactoe/cli/options/board_type_selection'
+require 'tictactoe/cli/options/option'
 require 'tictactoe/boards/board_type_factory'
-require 'options/option'
 
 RSpec.describe "Board type integration" do
   def create(input, out)
-    cli_asker = Options::CliAsker.new(input, out)
-    selection = Options::BoardTypeSelection.new(cli_asker)
+    cli_asker = Tictactoe::Cli::Options::CliAsker.new(input, out)
+    selection = Tictactoe::Cli::Options::BoardTypeSelection.new(cli_asker)
     factory = Tictactoe::Boards::BoardTypeFactory.new
     Options::Option.new(selection, factory)
   end
