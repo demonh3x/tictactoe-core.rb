@@ -4,7 +4,7 @@ require 'players/ai/perfect_player'
 require 'players/ai/random_chooser'
 
 module Core
-  class TicTacToe
+  class Game
     def initialize(random=Random.new)
       @players = [:x, :o].cycle
       @types = {}
