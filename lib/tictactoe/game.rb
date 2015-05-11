@@ -1,5 +1,5 @@
 require 'tictactoe/state'
-require 'boards/board_type_factory'
+require 'tictactoe/boards/board_type_factory'
 require 'tictactoe/ai/perfect_player'
 require 'tictactoe/ai/random_chooser'
 
@@ -17,7 +17,7 @@ module Tictactoe
 
     def set_board_size(size)
       @size = size
-      @board = Boards::BoardTypeFactory.new.create(size)
+      @board = Tictactoe::Boards::BoardTypeFactory.new.create(size)
       @state = Tictactoe::State.new(@board)
     end
 

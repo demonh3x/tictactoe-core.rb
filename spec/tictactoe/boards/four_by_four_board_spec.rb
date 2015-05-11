@@ -1,9 +1,9 @@
 require 'spec_helper'
-require 'boards/four_by_four_board'
+require 'tictactoe/boards/four_by_four_board'
 
-RSpec.describe "4x4 board" do
+RSpec.describe Tictactoe::Boards::FourByFourBoard do
    it 'has the possible locations' do
-     expect(Boards::FourByFourBoard.new.locations).to eq([
+     expect(described_class.new.locations).to eq([
        0, 1, 2, 3,
        4, 5, 6, 7,
        8, 9, 10, 11,
@@ -12,7 +12,7 @@ RSpec.describe "4x4 board" do
    end
 
    it 'should know the lines' do
-     expect(Boards::FourByFourBoard.new.lines).to eq([
+     expect(described_class.new.lines).to eq([
        [0, 1, 2, 3],
        [4, 5, 6, 7],
        [8, 9, 10, 11],

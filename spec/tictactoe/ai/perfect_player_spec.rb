@@ -1,11 +1,11 @@
 require 'spec_helper'
 require 'tictactoe/ai/perfect_player'
 require 'tictactoe/state'
-require 'boards/three_by_three_board'
+require 'tictactoe/boards/three_by_three_board'
 
 RSpec.describe Tictactoe::Ai::PerfectPlayer do
   def board(*marks)
-    state = Tictactoe::State.new(Boards::ThreeByThreeBoard.new)
+    state = Tictactoe::State.new(Tictactoe::Boards::ThreeByThreeBoard.new)
     marks.each_with_index do |mark, location|
       state = state.make_move(location, mark)
     end

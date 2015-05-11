@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'boards/three_by_three_board'
+require 'tictactoe/boards/three_by_three_board'
 
-RSpec.describe Boards::ThreeByThreeBoard do
+RSpec.describe Tictactoe::Boards::ThreeByThreeBoard do
   before(:each) do
     @board = described_class.new
   end

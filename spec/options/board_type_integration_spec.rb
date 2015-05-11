@@ -2,14 +2,14 @@ require 'spec_helper'
 require 'options/cli_asker'
 
 require 'options/board_type_selection'
-require 'boards/board_type_factory'
+require 'tictactoe/boards/board_type_factory'
 require 'options/option'
 
 RSpec.describe "Board type integration" do
   def create(input, out)
     cli_asker = Options::CliAsker.new(input, out)
     selection = Options::BoardTypeSelection.new(cli_asker)
-    factory = Boards::BoardTypeFactory.new
+    factory = Tictactoe::Boards::BoardTypeFactory.new
     Options::Option.new(selection, factory)
   end
 
@@ -46,10 +46,10 @@ RSpec.describe "Board type integration" do
   end
 
   it "should return a ThreeByThreeBoard if answering 3" do
-    expect(ask_board_type %w(3)).to be_an_instance_of(Boards::ThreeByThreeBoard)
+    expect(ask_board_type %w(3)).to be_an_instance_of(Tictactoe::Boards::ThreeByThreeBoard)
   end
 
   it "should return a FourByFourBoard if answering 4" do
-    expect(ask_board_type %w(4)).to be_an_instance_of(Boards::FourByFourBoard)
+    expect(ask_board_type %w(4)).to be_an_instance_of(Tictactoe::Boards::FourByFourBoard)
   end
 end
