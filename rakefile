@@ -12,6 +12,7 @@ namespace :spec do
   end
 
   rspec_task(:ci) do
+    add_opts "--color -fd"
     exclude_tags :properties
   end
 
