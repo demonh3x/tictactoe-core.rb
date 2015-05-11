@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'uis/gui/runner'
+require 'tictactoe/gui/runner'
 
-RSpec.describe UIs::Gui::MenuWindow, :integration => true, :gui => true do
+RSpec.describe Tictactoe::Gui::MenuWindow, :integration => true, :gui => true do
   before(:each) do
     Qt::Application.new(ARGV)
   end

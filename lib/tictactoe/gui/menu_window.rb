@@ -1,6 +1,6 @@
 require 'Qt'
 
-module UIs
+module Tictactoe
   module Gui
     class MenuWindow < Qt::Widget
       def initialize(start_callback)

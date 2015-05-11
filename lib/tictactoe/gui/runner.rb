@@ -1,9 +1,9 @@
 require 'Qt'
 require 'tictactoe/game'
-require 'uis/gui/menu_window'
-require 'uis/gui/main_window'
+require 'tictactoe/gui/menu_window'
+require 'tictactoe/gui/main_window'
 
-module UIs
+module Tictactoe
   module Gui
     class Runner
       attr_reader :menu, :games
@@ -12,12 +12,12 @@ module UIs
         @running = false
         @app = Qt::Application.new(ARGV)
         @games = []
-        @menu = UIs::Gui::MenuWindow.new(lambda{|options|
-          ttt = Tictactoe::Game.new
+        @menu = MenuWindow.new(lambda{|options|
+          ttt = Game.new
           ttt.set_board_size(options[:board])
           ttt.set_player_x(options[:x])
           ttt.set_player_o(options[:o])
-          game = UIs::Gui::MainWindow.new(ttt, options[:board])
+          game = MainWindow.new(ttt, options[:board])
           @games.push(game)
           game.show if @running
         })

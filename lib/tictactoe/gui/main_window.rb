@@ -1,6 +1,6 @@
 require 'Qt'
 
-module UIs
+module Tictactoe
   module Gui
     class MainWindow < Qt::Widget
       def initialize(tictactoe, side_size)
@@ -31,7 +31,7 @@ module UIs
 
       def setup_cells
         cell_count = @side_size ** @dimensions
-        @cells = (0..cell_count-1).map {|move| UIs::Gui::Cell.new(self, move)}
+        @cells = (0..cell_count-1).map {|move| Cell.new(self, move)}
       end
 
       def setup_board

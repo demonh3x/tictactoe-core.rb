@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'uis/gui/runner'
+require 'tictactoe/gui/runner'
 
-RSpec.describe UIs::Gui::Runner, :integration => true, :gui => true do
+RSpec.describe Tictactoe::Gui::Runner, :integration => true, :gui => true do
   def tick(gui)
     find(gui, "timer").timeout
   end
@@ -11,13 +11,13 @@ RSpec.describe UIs::Gui::Runner, :integration => true, :gui => true do
   end
 
   it 'creates a Qt application' do
-    UIs::Gui::Runner.new
+    described_class.new
     app_count = ObjectSpace.each_object(Qt::Application).count
     expect(app_count).to be > 0
   end
 
   it 'running a full game between two humans on a 3 by 3 board' do
-    app = UIs::Gui::Runner.new
+    app = described_class.new
 
     find(app.menu, "board_3").click
     find(app.menu, "x_human").click
@@ -35,7 +35,7 @@ RSpec.describe UIs::Gui::Runner, :integration => true, :gui => true do
   end
 
   it 'running a full game between two humans on a 4 by 4 board' do
-    app = UIs::Gui::Runner.new
+    app = described_class.new
 
     find(app.menu, "board_4").click
     find(app.menu, "x_human").click
@@ -55,7 +55,7 @@ RSpec.describe UIs::Gui::Runner, :integration => true, :gui => true do
   end
 
   it 'running a full game between two computers on a 3 by 3 board' do
-    app = UIs::Gui::Runner.new
+    app = described_class.new
 
     find(app.menu, "board_3").click
     find(app.menu, "x_computer").click
