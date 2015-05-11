@@ -10,6 +10,6 @@ Gem::Specification.new do |s|
   s.email = "mateuadsuara@gmail.com"
 
   s.files = `git ls-files`.split("\n")
-  s.homepage = "https://github.com/demonh3x/tictactoe.rb"
+  s.homepage = "https://github.com/demonh3x/tictactoe-core.rb"
   s.license = "MIT"
 end
