@@ -1,5 +1,5 @@
-module Players
-  module AI
+module Tictactoe
+  module Ai
     class RandomChooser
       def initialize(random)
         @random = random

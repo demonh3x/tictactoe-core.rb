@@ -1,17 +1,17 @@
 require 'tictactoe/state'
 require 'boards/board_type_factory'
-require 'players/ai/perfect_player'
-require 'players/ai/random_chooser'
+require 'tictactoe/ai/perfect_player'
+require 'tictactoe/ai/random_chooser'
 
 module Tictactoe
   class Game
     def initialize(random=Random.new)
       @players = [:x, :o].cycle
       @types = {}
-      chooser = Players::AI::RandomChooser.new(random)
+      chooser = Tictactoe::Ai::RandomChooser.new(random)
       @ais = {
-        :x => Players::AI::PerfectPlayer.new(:x, :o, chooser),
-        :o => Players::AI::PerfectPlayer.new(:o, :x, chooser),
+        :x => Tictactoe::Ai::PerfectPlayer.new(:x, :o, chooser),
+        :o => Tictactoe::Ai::PerfectPlayer.new(:o, :x, chooser),
       }
     end
 

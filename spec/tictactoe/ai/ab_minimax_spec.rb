@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'players/ai/ab_minimax'
+require 'tictactoe/ai/ab_minimax'
 
-RSpec.describe Players::AI::ABMinimax do
+RSpec.describe Tictactoe::Ai::ABMinimax do
   def strategy(tree)
     minimax = described_class.new(-1, -1, 10)
     strategy = minimax.evaluate(tree)

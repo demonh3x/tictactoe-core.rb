@@ -1,5 +1,5 @@
-module Players
-  module AI
+module Tictactoe
+  module Ai
     class ABMinimax
       def initialize(min_score, heuristic_score, depth_limit)
         @min_score_possible = min_score

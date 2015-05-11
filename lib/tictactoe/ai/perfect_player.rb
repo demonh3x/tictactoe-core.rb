@@ -1,7 +1,7 @@
-require 'players/ai/ab_minimax'
+require 'tictactoe/ai/ab_minimax'
 
-module Players
-  module AI
+module Tictactoe
+  module Ai
     class PerfectPlayer
       MAXIMUM_SCORE = 2
       MINIMUM_SCORE = -2
@@ -75,7 +75,7 @@ module Players
       def find_best_locations(state)
         depth = dynamic_depth_for state
 
-        ab_minimax = Players::AI::ABMinimax.new(MINIMUM_SCORE, SCORE_FOR_UNKNOWN_FUTURE, depth)
+        ab_minimax = Tictactoe::Ai::ABMinimax.new(MINIMUM_SCORE, SCORE_FOR_UNKNOWN_FUTURE, depth)
 
         locs = ab_minimax.evaluate(TTT::Node.new(state, mark, opponents_mark, mark))
         locs
