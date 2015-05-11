@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'uis/cli/runner'
+require 'tictactoe/cli/runner'
 
-RSpec.describe UIs::Cli::Runner, :integration => true do
+RSpec.describe Tictactoe::Cli::Runner, :integration => true do
   def format_for_stdin(commands)
     commands.push("").join("\n")
   end

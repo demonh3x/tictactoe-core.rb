@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'uis/cli/move_reader'
+require 'tictactoe/cli/move_reader'
 
-RSpec.describe UIs::Cli::MoveReader do
+RSpec.describe Tictactoe::Cli::MoveReader do
   let(:input){StringIO.new}
   let(:output){StringIO.new}
 

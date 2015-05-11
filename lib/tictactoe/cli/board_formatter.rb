@@ -1,4 +1,4 @@
-module UIs
+module Tictactoe
   module Cli
     class BoardFormatter
       def format(marks)

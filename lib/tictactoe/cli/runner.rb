@@ -3,10 +3,10 @@ require 'options/cli_asker'
 require 'options/play_again_option'
 require 'options/board_type_selection'
 require 'options/players_selection'
-require 'uis/cli/move_reader'
-require 'uis/cli/board_formatter'
+require 'tictactoe/cli/move_reader'
+require 'tictactoe/cli/board_formatter'
 
-module UIs
+module Tictactoe
   module Cli
     class Runner
       attr_reader :input, :output, :random, :ttt, :asker, :board_type, :who_will_play, :play_again
@@ -55,11 +55,11 @@ module UIs
       end
 
       def print_board
-        output.puts UIs::Cli::BoardFormatter.new.format(ttt.marks)
+        output.puts Tictactoe::Cli::BoardFormatter.new.format(ttt.marks)
       end
 
       def make_move
-        ttt.tick(UIs::Cli::MoveReader.new(input, output, ttt))
+        ttt.tick(Tictactoe::Cli::MoveReader.new(input, output, ttt))
       end
 
       def is_game_finished?

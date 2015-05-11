@@ -1,4 +1,4 @@
-module UIs
+module Tictactoe
   module Cli
     class MoveReader
       attr_reader :input, :output, :ttt

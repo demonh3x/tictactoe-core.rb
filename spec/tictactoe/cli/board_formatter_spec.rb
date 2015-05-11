@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'uis/cli/board_formatter'
+require 'tictactoe/cli/board_formatter'
 
-RSpec.describe UIs::Cli::BoardFormatter do
+RSpec.describe Tictactoe::Cli::BoardFormatter do
   def format(marks)
     described_class.new.format(marks)
   end
