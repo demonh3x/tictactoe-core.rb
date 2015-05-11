@@ -1,24 +1,8 @@
 require 'spec_helper'
+require 'reproducible_random'
 require 'tictactoe/game'
 
 RSpec.describe "Properties", :properties => true do
-  class RepeteableRandom
-    attr_accessor :sequence, :progress
-
-    def initialize(sequence = 20.times.map{Random.new.rand})
-      @sequence = sequence
-      @progress = sequence.cycle
-    end
-
-    def rand
-      progress.next
-    end
-
-    def print
-      puts "RepeteableRandom sequence: #{sequence.to_s}"
-    end
-  end
-
   def game_winner(board_size, random)
     ttt = Tictactoe::Game.new(random)
     ttt.set_board_size(board_size)
@@ -31,7 +15,7 @@ RSpec.describe "Properties", :properties => true do
 
   1000.times do |n|
     it 'two perfect players in a 4x4 board ends up in a draw' do
-      random = RepeteableRandom.new
+      random = ReproducibleRandom.new
 
       random.print
       puts n
@@ -42,7 +26,7 @@ RSpec.describe "Properties", :properties => true do
 
   1000.times do |n|
     it 'two perfect players in a 3x3 board ends up in a draw' do
-      random = RepeteableRandom.new
+      random = ReproducibleRandom.new
 
       random.print
       puts n
