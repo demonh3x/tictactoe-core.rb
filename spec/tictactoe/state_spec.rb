@@ -1,8 +1,8 @@
 require 'spec_helper'
-require 'core/state'
+require 'tictactoe/state'
 require 'boards/three_by_three_board'
 
-RSpec.describe Core::State do
+RSpec.describe Tictactoe::State do
   def look_at(state, location)
     state.layout
       .select{|loc, mark| loc == location}

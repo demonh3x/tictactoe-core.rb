@@ -1,4 +1,4 @@
-module Core
+module Tictactoe
   class State
     def initialize(board, marks=[])
       @board = board

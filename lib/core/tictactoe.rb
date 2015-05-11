@@ -1,4 +1,4 @@
-require 'core/state'
+require 'tictactoe/state'
 require 'boards/board_type_factory'
 require 'players/ai/perfect_player'
 require 'players/ai/random_chooser'
@@ -18,7 +18,7 @@ module Core
     def set_board_size(size)
       @size = size
       @board = Boards::BoardTypeFactory.new.create(size)
-      @state = State.new(@board)
+      @state = Tictactoe::State.new(@board)
     end
 
     def set_player_x(type)
