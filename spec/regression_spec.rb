@@ -19,10 +19,6 @@ RSpec.describe "Regression", :regression => true do
     end
   end
 
-  def player(mark, opponent, random)
-    Players::AI::PerfectPlayer.new(mark, opponent, Players::AI::RandomChooser.new(random))
-  end
-
   def game_winner(board_size, random)
     ttt = Tictactoe::Game.new(random)
     ttt.set_board_size(board_size)
