@@ -8,17 +8,17 @@ module Tictactoe
     def initialize(random=Random.new)
       @players = [:x, :o].cycle
       @types = {}
-      chooser = Tictactoe::Ai::RandomChooser.new(random)
+      chooser = Ai::RandomChooser.new(random)
       @ais = {
-        :x => Tictactoe::Ai::PerfectPlayer.new(:x, :o, chooser),
-        :o => Tictactoe::Ai::PerfectPlayer.new(:o, :x, chooser),
+        :x => Ai::PerfectPlayer.new(:x, :o, chooser),
+        :o => Ai::PerfectPlayer.new(:o, :x, chooser),
       }
     end
 
     def set_board_size(size)
       @size = size
-      @board = Tictactoe::Boards::BoardTypeFactory.new.create(size)
-      @state = Tictactoe::State.new(@board)
+      @board = Boards::BoardTypeFactory.new.create(size)
+      @state = State.new(@board)
     end
 
     def set_player_x(type)

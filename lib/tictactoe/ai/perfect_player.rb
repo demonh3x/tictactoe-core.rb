@@ -8,39 +8,37 @@ module Tictactoe
       NEUTRAL_SCORE = 0
       SCORE_FOR_UNKNOWN_FUTURE = -1
 
-      module TTT
-        class Node
-          def initialize(state, me, opponent, current_player, transition=nil)
-            @state = state
-            @me = me
-            @opponent = opponent
-            @current_player = current_player
-            @transition = transition
-          end
-          attr_reader :state, :me, :opponent, :current_player, :transition
+      class Node
+        def initialize(state, me, opponent, current_player, transition=nil)
+          @state = state
+          @me = me
+          @opponent = opponent
+          @current_player = current_player
+          @transition = transition
+        end
+        attr_reader :state, :me, :opponent, :current_player, :transition
 
-          def is_leaf?
-            state.when_finished{true} || false
-          end
+        def is_leaf?
+          state.when_finished{true} || false
+        end
 
-          def childs
-            state.available_moves.lazy.map do |transition|
-              next_player = current_player == me ? opponent : me
-              next_state = state.make_move transition, current_player
-              Node.new(next_state, me, opponent, next_player, transition)
-            end
+        def childs
+          state.available_moves.lazy.map do |transition|
+            next_player = current_player == me ? opponent : me
+            next_state = state.make_move transition, current_player
+            Node.new(next_state, me, opponent, next_player, transition)
           end
+        end
 
-          def score
-            state.when_finished do |winner|
-              case winner
-              when me
-                MAXIMUM_SCORE
-              when nil
-                NEUTRAL_SCORE
-              else
-                MINIMUM_SCORE
-              end
+        def score
+          state.when_finished do |winner|
+            case winner
+            when me
+              MAXIMUM_SCORE
+            when nil
+              NEUTRAL_SCORE
+            else
+              MINIMUM_SCORE
             end
           end
         end
@@ -75,9 +73,9 @@ module Tictactoe
       def find_best_locations(state)
         depth = dynamic_depth_for state
 
-        ab_minimax = Tictactoe::Ai::ABMinimax.new(MINIMUM_SCORE, SCORE_FOR_UNKNOWN_FUTURE, depth)
+        ab_minimax = ABMinimax.new(MINIMUM_SCORE, SCORE_FOR_UNKNOWN_FUTURE, depth)
 
-        locs = ab_minimax.evaluate(TTT::Node.new(state, mark, opponents_mark, mark))
+        locs = ab_minimax.evaluate(Node.new(state, mark, opponents_mark, mark))
         locs
       end
 

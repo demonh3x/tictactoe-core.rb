@@ -41,7 +41,7 @@ module Tictactoe
 
       private
       def reset_game
-        @ttt = Tictactoe::Game.new(random)
+        @ttt = Game.new(random)
       end
 
       def set_board_size
@@ -55,11 +55,11 @@ module Tictactoe
       end
 
       def print_board
-        output.puts Tictactoe::Cli::BoardFormatter.new.format(ttt.marks)
+        output.puts BoardFormatter.new.format(ttt.marks)
       end
 
       def make_move
-        ttt.tick(Tictactoe::Cli::MoveReader.new(input, output, ttt))
+        ttt.tick(MoveReader.new(input, output, ttt))
       end
 
       def is_game_finished?

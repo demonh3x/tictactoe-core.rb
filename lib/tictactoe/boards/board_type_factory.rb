@@ -6,8 +6,8 @@ module Tictactoe
     class BoardTypeFactory
       def create(side_size)
         case side_size
-        when 3 then Tictactoe::Boards::ThreeByThreeBoard.new
-        when 4 then Tictactoe::Boards::FourByFourBoard.new
+        when 3 then ThreeByThreeBoard.new
+        when 4 then FourByFourBoard.new
         end
       end
     end
