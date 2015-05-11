@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'core/tictactoe'
+require 'tictactoe/game'
 
 RSpec.describe "Properties", :properties => true do
   class RepeteableRandom
@@ -20,7 +20,7 @@ RSpec.describe "Properties", :properties => true do
   end
 
   def game_winner(board_size, random)
-    ttt = Core::TicTacToe.new(random)
+    ttt = Tictactoe::Game.new(random)
     ttt.set_board_size(board_size)
     ttt.set_player_x(:computer)
     ttt.set_player_o(:computer)

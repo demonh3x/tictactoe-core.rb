@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'core/tictactoe'
+require 'tictactoe/game'
 
 RSpec.describe "Regression", :regression => true do
   class RepeteableRandom
@@ -19,12 +19,8 @@ RSpec.describe "Regression", :regression => true do
     end
   end
 
-  def player(mark, opponent, random)
-    Players::AI::PerfectPlayer.new(mark, opponent, Players::AI::RandomChooser.new(random))
-  end
-
   def game_winner(board_size, random)
-    ttt = Core::TicTacToe.new(random)
+    ttt = Tictactoe::Game.new(random)
     ttt.set_board_size(board_size)
     ttt.set_player_x(:computer)
     ttt.set_player_o(:computer)
