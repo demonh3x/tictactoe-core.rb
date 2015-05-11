@@ -3,7 +3,7 @@ require 'boards/board_type_factory'
 require 'players/ai/perfect_player'
 require 'players/ai/random_chooser'
 
-module Core
+module Tictactoe
   class Game
     def initialize(random=Random.new)
       @players = [:x, :o].cycle

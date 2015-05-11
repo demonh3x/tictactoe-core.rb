@@ -1,4 +1,4 @@
-require 'core/game'
+require 'tictactoe/game'
 require 'options/cli_asker'
 require 'options/play_again_option'
 require 'options/board_type_selection'
@@ -41,7 +41,7 @@ module UIs
 
       private
       def reset_game
-        @ttt = Core::Game.new(random)
+        @ttt = Tictactoe::Game.new(random)
       end
 
       def set_board_size

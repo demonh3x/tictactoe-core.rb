@@ -1,6 +1,6 @@
-require 'core/game'
+require 'tictactoe/game'
 
-RSpec.describe Core::Game do
+RSpec.describe Tictactoe::Game do
   let (:ttt) {
     described_class.new
   }
