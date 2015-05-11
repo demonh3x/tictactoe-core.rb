@@ -3,5 +3,5 @@
 dirname = File.expand_path(File.dirname(File.dirname(__FILE__))) + "/lib"
 $LOAD_PATH.unshift(dirname) unless $LOAD_PATH.include?(dirname)
 
-require 'uis/gui/runner'
-UIs::Gui::Runner.new.run
+require 'tictactoe/gui/runner'
+Tictactoe::Gui::Runner.new.run
