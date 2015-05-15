@@ -4,16 +4,11 @@ require 'tictactoe/boards/three_by_three_board'
 
 RSpec.describe Tictactoe::State do
   def look_at(state, location)
-    state.layout
-      .select{|loc, mark| loc == location}
-      .map{|loc, mark| mark}
-      .first
+    state.layout[location]
   end
 
   def expect_state(marks)
-    marks.each_with_index do |mark, location|
-      expect(look_at(@state, location)).to eq(mark)
-    end
+    expect(@state.layout).to eq(marks)
   end
 
   def expect_finished(expected)
@@ -46,9 +41,9 @@ RSpec.describe Tictactoe::State do
 
     it 'can access to the board layout' do
       expect(@state.layout).to eq([
-        [0, nil], [1, nil], [2, nil],
-        [3, nil], [4, nil], [5, nil],
-        [6, nil], [7, nil], [8, nil],
+        nil, nil, nil,
+        nil, nil, nil,
+        nil, nil, nil,
       ])
     end
 

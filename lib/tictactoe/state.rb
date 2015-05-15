@@ -1,6 +1,6 @@
 module Tictactoe
   class State
-    def initialize(board, marks=[])
+    def initialize(board, marks=[nil] * board.locations.length)
       @board = board
       @marks = marks
     end
@@ -20,9 +20,7 @@ module Tictactoe
     end
 
     def layout
-      board.locations.map do |location| 
-        [location, marks[location]]
-      end
+      marks
     end
 
     def ==(other)

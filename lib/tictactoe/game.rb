@@ -46,7 +46,7 @@ module Tictactoe
     end
 
     def marks
-      @state.layout.map{|loc, mark| mark}
+      @state.layout
     end
 
     def available
