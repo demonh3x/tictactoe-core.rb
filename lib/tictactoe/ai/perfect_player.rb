@@ -70,6 +70,10 @@ module Tictactoe
         @chooser.choose_one(options)
       end
 
+      def desired_moves
+        find_best_locations(state).map(&:transition)
+      end
+
       def find_best_locations(state)
         depth = dynamic_depth_for state
 

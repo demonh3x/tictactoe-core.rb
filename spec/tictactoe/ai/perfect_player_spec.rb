@@ -18,11 +18,10 @@ RSpec.describe Tictactoe::Ai::PerfectPlayer do
     end
   end
 
-  def play(player, state)
-    opponent = player == :x ? :o : :x
-    @player = described_class.new(player, opponent, ChoosesFirst.new)
+  def play(state)
+    @player = described_class.new(:x, :o, ChoosesFirst.new)
     @player.update(state)
-    @player.play_location
+    @player.desired_moves
   end
 
   it 'given only one possible play, should do it' do
@@ -31,42 +30,80 @@ RSpec.describe Tictactoe::Ai::PerfectPlayer do
       :o, :x, :x,
       :x, :o, :o
     )
-    expect(play(:x, state)).to eq 2
+    expect(play(state)).to eq [2]
   end
 
-  it 'given the possibility to lose, should prefer a draw' do
+  it 'given the possibility to lose, should block' do
     state = board(
-      :x, nil, :o,
-      :o, :x,  :x,
-      :x, :o,  nil 
+      :x, nil, nil,
+      :o, nil, :o,
+      :x, nil, nil
     )
-    expect(play(:o, state)).to eq 8
+    expect(play(state)).to eq [4]
   end
   
-  it 'given the possibility to win, should do it' do
+  it 'given the possibility to lose, should block, not matter if there is a fork comming' do
+    state = board(
+      :x, nil, nil,
+      :x, nil, nil,
+      :o, nil, :o,
+    )
+    expect(play(state)).to eq [7]
+  end
+
+  it 'given the possibility to win, should prefer it' do
     state = board(
       :x,  :o,  :x,
       :o,  :x,  :o,
       nil, nil, :o 
     )
-    expect(play(:x, state)).to eq 6
+    expect(play(state)).to eq [6]
   end
 
-  it 'given the possibility to fork, should do it' do
+  it 'given the possibility to win, should prefer it over blocking or forking' do
+    state = board(
+      :x,  nil, :o,
+      nil, nil, :o,
+      :x,  nil, nil
+    )
+    expect(play(state)).to eq [3]
+  end
+
+  it 'given the possibility to fork, should prefer it' do
+    state = board(
+      :x,  :o,  :x,
+      nil, nil, :o,
+      nil, nil, nil
+    )
+    expect(play(state)).to eq [4, 6]
+  end
+
+  it 'given the possibility to block, should prefer it over forking' do
     state = board(
       nil, nil, :x,
-      nil, nil, :o,
-      :o,  nil, :x
+      nil, :o,  nil,
+      :x,  :o,  nil
     )
-    expect(play(:x, state)).to eq 0
+    expect(play(state)).to eq [1]
   end
 
-  it 'having a possibility of a fork against, should attack to avoid it' do
+  it 'given the possibility to block a fork, should do it' do
+    #:o started the game
     state = board(
-      :o, nil, nil,
-      :x, nil, nil,
-      :o, nil, nil 
+      :o,  :x,  :o,
+      nil, nil, nil,
+      nil, nil, nil,
     )
-    expect(play(:x, state)).to eq 4
+    expect(play(state)).to eq [4]
+  end
+
+  it 'given two possible forks for the opponent, should attack avoiding the creation of the fork' do
+    #:o started the game
+    state = board(
+      nil, nil, :o,
+      nil, :x,  nil,
+      :o,  nil, nil,
+    )
+    expect(play(state)).to eq [1, 3, 5, 7]
   end
 end
