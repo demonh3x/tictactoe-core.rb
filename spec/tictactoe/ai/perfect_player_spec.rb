@@ -22,7 +22,7 @@ RSpec.describe Tictactoe::Ai::PerfectPlayer do
     opponent = player == :x ? :o : :x
     @player = described_class.new(player, opponent, ChoosesFirst.new)
     @player.update(state)
-    @player.play
+    @player.play_location
   end
 
   it 'given only one possible play, should do it' do
@@ -31,11 +31,7 @@ RSpec.describe Tictactoe::Ai::PerfectPlayer do
       :o, :x, :x,
       :x, :o, :o
     )
-    expect(play(:x, state)).to eq board(
-      :x, :o, :x,
-      :o, :x, :x,
-      :x, :o, :o
-    )
+    expect(play(:x, state)).to eq 2
   end
 
   it 'given the possibility to lose, should prefer a draw' do
@@ -44,11 +40,7 @@ RSpec.describe Tictactoe::Ai::PerfectPlayer do
       :o, :x,  :x,
       :x, :o,  nil 
     )
-    expect(play(:o, state)).to eq board(
-      :x, nil, :o,
-      :o, :x,  :x,
-      :x, :o,  :o 
-    )
+    expect(play(:o, state)).to eq 8
   end
   
   it 'given the possibility to win, should do it' do
@@ -57,11 +49,7 @@ RSpec.describe Tictactoe::Ai::PerfectPlayer do
       :o,  :x,  :o,
       nil, nil, :o 
     )
-    expect(play(:x, state)).to eq board(
-      :x,  :o,  :x,
-      :o,  :x,  :o,
-      :x,  nil, :o 
-    )
+    expect(play(:x, state)).to eq 6
   end
 
   it 'given the possibility to fork, should do it' do
@@ -70,11 +58,7 @@ RSpec.describe Tictactoe::Ai::PerfectPlayer do
       nil, nil, :o,
       :o,  nil, :x
     )
-    expect(play(:x, state)).to eq board(
-      :x,  nil, :x,
-      nil, nil, :o,
-      :o,  nil, :x
-    )
+    expect(play(:x, state)).to eq 0
   end
 
   it 'having a possibility of a fork against, should attack to avoid it' do
@@ -83,10 +67,6 @@ RSpec.describe Tictactoe::Ai::PerfectPlayer do
       :x, nil, nil,
       :o, nil, nil 
     )
-    expect(play(:x, state)).to eq board(
-      :o, nil, nil,
-      :x, :x,  nil,
-      :o, nil, nil 
-    )
+    expect(play(:x, state)).to eq 4
   end
 end
