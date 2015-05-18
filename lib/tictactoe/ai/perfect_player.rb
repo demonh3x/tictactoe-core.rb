@@ -48,18 +48,6 @@ module Tictactoe
             end
           end
         end
-
-        def debug_print
-          state.layout.each_slice(3) do |marks|
-            puts marks.to_s
-          end
-          if is_leaf?
-            puts "Score: " + score.to_s
-          else
-            puts "Intermediate node"
-            childs.each {|c| c.debug_print}
-          end
-        end
       end
 
       def initialize(mark, opponents_mark, chooser)
@@ -93,13 +81,13 @@ module Tictactoe
       end
 
       def find_best_locations(state)
-        depth = 200
+        depth = dynamic_depth_for state
 
-        ab_minimax = ABMinimax.new(-8, SCORE_FOR_UNKNOWN_FUTURE, depth) 
+        ai = ABNegamax.new(depth, SCORE_FOR_UNKNOWN_FUTURE)
 
         root = Node.new(state, mark, opponents_mark, mark)
-        locs = ab_minimax.evaluate(root)
-        #root.debug_print
+        locs = ai.best_nodes(root)
+
         locs
       end
 
