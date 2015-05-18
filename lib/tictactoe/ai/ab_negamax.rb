@@ -38,7 +38,7 @@ module Tictactoe
             best_nodes << child
           end
           a = [a, score].max
-          break if a >= b
+          break if a > b
         end
 
         {:score => best_score, :nodes => best_nodes}
