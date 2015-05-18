@@ -1,4 +1,5 @@
 require 'tictactoe/ai/ab_minimax'
+require 'tictactoe/ai/ab_negamax'
 
 module Tictactoe
   module Ai
@@ -30,7 +31,12 @@ module Tictactoe
           end
         end
 
-        def score
+        def score 
+          depth = state.available_moves.length + 1
+          base_score * depth
+        end
+
+        def base_score
           state.when_finished do |winner|
             case winner
             when me
@@ -40,6 +46,18 @@ module Tictactoe
             else
               MINIMUM_SCORE
             end
+          end
+        end
+
+        def debug_print
+          state.layout.each_slice(3) do |marks|
+            puts marks.to_s
+          end
+          if is_leaf?
+            puts "Score: " + score.to_s
+          else
+            puts "Intermediate node"
+            childs.each {|c| c.debug_print}
           end
         end
       end
@@ -75,11 +93,13 @@ module Tictactoe
       end
 
       def find_best_locations(state)
-        depth = dynamic_depth_for state
+        depth = 200
 
-        ab_minimax = ABMinimax.new(MINIMUM_SCORE, SCORE_FOR_UNKNOWN_FUTURE, depth)
+        ab_minimax = ABMinimax.new(-8, SCORE_FOR_UNKNOWN_FUTURE, depth) 
 
-        locs = ab_minimax.evaluate(Node.new(state, mark, opponents_mark, mark))
+        root = Node.new(state, mark, opponents_mark, mark)
+        locs = ab_minimax.evaluate(root)
+        #root.debug_print
         locs
       end
 

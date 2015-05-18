@@ -4,13 +4,13 @@ require 'tictactoe/ai/ab_negamax'
 RSpec.describe Tictactoe::Ai::ABNegamax do
   def preferred_nodes(tree)
     negamax = described_class.new(-1, 10)
-    strategy = negamax.evaluate(tree)[:nodes]
+    strategy = negamax.best_nodes(tree)
     strategy
   end
 
   def score(tree, depth = 10, depth_reached_score = -10)
     negamax = described_class.new(depth, depth_reached_score)
-    negamax.evaluate(tree)[:score]
+    negamax.score(tree)
   end
 
   def leaf(score)

@@ -13,7 +13,7 @@ RSpec.describe "Properties", :properties => true do
     ttt.winner
   end
 
-  1000.times do |n|
+  10.times do |n|
     it 'two perfect players in a 4x4 board ends up in a draw' do
       random = ReproducibleRandom.new
 
@@ -24,7 +24,7 @@ RSpec.describe "Properties", :properties => true do
     end
   end
 
-  1000.times do |n|
+  10.times do |n|
     it 'two perfect players in a 3x3 board ends up in a draw' do
       random = ReproducibleRandom.new
 

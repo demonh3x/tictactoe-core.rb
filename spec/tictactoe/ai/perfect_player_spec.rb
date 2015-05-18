@@ -3,6 +3,8 @@ require 'tictactoe/ai/perfect_player'
 require 'tictactoe/state'
 require 'tictactoe/boards/three_by_three_board'
 
+require 'benchmark'
+
 RSpec.describe Tictactoe::Ai::PerfectPlayer do
   def board(*marks)
     state = Tictactoe::State.new(Tictactoe::Boards::ThreeByThreeBoard.new)
@@ -22,6 +24,18 @@ RSpec.describe Tictactoe::Ai::PerfectPlayer do
     @player = described_class.new(:x, :o, ChoosesFirst.new)
     @player.update(state)
     @player.desired_moves
+  end
+
+  it 'the first play' do
+    initial_state = board(
+      nil, nil, nil,
+      nil, nil, nil,
+      nil, nil, nil,
+    )
+
+    puts Benchmark.measure {
+      play(initial_state)
+    }
   end
 
   it 'given only one possible play, should do it' do

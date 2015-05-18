@@ -12,6 +12,17 @@ RSpec.describe Tictactoe::Ai::ABMinimax do
     spy "leaf scored: #{score}", :is_leaf? => true, :score => score
   end
 
+  it '' do
+    best_option = leaf(-4)
+    root = tree([
+      best_option,
+      leaf(-6)
+    ])
+
+    minimax = described_class.new(-8, -1, 10)
+    expect(minimax.evaluate(root)).to eq([best_option])
+  end
+
   describe 'given a leaf node' do
     describe 'there is no strategy possible' do
       it do
