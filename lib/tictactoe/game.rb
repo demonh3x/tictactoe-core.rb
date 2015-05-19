@@ -6,26 +6,29 @@ require 'tictactoe/ai/random_chooser'
 
 module Tictactoe
   class Game
-    attr_reader :current_player, :ais
+    attr_reader :current_player, :ais, :moves_source
 
-    def initialize(board_size, x_type, o_type, random=Random.new)
+    def initialize(board_size, x_type, o_type, moves_source, random=Random.new)
       players = Players.new(:x, :o)
       @current_player = players.first
-      @types = {
-        :x => x_type,
-        :o => o_type
-      }
+
+      @moves_source = moves_source
+
       chooser = Ai::RandomChooser.new(random)
       @ais = {
         :x => Ai::PerfectPlayer.new(players.first, chooser),
         :o => Ai::PerfectPlayer.new(players.first.next, chooser),
       }
+      @types = {
+        :x => x_type,
+        :o => o_type
+      }
 
       @state = State.new(Boards::BoardTypeFactory.new.create(board_size))
     end
 
-    def tick(user)
-      move = get_move(user)
+    def tick()
+      move = get_move()
       if is_valid?(move) && !is_finished?
         @state = @state.make_move(move, current_mark)
         @current_player = @current_player.next
@@ -57,9 +60,9 @@ module Tictactoe
       @current_player.mark
     end
 
-    def get_move(user)
+    def get_move()
       if is_users_turn?
-        user.get_move!
+        moves_source.get_move!
       else
         ai = ais[current_mark]
         ai.update(@state)

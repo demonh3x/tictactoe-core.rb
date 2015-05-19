@@ -1,12 +1,35 @@
 require 'tictactoe/game'
 
 RSpec.describe Tictactoe::Game do
+  class MovesSource
+    attr_reader :moves
+
+    def initialize()
+      @moves = []
+    end
+
+    def add(move)
+      moves << move
+    end
+
+    def get_move!
+      moves.pop
+    end
+  end
+
+  let(:moves_source) {MovesSource.new}
+
+  def create(board_size, x_type, o_type)
+    described_class.new(board_size, x_type, o_type, moves_source)
+  end
+
   def human_tick_playing_to(ttt, loc)
-    ttt.tick(spy(:get_move! => loc))
+    moves_source.add(loc)
+    ttt.tick()
   end
   
   def computer_tick(ttt)
-    ttt.tick(:ignored_player_because_computer_plays)
+    ttt.tick()
   end
 
   def expect_amount_of_marks(ttt, mark, expected_count)
@@ -15,13 +38,13 @@ RSpec.describe Tictactoe::Game do
   end
 
   it 'is not finished' do
-    ttt = described_class.new(3, :human, :human)
+    ttt = create(3, :human, :human)
     expect(ttt.is_finished?).to eq(false)
   end
 
   describe 'can be observed' do
     it 'initial game size 3' do
-      ttt = described_class.new(3, :human, :human)
+      ttt = create(3, :human, :human)
       expect(ttt.marks).to eq([
         nil, nil, nil,
         nil, nil, nil,
@@ -30,7 +53,7 @@ RSpec.describe Tictactoe::Game do
     end
 
     it 'initial game size 4' do
-      ttt = described_class.new(4, :human, :human)
+      ttt = create(4, :human, :human)
       expect(ttt.marks).to eq([
         nil, nil, nil, nil,
         nil, nil, nil, nil,
@@ -40,7 +63,7 @@ RSpec.describe Tictactoe::Game do
     end
 
     it 'first play of x on size 3' do
-      ttt = described_class.new(3, :human, :human)
+      ttt = create(3, :human, :human)
       human_tick_playing_to(ttt, 0)
       expect(ttt.marks).to eq([
         :x,  nil, nil,
@@ -50,7 +73,7 @@ RSpec.describe Tictactoe::Game do
     end
     
     it 'first play of o on size 3' do
-      ttt = described_class.new(3, :human, :human)
+      ttt = create(3, :human, :human)
       human_tick_playing_to(ttt, 0)
       human_tick_playing_to(ttt, 1)
       expect(ttt.marks).to eq([
@@ -63,7 +86,7 @@ RSpec.describe Tictactoe::Game do
 
   describe 'has the available locations' do
     it do
-      ttt = described_class.new(3, :human, :human)
+      ttt = create(3, :human, :human)
       expect(ttt.available).to eq([
         0, 1, 2,
         3, 4, 5,
@@ -72,7 +95,7 @@ RSpec.describe Tictactoe::Game do
     end
 
     it do
-      ttt = described_class.new(3, :human, :human)
+      ttt = create(3, :human, :human)
       human_tick_playing_to(ttt, 0)
       expect(ttt.available).to eq([
            1, 2,
@@ -82,7 +105,7 @@ RSpec.describe Tictactoe::Game do
     end
 
     it do
-      ttt = described_class.new(4, :human, :human)
+      ttt = create(4, :human, :human)
       human_tick_playing_to(ttt, 15)
       expect(ttt.available).to eq([
         0, 1, 2, 3,
@@ -95,7 +118,7 @@ RSpec.describe Tictactoe::Game do
 
   describe 'is not finished if no player has a line' do
     it do
-      ttt = described_class.new(4, :human, :human)
+      ttt = create(4, :human, :human)
       human_tick_playing_to(ttt, 0)
       human_tick_playing_to(ttt, 4)
       human_tick_playing_to(ttt, 1)
@@ -106,7 +129,7 @@ RSpec.describe Tictactoe::Game do
     end
     
     it do
-      ttt = described_class.new(3, :human, :human)
+      ttt = create(3, :human, :human)
       human_tick_playing_to(ttt, 0)
       human_tick_playing_to(ttt, 3)
       human_tick_playing_to(ttt, 1)
@@ -117,7 +140,7 @@ RSpec.describe Tictactoe::Game do
 
   describe 'is finished when a player has a line' do
     it do
-      ttt = described_class.new(3, :human, :human)
+      ttt = create(3, :human, :human)
       human_tick_playing_to(ttt, 0)
       human_tick_playing_to(ttt, 3)
       human_tick_playing_to(ttt, 1)
@@ -128,7 +151,7 @@ RSpec.describe Tictactoe::Game do
     end
 
     it do
-      ttt = described_class.new(3, :human, :human)
+      ttt = create(3, :human, :human)
       human_tick_playing_to(ttt, 3)
       human_tick_playing_to(ttt, 0)
       human_tick_playing_to(ttt, 4)
@@ -140,7 +163,7 @@ RSpec.describe Tictactoe::Game do
     end
 
     it do
-      ttt = described_class.new(4, :human, :human)
+      ttt = create(4, :human, :human)
       human_tick_playing_to(ttt, 0)
       human_tick_playing_to(ttt, 4)
       human_tick_playing_to(ttt, 1)
@@ -155,7 +178,7 @@ RSpec.describe Tictactoe::Game do
 
   describe 'is finished when the board is full' do
     it do
-      ttt = described_class.new(3, :human, :human)
+      ttt = create(3, :human, :human)
       human_tick_playing_to(ttt, 0)
       human_tick_playing_to(ttt, 1)
       human_tick_playing_to(ttt, 2)
@@ -176,7 +199,7 @@ RSpec.describe Tictactoe::Game do
 
   describe 'cant play twice to the same location' do
     it 'second play' do
-      ttt = described_class.new(3, :human, :human)
+      ttt = create(3, :human, :human)
       human_tick_playing_to(ttt, 0)
       human_tick_playing_to(ttt, 0)
       expect(ttt.marks).to eq([
@@ -189,7 +212,7 @@ RSpec.describe Tictactoe::Game do
 
   describe 'cant be played when finished' do
     it do
-      ttt = described_class.new(3, :human, :human)
+      ttt = create(3, :human, :human)
 
       human_tick_playing_to(ttt, 0)
       human_tick_playing_to(ttt, 3)
@@ -209,7 +232,7 @@ RSpec.describe Tictactoe::Game do
 
   describe 'if the human has no move ignores the ticks' do
     it do
-      ttt = described_class.new(3, :human, :human)
+      ttt = create(3, :human, :human)
       human_tick_playing_to(ttt, nil)
       human_tick_playing_to(ttt, nil)
       human_tick_playing_to(ttt, nil)
@@ -217,7 +240,7 @@ RSpec.describe Tictactoe::Game do
     end
 
     it do
-      ttt = described_class.new(3, :human, :human)
+      ttt = create(3, :human, :human)
       human_tick_playing_to(ttt, nil)
       human_tick_playing_to(ttt, nil)
       human_tick_playing_to(ttt, nil)
@@ -227,7 +250,7 @@ RSpec.describe Tictactoe::Game do
     end
 
     it do
-      ttt = described_class.new(3, :human, :human)
+      ttt = create(3, :human, :human)
       human_tick_playing_to(ttt, 0)
       human_tick_playing_to(ttt, nil)
       human_tick_playing_to(ttt, nil)
@@ -239,14 +262,14 @@ RSpec.describe Tictactoe::Game do
 
   describe 'the computer plays' do
     it 'the first turn' do
-      ttt = described_class.new(3, :computer, :human)
+      ttt = create(3, :computer, :human)
       computer_tick(ttt)
       expect_amount_of_marks(ttt, :x, 1)
       expect_amount_of_marks(ttt, :o, 0)
     end
 
     it 'the second turn' do
-      ttt = described_class.new(3, :human, :computer)
+      ttt = create(3, :human, :computer)
       human_tick_playing_to(ttt, 0)
       computer_tick(ttt)
       expect_amount_of_marks(ttt, :x, 1)
@@ -254,7 +277,7 @@ RSpec.describe Tictactoe::Game do
     end
 
     it 'four consecutive turns' do
-      ttt = described_class.new(3, :computer, :computer)
+      ttt = create(3, :computer, :computer)
       computer_tick(ttt)
       computer_tick(ttt)
       computer_tick(ttt)
