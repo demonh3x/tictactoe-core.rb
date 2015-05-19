@@ -20,3 +20,15 @@ namespace :spec do
     include_tags :properties
   end
 end
+
+task :profile do
+  require 'ruby-prof'
+  require './spec/test_run'
+
+  RubyProf.start
+
+  TestRun.new(4).game_winner 
+
+  result = RubyProf.stop
+  RubyProf::GraphHtmlPrinter.new(result).print(STDOUT)
+end
