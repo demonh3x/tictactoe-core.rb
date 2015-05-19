@@ -3,7 +3,7 @@ require 'tictactoe/ai/tree'
 
 module Tictactoe
   module Ai
-    class Intelligence
+    class PerfectIntelligence
       SCORE_FOR_UNKNOWN_FUTURE = -1
 
       attr_reader :player

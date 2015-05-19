@@ -1,10 +1,10 @@
 require 'spec_helper'
-require 'tictactoe/ai/perfect_player'
+require 'tictactoe/ai/perfect_intelligence'
 require 'tictactoe/state'
 require 'tictactoe/players'
 require 'tictactoe/boards/three_by_three_board'
 
-RSpec.describe Tictactoe::Ai::Intelligence do
+RSpec.describe Tictactoe::Ai::PerfectIntelligence do
   def board(*marks)
     state = Tictactoe::State.new(Tictactoe::Boards::ThreeByThreeBoard.new)
     marks.each_with_index do |mark, location|

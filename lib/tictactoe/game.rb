@@ -2,6 +2,7 @@ require 'tictactoe/state'
 require 'tictactoe/players'
 require 'tictactoe/boards/board_type_factory'
 require 'tictactoe/ai/computer_player'
+require 'tictactoe/ai/perfect_intelligence'
 require 'tictactoe/ai/random_chooser'
 
 module Tictactoe
@@ -16,8 +17,8 @@ module Tictactoe
 
       chooser = Ai::RandomChooser.new(random)
       @ais = {
-        :x => Ai::ComputerPlayer.new(Ai::Intelligence.new(players.first), chooser),
-        :o => Ai::ComputerPlayer.new(Ai::Intelligence.new(players.first.next), chooser),
+        :x => Ai::ComputerPlayer.new(Ai::PerfectIntelligence.new(players.first), chooser),
+        :o => Ai::ComputerPlayer.new(Ai::PerfectIntelligence.new(players.first.next), chooser),
       }
       @types = {
         :x => x_type,
