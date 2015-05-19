@@ -34,7 +34,7 @@ module Tictactoe
           depth = [5, played_moves].min
         end
 
-        depth
+        depth +1
       end
     end
   end

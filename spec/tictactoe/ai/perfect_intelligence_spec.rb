@@ -3,6 +3,7 @@ require 'tictactoe/ai/perfect_intelligence'
 require 'tictactoe/state'
 require 'tictactoe/sequence'
 require 'tictactoe/boards/three_by_three_board'
+require 'tictactoe/boards/four_by_four_board'
 
 RSpec.describe Tictactoe::Ai::PerfectIntelligence do
   def board(*marks)
@@ -99,5 +100,23 @@ RSpec.describe Tictactoe::Ai::PerfectIntelligence do
       :o,  nil, nil,
     )
     expect(play(state)).to eq [1, 3, 5, 7]
+  end
+
+  def board4(*marks)
+    state = Tictactoe::State.new(Tictactoe::Boards::FourByFourBoard.new)
+    marks.each_with_index do |mark, location|
+      state = state.make_move(location, mark)
+    end
+    state
+  end
+
+  it 'given initial state, any option is valid' do
+    state = board4(
+      nil, nil, nil, nil,
+      nil, nil, nil, nil,
+      nil, nil, nil, nil,
+      nil, nil, nil, nil,
+    )
+    expect(play(state)).to eq((0..15).to_a)
   end
 end
