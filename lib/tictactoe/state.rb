@@ -19,6 +19,14 @@ module Tictactoe
       yield winner if is_finished?
     end
 
+    def is_finished?
+      is_full? || has_winner?
+    end
+
+    def winner
+      @winner ||= find_winner
+    end
+
     def layout
       marks
     end
@@ -31,21 +39,12 @@ module Tictactoe
     attr_reader :board, :marks
 
     private
-
-    def is_finished?
-      is_full? || has_winner?
-    end
-
     def is_full?
       available_moves.empty?
     end
 
     def has_winner?
       winner != nil
-    end
-
-    def winner
-      @winner ||= find_winner
     end
 
     def find_winner

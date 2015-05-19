@@ -82,11 +82,11 @@ module Tictactoe
     end
 
     def is_finished?()
-      state.when_finished{true} || false
+      state.is_finished?()
     end
 
     def winner()
-      state.when_finished{|winner| winner}
+      state.winner()
     end
 
     def marks()

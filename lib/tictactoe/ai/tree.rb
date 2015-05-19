@@ -14,7 +14,7 @@ module Tictactoe
       attr_reader :state, :me, :current_player, :transition
 
       def is_final?
-        state.when_finished{true} || false
+        state.is_finished?
       end
 
       def childs
@@ -30,15 +30,13 @@ module Tictactoe
       end
 
       def base_score
-        state.when_finished do |winner|
-          case winner
-          when me.value
-            MAXIMUM_SCORE
-          when nil
-            NEUTRAL_SCORE
-          else
-            MINIMUM_SCORE
-          end
+        case state.winner
+        when me.value
+          MAXIMUM_SCORE
+        when nil
+          NEUTRAL_SCORE
+        else
+          MINIMUM_SCORE
         end
       end
     end
