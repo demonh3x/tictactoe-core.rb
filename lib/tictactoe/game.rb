@@ -7,23 +7,58 @@ require 'tictactoe/ai/random_chooser'
 
 module Tictactoe
   class Game
-    attr_reader :current_player, :ais, :moves_source
+    class Human
+      attr_reader :moves_source
 
-    def initialize(board_size, x_type, o_type, moves_source, random=Random.new)
-      players = Players.new(:x, :o)
-      @current_player = players.first
+      def initialize(moves_source)
+        @moves_source = moves_source
+      end
 
-      @moves_source = moves_source
+      def get_move(state)
+        moves_source.get_move!
+      end
+    end
 
-      chooser = Ai::RandomChooser.new(random)
-      @ais = {
-        :x => Ai::ComputerPlayer.new(Ai::PerfectIntelligence.new(players.first), chooser),
-        :o => Ai::ComputerPlayer.new(Ai::PerfectIntelligence.new(players.first.next), chooser),
+    class Computer
+      attr_reader :ai
+
+      def initialize(mark, random)
+        @ai = Ai::ComputerPlayer.new(
+          Ai::PerfectIntelligence.new(mark),
+          Ai::RandomChooser.new(random)
+        )
+      end
+
+      def get_move(state)
+        ai.get_move(state)
+      end
+    end
+
+    def create_player(mark, type)
+      case type
+      when :human
+        Human.new(moves_source)
+      when :computer
+        Computer.new(mark, random)
+      end
+    end
+
+    attr_reader :current_mark, :ais, :moves_source, :random, :players
+    def initialize(board_size, x_type, o_type, user_moves_source, random=Random.new)
+      marks = Players.new(:x, :o)
+      @current_mark = marks.first
+
+      @moves_source = user_moves_source
+      @random = random
+
+      ts = {
+        marks.first => x_type,
+        marks.first.next => o_type,
       }
-      @types = {
-        :x => x_type,
-        :o => o_type
-      }
+      players = ts.map do |mark, type|
+        create_player(mark, type)
+      end
+      @players = players.cycle
 
       @state = State.new(Boards::BoardTypeFactory.new.create(board_size))
     end
@@ -31,8 +66,8 @@ module Tictactoe
     def tick()
       move = get_move()
       if is_valid?(move) && !is_finished?
-        @state = @state.make_move(move, current_mark)
-        @current_player = @current_player.next
+        update_state(move)
+        advance_player
       end
     end
 
@@ -58,20 +93,24 @@ module Tictactoe
     end
 
     def current_mark
-      @current_player.mark
+      @current_mark.mark
     end
 
-    def get_move()
-      if is_users_turn?
-        moves_source.get_move!
-      else
-        ai = ais[current_mark]
-        ai.get_move(@state)
-      end
+    def update_state(move)
+      @state = @state.make_move(move, current_mark)
     end
 
-    def is_users_turn?
-      @types[current_mark] == :human
+    def advance_player
+      @current_mark = @current_mark.next
+      @players.next
+    end
+
+    def current_player
+      @players.peek
+    end
+
+    def get_move
+      current_player.get_move(@state)
     end
   end
 end
