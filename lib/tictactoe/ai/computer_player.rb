@@ -1,5 +1,3 @@
-require 'tictactoe/ai/intelligence'
-
 module Tictactoe
   module Ai
     class ComputerPlayer
