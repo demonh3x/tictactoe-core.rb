@@ -6,10 +6,10 @@ module Tictactoe
     class Intelligence
       SCORE_FOR_UNKNOWN_FUTURE = -1
 
-      attr_reader :mark
+      attr_reader :player
 
-      def initialize(mark)
-        @mark = mark
+      def initialize(player)
+        @player = player
       end
 
       def desired_moves(state)
@@ -20,12 +20,8 @@ module Tictactoe
       def find_best_locations(state)
         depth = dynamic_depth_for state
         ai = ABNegamax.new(depth, SCORE_FOR_UNKNOWN_FUTURE)
-        root = Tree.new(state, mark, opponent(mark), mark)
+        root = Tree.new(state, player.mark, player.next.mark, player.mark)
         ai.best_nodes(root)
-      end
-
-      def opponent(mark)
-        mark == :x ? :o : :x
       end
 
       def dynamic_depth_for(state)

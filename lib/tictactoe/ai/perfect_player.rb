@@ -3,10 +3,10 @@ require 'tictactoe/ai/intelligence'
 module Tictactoe
   module Ai
     class PerfectPlayer
-      attr_accessor :mark, :state
+      attr_accessor :player, :state
 
-      def initialize(mark, chooser)
-        @mark = mark
+      def initialize(player, chooser)
+        @player = player
         @chooser = chooser
       end
 
@@ -20,7 +20,7 @@ module Tictactoe
 
       private
       def desired_moves
-        Intelligence.new(mark).desired_moves(state)
+        Intelligence.new(player).desired_moves(state)
       end
     end
   end

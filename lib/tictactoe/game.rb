@@ -1,4 +1,5 @@
 require 'tictactoe/state'
+require 'tictactoe/players'
 require 'tictactoe/boards/board_type_factory'
 require 'tictactoe/ai/perfect_player'
 require 'tictactoe/ai/random_chooser'
@@ -6,12 +7,13 @@ require 'tictactoe/ai/random_chooser'
 module Tictactoe
   class Game
     def initialize(random=Random.new)
-      @players = [:x, :o].cycle
+      @players = Players.new(:x, :o)
+      @current_player = @players.first
       @types = {}
       chooser = Ai::RandomChooser.new(random)
       @ais = {
-        :x => Ai::PerfectPlayer.new(:x, chooser),
-        :o => Ai::PerfectPlayer.new(:o, chooser),
+        :x => Ai::PerfectPlayer.new(@players.first, chooser),
+        :o => Ai::PerfectPlayer.new(@players.first.next, chooser),
       }
     end
 
@@ -33,7 +35,7 @@ module Tictactoe
       move = get_move(user)
       if is_valid?(move) && !is_finished?
         @state = @state.make_move(move, current_mark)
-        @players.next
+        @current_player = @current_player.next
       end
     end
 
@@ -59,7 +61,7 @@ module Tictactoe
     end
 
     def current_mark
-      @players.peek
+      @current_player.mark
     end
 
     def get_move(user)
