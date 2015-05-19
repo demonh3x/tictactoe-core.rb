@@ -14,11 +14,11 @@ RSpec.describe Tictactoe::Ai::ABNegamax do
   end
 
   def leaf(score)
-    spy "leaf scored: #{score}", :is_leaf? => true, :score => score
+    spy "leaf scored: #{score}", :is_final? => true, :score => score
   end
 
   def tree(childs)
-    spy "tree, childs: #{childs.to_s}", :is_leaf? => false, :childs => childs
+    spy "tree, childs: #{childs.to_s}", :is_final? => false, :childs => childs
   end
 
   it 'with one player choice of score 0, the resulting score is 0' do

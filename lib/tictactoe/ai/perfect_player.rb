@@ -9,6 +9,43 @@ module Tictactoe
       NEUTRAL_SCORE = 0
       SCORE_FOR_UNKNOWN_FUTURE = -1
 
+      class Intelligence
+        attr_reader :mark
+
+        def initialize(mark)
+          @mark = mark 
+        end
+
+        def desired_moves(state)
+          find_best_locations(state).map(&:transition)
+        end
+
+        private
+        def find_best_locations(state)
+          depth = dynamic_depth_for state
+          ai = ABNegamax.new(depth, SCORE_FOR_UNKNOWN_FUTURE)
+          root = Node.new(state, mark, opponent(mark), mark)
+          ai.best_nodes(root)
+        end
+
+        def opponent(mark)
+          mark == :x ? :o : :x
+        end
+
+        def dynamic_depth_for(state)
+          played_moves = state.board.locations.length - state.available_moves.length
+
+          if state.board.locations.length == 16
+            depth = [7, played_moves].min
+          else
+            played_moves += 4
+            depth = [5, played_moves].min
+          end
+
+          depth
+        end
+      end
+
       class Node
         def initialize(state, me, opponent, current_player, transition=nil)
           @state = state
@@ -19,7 +56,7 @@ module Tictactoe
         end
         attr_reader :state, :me, :opponent, :current_player, :transition
 
-        def is_leaf?
+        def is_final?
           state.when_finished{true} || false
         end
 
@@ -58,50 +95,17 @@ module Tictactoe
 
       attr_accessor :mark, :opponents_mark, :state
 
-      def is_ready_to_move?
-        true
-      end
-
       def update(state)
         self.state = state
       end
 
-      def play
-        options = find_best_locations(state).map(&:state)
-        @chooser.choose_one(options)
-      end
-
       def play_location
-        options = find_best_locations(state).map(&:transition)
+        options = desired_moves
         @chooser.choose_one(options)
       end
 
       def desired_moves
-        find_best_locations(state).map(&:transition)
-      end
-
-      def find_best_locations(state)
-        depth = dynamic_depth_for state
-
-        ai = ABNegamax.new(depth, SCORE_FOR_UNKNOWN_FUTURE)
-
-        root = Node.new(state, mark, opponents_mark, mark)
-        locs = ai.best_nodes(root)
-
-        locs
-      end
-
-      def dynamic_depth_for(state)
-        played_moves = state.board.locations.length - state.available_moves.length
-
-        if state.board.locations.length == 16
-          depth = [7, played_moves].min
-        else
-          played_moves += 4
-          depth = [5, played_moves].min
-        end
-
-        depth
+        Intelligence.new(mark).desired_moves(state)
       end
     end
   end

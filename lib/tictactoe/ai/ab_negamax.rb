@@ -11,20 +11,17 @@ module Tictactoe
 
       attr_reader :depth_reached_score, :depth_limit
 
-      def evaluate(tree)
-        best_nodes(tree)
-      end
-
       def score(tree)
-        negamax(tree, depth_limit, -1000, 1000, COLOR_SELF)[:score]
+        negamax(tree)[:score]
       end
 
       def best_nodes(tree)
-        negamax(tree, depth_limit, -1000, 1000, COLOR_SELF)[:nodes]
+        negamax(tree)[:nodes]
       end
-
-      def negamax(node, depth, a, b, color)
-        return {:score => color * node.score, :nodes => []} if node.is_leaf?
+      
+      private
+      def negamax(node, depth = depth_limit, a = -1000, b = 1000, color = COLOR_SELF)
+        return {:score => color * node.score, :nodes => []} if node.is_final?
         return {:score => color * depth_reached_score, :nodes => []} if depth == 0
 
         best_score = -1000
@@ -43,7 +40,6 @@ module Tictactoe
 
         {:score => best_score, :nodes => best_nodes}
       end
-
     end
   end
 end
