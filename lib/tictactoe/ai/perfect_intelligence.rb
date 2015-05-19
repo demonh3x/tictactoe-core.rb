@@ -6,10 +6,10 @@ module Tictactoe
     class PerfectIntelligence
       SCORE_FOR_UNKNOWN_FUTURE = -1
 
-      attr_reader :player
+      attr_reader :own_mark
 
-      def initialize(player)
-        @player = player
+      def initialize(own_mark)
+        @own_mark = own_mark
       end
 
       def desired_moves(state)
@@ -20,7 +20,7 @@ module Tictactoe
       def find_best_locations(state)
         depth = dynamic_depth_for state
         ai = ABNegamax.new(depth, SCORE_FOR_UNKNOWN_FUTURE)
-        root = Tree.new(state, player.mark, player.next.mark, player.mark)
+        root = Tree.new(state, own_mark.value, own_mark.next.value, own_mark.value)
         ai.best_nodes(root)
       end
 

@@ -1,5 +1,5 @@
 require 'tictactoe/state'
-require 'tictactoe/players'
+require 'tictactoe/sequence'
 require 'tictactoe/boards/board_type_factory'
 require 'tictactoe/ai/computer_player'
 require 'tictactoe/ai/perfect_intelligence'
@@ -7,110 +7,112 @@ require 'tictactoe/ai/random_chooser'
 
 module Tictactoe
   class Game
-    class Human
-      attr_reader :moves_source
+    class PlayersFactory
+      class Human
+        attr_reader :moves_source
 
-      def initialize(moves_source)
-        @moves_source = moves_source
+        def initialize(moves_source)
+          @moves_source = moves_source
+        end
+
+        def get_move(state)
+          moves_source.get_move!()
+        end
       end
 
-      def get_move(state)
-        moves_source.get_move!
+      class Computer
+        attr_reader :ai
+
+        def initialize(mark, random)
+          @ai = Ai::ComputerPlayer.new(
+            Ai::PerfectIntelligence.new(mark),
+            Ai::RandomChooser.new(random)
+          )
+        end
+
+        def get_move(state)
+          ai.get_move(state)
+        end
+      end
+
+      attr_reader :moves_source, :random
+
+      def initialize(user_moves_source, random)
+        @moves_source = user_moves_source
+        @random = random
+      end
+
+      def create(type, mark)
+        case type
+        when :human
+          Human.new(moves_source)
+        when :computer
+          Computer.new(mark, random)
+        end
       end
     end
 
-    class Computer
-      attr_reader :ai
+    attr_accessor :current_mark, :current_player, :state
 
-      def initialize(mark, random)
-        @ai = Ai::ComputerPlayer.new(
-          Ai::PerfectIntelligence.new(mark),
-          Ai::RandomChooser.new(random)
-        )
-      end
-
-      def get_move(state)
-        ai.get_move(state)
-      end
-    end
-
-    def create_player(mark, type)
-      case type
-      when :human
-        Human.new(moves_source)
-      when :computer
-        Computer.new(mark, random)
-      end
-    end
-
-    attr_reader :current_mark, :ais, :moves_source, :random, :players
     def initialize(board_size, x_type, o_type, user_moves_source, random=Random.new)
-      marks = Players.new(:x, :o)
-      @current_mark = marks.first
+      players_factory = PlayersFactory.new(user_moves_source, random)
+      board_factory = Boards::BoardTypeFactory.new()
 
-      @moves_source = user_moves_source
-      @random = random
+      first_mark = Sequence.new([:x, :o]).first()
+      @current_mark = first_mark
 
-      ts = {
-        marks.first => x_type,
-        marks.first.next => o_type,
+      types = {
+        first_mark => x_type,
+        first_mark.next => o_type,
       }
-      players = ts.map do |mark, type|
-        create_player(mark, type)
+      players = types.map do |mark, type|
+        players_factory.create(type, mark)
       end
-      @players = players.cycle
+      @current_player = Sequence.new(players).first()
 
-      @state = State.new(Boards::BoardTypeFactory.new.create(board_size))
+      @state = State.new(board_factory.create(board_size))
     end
 
     def tick()
       move = get_move()
-      if is_valid?(move) && !is_finished?
+      if is_valid?(move) && !is_finished?()
         update_state(move)
-        advance_player
+        advance_player()
       end
     end
 
-    def is_finished?
-      @state.when_finished{true} || false
+    def is_finished?()
+      state.when_finished{true} || false
     end
 
-    def winner
-      @state.when_finished{|winner| winner}
+    def winner()
+      state.when_finished{|winner| winner}
     end
 
-    def marks
-      @state.layout
+    def marks()
+      state.layout()
     end
 
-    def available
-      @state.available_moves
+    def available()
+      state.available_moves()
     end
 
     private
     def is_valid?(move)
-      move != nil && @state.available_moves.include?(move)
-    end
-
-    def current_mark
-      @current_mark.mark
+      move != nil && state.available_moves.include?(move)
     end
 
     def update_state(move)
-      @state = @state.make_move(move, current_mark)
+      self.state = state.make_move(move, current_mark.value())
     end
 
-    def advance_player
-      @current_mark = @current_mark.next
-      @players.next
+    def advance_player()
+      self.current_mark = current_mark.next()
+      self.current_player = current_player.next()
     end
 
-    def current_player
-      @players.peek
-    end
-
-    def get_move
-      current_player.get_move(@state)
+    def get_move()
+      current_player.value.get_move(state)
     end
   end
 end

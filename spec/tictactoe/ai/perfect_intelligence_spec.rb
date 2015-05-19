@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'tictactoe/ai/perfect_intelligence'
 require 'tictactoe/state'
-require 'tictactoe/players'
+require 'tictactoe/sequence'
 require 'tictactoe/boards/three_by_three_board'
 
 RSpec.describe Tictactoe::Ai::PerfectIntelligence do
@@ -20,7 +20,7 @@ RSpec.describe Tictactoe::Ai::PerfectIntelligence do
   end
 
   def play(state)
-    @player = described_class.new(Tictactoe::Players.new(:x, :o).first)
+    @player = described_class.new(Tictactoe::Sequence.new([:x, :o]).first)
     @player.desired_moves(state)
   end
 
