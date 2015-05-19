@@ -4,12 +4,8 @@ require 'tictactoe/game'
 
 RSpec.describe "Properties", :properties => true do
   def game_winner(board_size, random)
-    ttt = Tictactoe::Game.new(random)
-    ttt.set_board_size(board_size)
-    ttt.set_player_x(:computer)
-    ttt.set_player_o(:computer)
-
-    ttt.tick(nil) until ttt.is_finished?
+    ttt = Tictactoe::Game.new(board_size, :computer, :computer, nil, random)
+    ttt.tick() until ttt.is_finished?
     ttt.winner
   end
 
