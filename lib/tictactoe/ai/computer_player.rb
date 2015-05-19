@@ -2,7 +2,7 @@ require 'tictactoe/ai/intelligence'
 
 module Tictactoe
   module Ai
-    class PerfectPlayer
+    class ComputerPlayer
       attr_accessor :intelligence, :chooser
 
       def initialize(intelligence, chooser)
