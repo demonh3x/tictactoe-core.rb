@@ -13,12 +13,6 @@ RSpec.describe Tictactoe::Ai::PerfectIntelligence do
     state
   end
 
-  class ChoosesFirst
-    def choose_one(list)
-      list.first
-    end
-  end
-
   def play(state)
     @player = described_class.new(Tictactoe::Sequence.new([:x, :o]).first)
     @player.desired_moves(state)
