@@ -2,8 +2,8 @@ require 'spec_helper'
 require 'tictactoe/ai/ab_negamax'
 
 RSpec.describe Tictactoe::Ai::ABNegamax do
-  def preferred_nodes(tree)
-    negamax = described_class.new(-1, 10)
+  def preferred_nodes(tree, depth = 10, depth_reached_score = -10)
+    negamax = described_class.new(depth, depth_reached_score)
     strategy = negamax.best_nodes(tree)
     strategy
   end
@@ -78,12 +78,14 @@ RSpec.describe Tictactoe::Ai::ABNegamax do
     depth = 0
     depth_reached_score = -10
 
-    root = tree([
+    all_childs = [
       #player choice
       leaf(1),
-    ])
+    ]
+    root = tree(all_childs)
 
     expect(score(root, depth, depth_reached_score)).to eq(-10)
+    expect(preferred_nodes(root, depth, depth_reached_score)).to eq(all_childs)
   end
 
   it 'with a depth limit of 1 and a score of -10 for the deeper nodes, when provided a single node at depth 2 returns -10' do
