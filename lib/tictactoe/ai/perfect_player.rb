@@ -88,13 +88,12 @@ module Tictactoe
     end
 
     class PerfectPlayer
-      def initialize(mark, opponents_mark, chooser)
+      def initialize(mark, chooser)
         @mark = mark
-        @opponents_mark = opponents_mark
         @chooser = chooser
       end
 
-      attr_accessor :mark, :opponents_mark, :state
+      attr_accessor :mark, :state
 
       def update(state)
         self.state = state

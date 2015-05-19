@@ -10,8 +10,8 @@ module Tictactoe
       @types = {}
       chooser = Ai::RandomChooser.new(random)
       @ais = {
-        :x => Ai::PerfectPlayer.new(:x, :o, chooser),
-        :o => Ai::PerfectPlayer.new(:o, :x, chooser),
+        :x => Ai::PerfectPlayer.new(:x, chooser),
+        :o => Ai::PerfectPlayer.new(:o, chooser),
       }
     end
 
