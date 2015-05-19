@@ -1,12 +1,10 @@
 require 'spec_helper'
 require 'reproducible_random'
-require 'tictactoe/game'
+require 'test_run'
 
 RSpec.describe "Regression", :regression => true do
   def game_winner(board_size, random)
-    ttt = Tictactoe::Game.new(board_size, :computer, :computer, nil, random)
-    ttt.tick() until ttt.is_finished?
-    ttt.winner
+    TestRun.new(board_size, random).game_winner
   end
 
   it '4x4 failure with depth 4' do

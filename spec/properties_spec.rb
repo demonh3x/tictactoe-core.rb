@@ -1,14 +1,8 @@
 require 'spec_helper'
 require 'reproducible_random'
-require 'tictactoe/game'
+require 'test_run'
 
 RSpec.describe "Properties", :properties => true do
-  def game_winner(board_size, random)
-    ttt = Tictactoe::Game.new(board_size, :computer, :computer, nil, random)
-    ttt.tick() until ttt.is_finished?
-    ttt.winner
-  end
-
   10.times do |n|
     it 'two perfect players in a 4x4 board ends up in a draw' do
       random = ReproducibleRandom.new
@@ -16,7 +10,7 @@ RSpec.describe "Properties", :properties => true do
       random.print
       puts n
 
-      expect(game_winner 4, random).to eq(nil)
+      expect(TestRun.new(4, random).game_winner).to eq(nil)
     end
   end
 
@@ -27,7 +21,7 @@ RSpec.describe "Properties", :properties => true do
       random.print
       puts n
 
-      expect(game_winner 3, random).to eq(nil)
+      expect(TestRun.new(3, random).game_winner).to eq(nil)
     end
   end
 end
