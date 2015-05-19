@@ -5,7 +5,7 @@ require 'tictactoe/boards/three_by_three_board'
 
 require 'benchmark'
 
-RSpec.describe Tictactoe::Ai::PerfectPlayer do
+RSpec.describe Tictactoe::Ai::Intelligence do
   def board(*marks)
     state = Tictactoe::State.new(Tictactoe::Boards::ThreeByThreeBoard.new)
     marks.each_with_index do |mark, location|
@@ -21,9 +21,8 @@ RSpec.describe Tictactoe::Ai::PerfectPlayer do
   end
 
   def play(state)
-    @player = described_class.new(:x, :o, ChoosesFirst.new)
-    @player.update(state)
-    @player.desired_moves
+    @player = described_class.new(:x)
+    @player.desired_moves(state)
   end
 
   it 'the first play' do
