@@ -5,14 +5,13 @@ module Tictactoe
       MINIMUM_SCORE = -2
       NEUTRAL_SCORE = 0
 
-      def initialize(state, me, opponent, current_player, transition=nil)
+      def initialize(state, me, current_player = me, transition=nil)
         @state = state
         @me = me
-        @opponent = opponent
         @current_player = current_player
         @transition = transition
       end
-      attr_reader :state, :me, :opponent, :current_player, :transition
+      attr_reader :state, :me, :current_player, :transition
 
       def is_final?
         state.when_finished{true} || false
@@ -20,9 +19,8 @@ module Tictactoe
 
       def childs
         state.available_moves.lazy.map do |transition|
-          next_player = current_player == me ? opponent : me
-          next_state = state.make_move transition, current_player
-          Tree.new(next_state, me, opponent, next_player, transition)
+          next_state = state.make_move(transition, current_player.value)
+          Tree.new(next_state, me, current_player.next, transition)
         end
       end
 
@@ -34,7 +32,7 @@ module Tictactoe
       def base_score
         state.when_finished do |winner|
           case winner
-          when me
+          when me.value
             MAXIMUM_SCORE
           when nil
             NEUTRAL_SCORE

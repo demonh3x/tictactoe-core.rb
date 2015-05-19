@@ -20,7 +20,7 @@ module Tictactoe
       def find_best_locations(state)
         depth = dynamic_depth_for state
         ai = ABNegamax.new(depth, SCORE_FOR_UNKNOWN_FUTURE)
-        root = Tree.new(state, own_mark.value, own_mark.next.value, own_mark.value)
+        root = Tree.new(state, own_mark)
         ai.best_nodes(root)
       end
 
