@@ -16,8 +16,8 @@ module Tictactoe
 
       chooser = Ai::RandomChooser.new(random)
       @ais = {
-        :x => Ai::PerfectPlayer.new(players.first, chooser),
-        :o => Ai::PerfectPlayer.new(players.first.next, chooser),
+        :x => Ai::PerfectPlayer.new(Ai::Intelligence.new(players.first), chooser),
+        :o => Ai::PerfectPlayer.new(Ai::Intelligence.new(players.first.next), chooser),
       }
       @types = {
         :x => x_type,
@@ -65,8 +65,7 @@ module Tictactoe
         moves_source.get_move!
       else
         ai = ais[current_mark]
-        ai.update(@state)
-        ai.play_location
+        ai.get_move(@state)
       end
     end
 
