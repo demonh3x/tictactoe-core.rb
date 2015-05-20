@@ -25,8 +25,8 @@ module Tictactoe
       end
 
       def score 
-        depth = state.available_moves.length + 1
-        base_score * depth
+        height = state.available_moves.length + 1
+        base_score * height
       end
 
       def base_score
