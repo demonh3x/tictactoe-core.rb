@@ -15,8 +15,8 @@ RSpec.describe Tictactoe::Ai::PerfectIntelligence do
   end
 
   def play(state)
-    @player = described_class.new(Tictactoe::Sequence.new([:x, :o]).first)
-    @player.desired_moves(state)
+    player = Tictactoe::Sequence.new([:x, :o]).first
+    described_class.new().desired_moves(state, player)
   end
 
   it 'given only one possible play, should do it' do

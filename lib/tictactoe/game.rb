@@ -21,11 +21,14 @@ module Tictactoe
       end
 
       class Computer
+        INTELLIGENCE = Ai::PerfectIntelligence.new()
+
         attr_reader :ai
 
         def initialize(mark, random)
           @ai = Ai::ComputerPlayer.new(
-            Ai::PerfectIntelligence.new(mark),
+            mark,
+            INTELLIGENCE,
             Ai::RandomChooser.new(random)
           )
         end
