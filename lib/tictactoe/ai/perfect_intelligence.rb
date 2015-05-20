@@ -13,7 +13,7 @@ module Tictactoe
       end
 
       def desired_moves(state)
-        find_best_locations(state).map(&:transition)
+        find_best_locations(state).map(&:move)
       end
 
       private
