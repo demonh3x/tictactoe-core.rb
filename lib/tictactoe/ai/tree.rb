@@ -18,7 +18,7 @@ module Tictactoe
       end
 
       def childs
-        state.available_moves.lazy.map do |transition|
+        state.available_moves.map do |transition|
           next_state = state.make_move(transition, current_player.value)
           Tree.new(next_state, me, current_player.next, transition)
         end
