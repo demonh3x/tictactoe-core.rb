@@ -15,21 +15,21 @@ module Tictactoe
         end
 
         def get_move(state)
-          moves_source.get_move!()
+          moves_source.get_move!
         end
       end
 
       class Computer
-        attr_reader :player, :intelligence, :chooser
+        attr_reader :mark, :intelligence, :chooser
 
-        def initialize(player, intelligence, chooser)
-          @player = player
+        def initialize(mark, intelligence, chooser)
+          @mark = mark
           @intelligence = intelligence
           @chooser = chooser
         end
 
         def get_move(state)
-          chooser.choose_one(intelligence.desired_moves(state, player))
+          chooser.choose_one(intelligence.desired_moves(state, mark))
         end
       end
 
@@ -38,7 +38,7 @@ module Tictactoe
       def initialize(user_moves_source, random)
         @moves_source = user_moves_source
         @chooser = Ai::RandomChooser.new(random)
-        @intelligence = Ai::PerfectIntelligence.new()
+        @intelligence = Ai::PerfectIntelligence.new
       end
 
       def create(type, mark)
@@ -66,28 +66,28 @@ module Tictactoe
       reset
     end
 
-    def tick()
-      move = get_move()
-      if is_valid?(move) && !is_finished?()
+    def tick
+      move = get_move
+      if is_valid?(move) && !is_finished?
         update_state(move)
-        advance_player()
+        advance_player
       end
     end
 
-    def is_finished?()
-      state.is_finished?()
+    def is_finished?
+      state.is_finished?
     end
 
-    def winner()
-      state.winner()
+    def winner
+      state.winner
     end
 
-    def marks()
-      state.layout()
+    def marks
+      state.layout
     end
 
-    def available()
-      state.available_moves()
+    def available
+      state.available_moves
     end
 
     private
@@ -96,15 +96,15 @@ module Tictactoe
     end
 
     def update_state(move)
-      self.state = state.make_move(move, current_mark.value())
+      self.state = state.make_move(move, current_mark.value)
     end
 
-    def advance_player()
-      self.current_mark = current_mark.next()
-      self.current_player = current_player.next()
+    def advance_player
+      self.current_mark = current_mark.next
+      self.current_player = current_player.next
     end
 
-    def get_move()
+    def get_move
       current_player.value.get_move(state)
     end
 
@@ -114,18 +114,18 @@ module Tictactoe
     end
 
     def reset_players
-      first_mark = Sequence.new([:x, :o]).first()
+      first_mark = Sequence.new([:x, :o]).first
 
       factory = PlayersFactory.new(user_moves_source, random)
       x_player = factory.create(x_type, first_mark)
       o_player = factory.create(o_type, first_mark.next)
 
       self.current_mark = first_mark
-      self.current_player = Sequence.new([x_player, o_player]).first()
+      self.current_player = Sequence.new([x_player, o_player]).first
     end
 
     def reset_state
-      self.state = State.new(Boards::BoardTypeFactory.new().create(board_size))
+      self.state = State.new(Boards::BoardTypeFactory.new.create(board_size))
     end
   end
 end
