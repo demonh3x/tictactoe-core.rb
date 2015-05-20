@@ -28,10 +28,12 @@ module Tictactoe
         played_moves = state.board.locations.length - state.available_moves.length
 
         if state.board.locations.length == 16
-          depth = [7, played_moves].min
+          minimum_depth_to_avoid_lethal_moves = 7
+          depth = [minimum_depth_to_avoid_lethal_moves, played_moves].min
         else
           played_moves += 4
-          depth = [5, played_moves].min
+          minimum_depth_to_avoid_lethal_moves = 5
+          depth = [minimum_depth_to_avoid_lethal_moves, played_moves].min
         end
 
         depth +1
