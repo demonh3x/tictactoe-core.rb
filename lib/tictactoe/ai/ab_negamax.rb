@@ -22,7 +22,7 @@ module Tictactoe
       private
       def negamax(node, depth = depth_limit, a = -1000, b = 1000, color = COLOR_SELF)
         return {:score => color * node.score, :nodes => []} if node.is_final?
-        return {:score => color * depth_reached_score, :nodes => []} if depth == 0
+        return {:score => color * depth_reached_score, :nodes => node.childs} if depth == 0
 
         best_score = -1000
         best_nodes = []
