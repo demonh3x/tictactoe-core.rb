@@ -1,7 +1,6 @@
 require 'tictactoe/state'
 require 'tictactoe/sequence'
 require 'tictactoe/boards/board_type_factory'
-require 'tictactoe/ai/computer_player'
 require 'tictactoe/ai/perfect_intelligence'
 require 'tictactoe/ai/random_chooser'
 
@@ -21,28 +20,25 @@ module Tictactoe
       end
 
       class Computer
-        INTELLIGENCE = Ai::PerfectIntelligence.new()
+        attr_reader :player, :intelligence, :chooser
 
-        attr_reader :ai
-
-        def initialize(mark, random)
-          @ai = Ai::ComputerPlayer.new(
-            mark,
-            INTELLIGENCE,
-            Ai::RandomChooser.new(random)
-          )
+        def initialize(player, intelligence, chooser)
+          @player = player
+          @intelligence = intelligence
+          @chooser = chooser
         end
 
         def get_move(state)
-          ai.get_move(state)
+          chooser.choose_one(intelligence.desired_moves(state, player))
         end
       end
 
-      attr_reader :moves_source, :random
+      attr_reader :moves_source, :chooser, :intelligence
 
       def initialize(user_moves_source, random)
         @moves_source = user_moves_source
-        @random = random
+        @chooser = Ai::RandomChooser.new(random)
+        @intelligence = Ai::PerfectIntelligence.new()
       end
 
       def create(type, mark)
@@ -50,7 +46,7 @@ module Tictactoe
         when :human
           Human.new(moves_source)
         when :computer
-          Computer.new(mark, random)
+          Computer.new(mark, intelligence, chooser)
         end
       end
     end
