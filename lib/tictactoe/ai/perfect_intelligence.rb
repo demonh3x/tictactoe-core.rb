@@ -1,4 +1,4 @@
-require 'tictactoe/ai/ab_negamax'
+require 'tictactoe/ai/ab_minimax'
 require 'tictactoe/ai/tree'
 
 module Tictactoe
@@ -19,8 +19,8 @@ module Tictactoe
       private
       def find_best_locations(state)
         depth = dynamic_depth_for state
-        ai = ABNegamax.new(depth, SCORE_FOR_UNKNOWN_FUTURE)
         root = Tree.new(state, own_mark)
+        ai = ABMinimax.new(-1000, SCORE_FOR_UNKNOWN_FUTURE, depth)
         ai.best_nodes(root)
       end
 
@@ -36,7 +36,7 @@ module Tictactoe
           depth = [minimum_depth_to_avoid_lethal_moves, played_moves].min
         end
 
-        depth +1
+        depth
       end
     end
   end
