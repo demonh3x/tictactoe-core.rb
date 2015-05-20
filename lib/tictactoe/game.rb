@@ -52,25 +52,19 @@ module Tictactoe
       end
     end
 
+    attr_accessor :board_size, :x_type, :o_type, :random, :user_moves_source
     attr_accessor :current_mark, :current_player, :state
 
-    def initialize(board_size, x_type, o_type, user_moves_source, random=Random.new)
-      players_factory = PlayersFactory.new(user_moves_source, random)
-      board_factory = Boards::BoardTypeFactory.new()
+    def initialize(board_size, x_type, o_type, random=Random.new)
+      @board_size = board_size
+      @x_type = x_type
+      @o_type = o_type
+      @random = random
+    end
 
-      first_mark = Sequence.new([:x, :o]).first()
-      @current_mark = first_mark
-
-      types = {
-        first_mark => x_type,
-        first_mark.next => o_type,
-      }
-      players = types.map do |mark, type|
-        players_factory.create(type, mark)
-      end
-      @current_player = Sequence.new(players).first()
-
-      @state = State.new(board_factory.create(board_size))
+    def user_moves=(user_moves_source)
+      self.user_moves_source = user_moves_source
+      reset
     end
 
     def tick()
@@ -113,6 +107,26 @@ module Tictactoe
 
     def get_move()
       current_player.value.get_move(state)
+    end
+
+    def reset
+      reset_players
+      reset_state
+    end
+
+    def reset_players
+      first_mark = Sequence.new([:x, :o]).first()
+
+      factory = PlayersFactory.new(user_moves_source, random)
+      x_player = factory.create(x_type, first_mark)
+      o_player = factory.create(o_type, first_mark.next)
+
+      self.current_mark = first_mark
+      self.current_player = Sequence.new([x_player, o_player]).first()
+    end
+
+    def reset_state
+      self.state = State.new(Boards::BoardTypeFactory.new().create(board_size))
     end
   end
 end

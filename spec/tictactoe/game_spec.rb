@@ -20,7 +20,9 @@ RSpec.describe Tictactoe::Game do
   let(:moves_source) {MovesSource.new}
 
   def create(board_size, x_type, o_type)
-    described_class.new(board_size, x_type, o_type, moves_source)
+    ttt = described_class.new(board_size, x_type, o_type)
+    ttt.user_moves = moves_source
+    ttt
   end
 
   def human_tick_playing_to(ttt, loc)

@@ -11,7 +11,8 @@ class TestRun
   end
 
   def game_winner
-    ttt = Tictactoe::Game.new(board_size, :computer, :computer, nil, random)
+    ttt = Tictactoe::Game.new(board_size, :computer, :computer, random)
+    ttt.user_moves = nil
     ttt.tick() until ttt.is_finished?
     ttt.winner
   end
