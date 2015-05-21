@@ -19,8 +19,6 @@ module Tictactoe
       end
 
       def dynamic_depth_for(state)
-        played_moves = state.board.locations.length - state.available_moves.length
-
         is_4_by_4 = state.board.locations.length == 16
         if is_4_by_4
           initial_depth_to_stay_out_of_trouble = 0
@@ -30,7 +28,7 @@ module Tictactoe
           minimum_depth_to_avoid_lethal_moves = 5
         end
 
-        [minimum_depth_to_avoid_lethal_moves, played_moves + initial_depth_to_stay_out_of_trouble].min
+        [minimum_depth_to_avoid_lethal_moves, state.played_moves + initial_depth_to_stay_out_of_trouble].min
       end
     end
   end

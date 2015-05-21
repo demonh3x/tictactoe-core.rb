@@ -11,6 +11,10 @@ module Tictactoe
       @available ||= board.locations.select{|location| marks[location].nil?}
     end
 
+    def played_moves
+      @played_moves ||= board.locations.length - available_moves.length
+    end
+
     def make_move(location, mark)
       new_marks = marks.clone
       new_marks[location] = mark

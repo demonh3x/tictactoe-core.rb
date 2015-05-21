@@ -31,6 +31,7 @@ RSpec.describe Tictactoe::State do
       next_state = @state.make_move(3, :mark)
       expect(look_at(next_state, 3)).to eq(:mark)
       expect(next_state.available_moves).not_to include(3)
+      expect(next_state.played_moves).to eq(1)
     end
 
     it "is immutable" do
