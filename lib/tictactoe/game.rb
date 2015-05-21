@@ -6,11 +6,10 @@ require 'tictactoe/ai/random_chooser'
 
 require 'tictactoe/players/factory'
 require 'tictactoe/players/computer'
-require 'tictactoe/players/human'
 
 module Tictactoe
   class Game
-    attr_accessor :board_size, :x_type, :o_type, :random, :user_moves_source
+    attr_accessor :board_size, :x_type, :o_type, :random
     attr_accessor :current_mark, :current_player, :state
 
     def initialize(board_size, x_type, o_type, random=Random.new)
@@ -20,8 +19,8 @@ module Tictactoe
       @random = random
     end
 
-    def user_moves=(user_moves_source)
-      self.user_moves_source = user_moves_source
+    def register_human_factory(factory)
+      players_factory.register(:human, factory)
       reset
     end
 
@@ -75,34 +74,27 @@ module Tictactoe
     def reset_players
       first_mark = Sequence.new([:x, :o]).first
 
-      factory = players_factory
-      x_player = factory.create(x_type, first_mark)
-      o_player = factory.create(o_type, first_mark.next)
+      x_player = players_factory.create(x_type, first_mark)
+      o_player = players_factory.create(o_type, first_mark.next)
 
       self.current_mark = first_mark
       self.current_player = Sequence.new([x_player, o_player]).first
     end
 
     def players_factory
+      @players_factory ||= create_players_factory
+    end
+
+    def create_players_factory
       factory = Players::Factory.new()
       factory.register(:computer, computer_factory)
-      factory.register(:human, human_factory)
       factory
     end
 
     def computer_factory
       intelligence = Ai::PerfectIntelligence.new
       chooser = Ai::RandomChooser.new(random)
-
-      lambda do |mark|
-        Players::Computer.new(mark, intelligence, chooser)
-      end
-    end
-
-    def human_factory
-      lambda do |mark|
-        Players::Human.new(mark, user_moves_source)
-      end
+      lambda {|mark| Players::Computer.new(mark, intelligence, chooser)}
     end
 
     def reset_state

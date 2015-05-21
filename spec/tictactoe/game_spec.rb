@@ -1,33 +1,26 @@
 require 'tictactoe/game'
 
 RSpec.describe Tictactoe::Game do
-  class MovesSource
-    attr_reader :moves
-
-    def initialize()
-      @moves = []
+  class Human
+    def set_move(move)
+      @move = move
     end
 
-    def add(move)
-      moves << move
-    end
-
-    def get_move!
-      moves.pop
+    def get_move(state)
+      @move
     end
   end
 
-
-  let(:moves_source) {MovesSource.new}
+  let(:human_player) {Human.new}
 
   def create(board_size, x_type, o_type)
     game = described_class.new(board_size, x_type, o_type)
-    game.user_moves = moves_source
+    game.register_human_factory(lambda{|mark| human_player})
     game
   end
 
   def human_tick_playing_to(game, loc)
-    moves_source.add(loc)
+    human_player.set_move(loc)
     game.tick()
   end
   
