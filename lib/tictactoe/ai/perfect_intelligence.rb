@@ -7,12 +7,12 @@ module Tictactoe
       SCORE_FOR_UNKNOWN_FUTURE = -1
 
       def desired_moves(state, player)
-        find_best_locations(state, player)
+        find_best_moves(state, player)
       end
 
       private
-      def find_best_locations(state, player)
-        depth = dynamic_depth_for state
+      def find_best_moves(state, player)
+        depth = dynamic_depth_for(state)
         root = Tree.new(state, player)
         ai = ABMinimax.new(-1000, SCORE_FOR_UNKNOWN_FUTURE, depth)
         ai.best_nodes(root).map(&:move)

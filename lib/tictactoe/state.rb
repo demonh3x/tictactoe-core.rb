@@ -1,5 +1,7 @@
 module Tictactoe
   class State
+    attr_reader :board, :marks
+
     def initialize(board, marks=[nil] * board.locations.length)
       @board = board
       @marks = marks
@@ -27,16 +29,10 @@ module Tictactoe
       @winner ||= find_winner
     end
 
-    def layout
-      marks
-    end
-
     def ==(other)
       return false if other.class != self.class
       self.marks == other.marks
     end
-
-    attr_reader :board, :marks
 
     private
     def is_full?
@@ -56,7 +52,7 @@ module Tictactoe
           mark = marks[location]
           first_mark_in_line ||= mark
 
-          is_winner = mark != nil && mark == first_mark_in_line
+          is_winner = mark && mark == first_mark_in_line
           break if !is_winner
         end
 

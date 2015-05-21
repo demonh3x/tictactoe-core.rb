@@ -84,7 +84,7 @@ RSpec.describe Tictactoe::Game do
   end
 
   describe 'available' do
-    it 'returns all the locations when no move has been made' do
+    it 'returns all the moves when no move has been made' do
       game = create(3, :human, :human)
       expect(game.available).to eq([
         0, 1, 2,
@@ -93,7 +93,7 @@ RSpec.describe Tictactoe::Game do
       ])
     end
 
-    it 'returns all the available locations for when there is one move made on 3 by 3' do
+    it 'returns all the available moves for when there is one move made on 3 by 3' do
       game = create(3, :human, :human)
       human_tick_playing_to(game, 0)
       expect(game.available).to eq([
@@ -103,7 +103,7 @@ RSpec.describe Tictactoe::Game do
       ])
     end
 
-    it 'returns all the available locations for when there is one move made on 4 by 4' do
+    it 'returns all the available moves for when there is one move made on 4 by 4' do
       game = create(4, :human, :human)
       human_tick_playing_to(game, 15)
       expect(game.available).to eq([
@@ -196,7 +196,7 @@ RSpec.describe Tictactoe::Game do
     end
   end
 
-  describe 'cant play twice to the same location' do
+  describe 'cannot play twice to the same move' do
     it 'second play' do
       game = create(3, :human, :human)
       human_tick_playing_to(game, 0)
@@ -209,7 +209,7 @@ RSpec.describe Tictactoe::Game do
     end
   end
 
-  describe 'cant be played when finished' do
+  describe 'cannot be played when finished' do
     it do
       game = create(3, :human, :human)
 

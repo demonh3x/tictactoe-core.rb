@@ -41,7 +41,7 @@ module Tictactoe
     end
 
     def marks
-      state.layout
+      state.marks
     end
 
     def available
@@ -50,7 +50,7 @@ module Tictactoe
 
     private
     def is_valid?(move)
-      move != nil && state.available_moves.include?(move)
+      move && state.available_moves.include?(move)
     end
 
     def update_state(move)

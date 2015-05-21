@@ -31,8 +31,8 @@ RSpec.describe Tictactoe::Ai::ABMinimax do
     end
   end
 
-  def tree(childs)
-    spy "tree, childs: #{childs.to_s}", :is_final? => false, :childs => childs
+  def tree(children)
+    spy "tree, children: #{children.to_s}", :is_final? => false, :children => children
   end
   
   describe 'given a one-leaf one-level tree' do

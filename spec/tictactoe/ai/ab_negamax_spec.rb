@@ -17,8 +17,8 @@ RSpec.describe Tictactoe::Ai::ABNegamax do
     spy "leaf scored: #{score}", :is_final? => true, :score => score
   end
 
-  def tree(childs)
-    spy "tree, childs: #{childs.to_s}", :is_final? => false, :childs => childs
+  def tree(children)
+    spy "tree, children: #{children.to_s}", :is_final? => false, :children => children
   end
 
   it 'with one player choice of score 0, the resulting score is 0' do
@@ -78,14 +78,14 @@ RSpec.describe Tictactoe::Ai::ABNegamax do
     depth = 0
     depth_reached_score = -10
 
-    all_childs = [
+    all_children = [
       #player choice
       leaf(1),
     ]
-    root = tree(all_childs)
+    root = tree(all_children)
 
     expect(score(root, depth, depth_reached_score)).to eq(-10)
-    expect(preferred_nodes(root, depth, depth_reached_score)).to eq(all_childs)
+    expect(preferred_nodes(root, depth, depth_reached_score)).to eq(all_children)
   end
 
   it 'with a depth limit of 1 and a score of -10 for the deeper nodes, when provided a single node at depth 2 returns -10' do
