@@ -1,18 +1,17 @@
 module Tictactoe
   module Players
     class Factory
-      def initialize(computer_factory)
-        @factories = {
-          :computer => computer_factory
-        }
+      def initialize()
+        @factories = {}
       end
 
       def create(type, mark)
+        raise "No factory has been defined for type: #{type}" unless factories.has_key?(type)
         factories[type].call(mark)
       end
 
-      def register_human_factory(human_factory)
-        factories[:human] = human_factory
+      def register(type, factory)
+        factories[type] = factory
       end
 
       private

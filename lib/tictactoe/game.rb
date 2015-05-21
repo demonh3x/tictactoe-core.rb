@@ -84,8 +84,9 @@ module Tictactoe
     end
 
     def players_factory
-      factory = Players::Factory.new(computer_factory)
-      factory.register_human_factory(human_factory)
+      factory = Players::Factory.new()
+      factory.register(:computer, computer_factory)
+      factory.register(:human, human_factory)
       factory
     end
 

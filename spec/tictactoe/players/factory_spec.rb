@@ -9,7 +9,14 @@ RSpec.describe Tictactoe::Players::Factory do
     end
   end
 
-  let(:factory){described_class.new(lambda{|mark| ComputerFake.new(mark)})}
+  let(:computer_factory) do
+    lambda{|mark| ComputerFake.new(mark)}
+  end
+  let(:factory) do 
+    factory = described_class.new()
+    factory.register(:computer, computer_factory)
+    factory
+  end
 
   it 'creates a computer player' do
     computer_player = factory.create(:computer, :x)
@@ -27,10 +34,15 @@ RSpec.describe Tictactoe::Players::Factory do
   end
 
   it 'creates a human computer after being registered' do
-    factory.register_human_factory(lambda{|mark| HumanFake.new(mark)})
+    human_factory = lambda{|mark| HumanFake.new(mark)}
+    factory.register(:human, human_factory)
     human_player = factory.create(:human, :o)
 
     expect(human_player).to be_a(HumanFake)
     expect(human_player.mark).to eq(:o)
+  end
+
+  it 'raises a message when no factory is available for that type' do
+    expect{factory.create(:unknown_type, :o)}.to raise_error("No factory has been defined for type: unknown_type")
   end
 end
