@@ -43,19 +43,9 @@ module Tictactoe
     end
 
     def find_winner
-      for line in board.lines
-        first_mark_in_line = nil
-        is_winner = true
-
-        for location in line
-          mark = marks[location]
-          first_mark_in_line ||= mark
-
-          is_winner = mark && mark == first_mark_in_line
-          break if !is_winner
-        end
-
-        return first_mark_in_line if is_winner
+      board.lines.each do |line|
+        line_marks = line.map{|location| marks[location]}
+        return line_marks.first if line_marks.all?{|mark| mark && mark == line_marks.first}
       end
 
       nil
