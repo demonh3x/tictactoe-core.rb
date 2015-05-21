@@ -4,12 +4,12 @@ require 'tictactoe/ai/ab_minimax'
 RSpec.describe Tictactoe::Ai::ABMinimax do
   def strategy(tree)
     minimax = described_class.new(-1, -1, 10)
-    strategy = minimax.evaluate(tree)
+    strategy = minimax.best_nodes(tree)
     strategy
   end
 
   def leaf(score)
-    spy "leaf scored: #{score}", :is_leaf? => true, :score => score
+    spy "leaf scored: #{score}", :is_final? => true, :score => score
   end
 
   describe 'given a leaf node' do
@@ -31,8 +31,8 @@ RSpec.describe Tictactoe::Ai::ABMinimax do
     end
   end
 
-  def tree(childs)
-    spy "tree, childs: #{childs.to_s}", :is_leaf? => false, :childs => childs
+  def tree(children)
+    spy "tree, children: #{children.to_s}", :is_final? => false, :children => children
   end
   
   describe 'given a one-leaf one-level tree' do
@@ -443,7 +443,7 @@ RSpec.describe Tictactoe::Ai::ABMinimax do
           root = tree(options_perceived_as_equivalent)
 
           minimax = described_class.new(-1, -1, 0)
-          expect(minimax.evaluate root).to eq(options_perceived_as_equivalent)
+          expect(minimax.best_nodes root).to eq(options_perceived_as_equivalent)
           expect(evaluated_leaf).to have_received(:score)
           expect(not_evaluated_leaf).not_to have_received(:score)
         end
@@ -469,7 +469,7 @@ RSpec.describe Tictactoe::Ai::ABMinimax do
           ])
 
           minimax = described_class.new(-1, -1, 1)
-          expect(minimax.evaluate root).to eq([option_perceived_as_best])
+          expect(minimax.best_nodes root).to eq([option_perceived_as_best])
           expect(evaluated_leaf).to have_received(:score)
           expect(not_evaluated_leaf).not_to have_received(:score)
         end
@@ -501,7 +501,7 @@ RSpec.describe Tictactoe::Ai::ABMinimax do
           ])
 
           minimax = described_class.new(-1, -1, 2)
-          expect(minimax.evaluate root).to eq([option_perceived_as_best])
+          expect(minimax.best_nodes root).to eq([option_perceived_as_best])
           expect(evaluated_leaf).to have_received(:score)
           expect(not_evaluated_leaf).not_to have_received(:score)
         end
