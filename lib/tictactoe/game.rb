@@ -10,7 +10,7 @@ require 'tictactoe/players/computer'
 module Tictactoe
   class Game
     attr_accessor :board_size, :x_type, :o_type, :random
-    attr_accessor :current_mark, :current_player, :state
+    attr_accessor :current_player, :state
 
     def initialize(board_size, x_type, o_type, random=Random.new)
       @board_size = board_size
@@ -54,11 +54,10 @@ module Tictactoe
     end
 
     def update_state(move)
-      self.state = state.make_move(move, current_mark.value)
+      self.state = state.make_move(move, current_player.value.mark.value)
     end
 
     def advance_player
-      self.current_mark = current_mark.next
       self.current_player = current_player.next
     end
 
@@ -77,7 +76,6 @@ module Tictactoe
       x_player = players_factory.create(x_type, first_mark)
       o_player = players_factory.create(o_type, first_mark.next)
 
-      self.current_mark = first_mark
       self.current_player = Sequence.new([x_player, o_player]).first
     end
 
