@@ -29,11 +29,6 @@ module Tictactoe
       @winner ||= find_winner
     end
 
-    def ==(other)
-      return false if other.class != self.class
-      self.marks == other.marks
-    end
-
     private
     def is_full?
       available_moves.empty?
