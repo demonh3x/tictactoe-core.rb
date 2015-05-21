@@ -4,53 +4,12 @@ require 'tictactoe/boards/board_type_factory'
 require 'tictactoe/ai/perfect_intelligence'
 require 'tictactoe/ai/random_chooser'
 
+require 'tictactoe/players/factory'
+require 'tictactoe/players/computer'
+require 'tictactoe/players/human'
+
 module Tictactoe
   class Game
-    class PlayersFactory
-      class Human
-        attr_reader :moves_source
-
-        def initialize(moves_source)
-          @moves_source = moves_source
-        end
-
-        def get_move(state)
-          moves_source.get_move!
-        end
-      end
-
-      class Computer
-        attr_reader :mark, :intelligence, :chooser
-
-        def initialize(mark, intelligence, chooser)
-          @mark = mark
-          @intelligence = intelligence
-          @chooser = chooser
-        end
-
-        def get_move(state)
-          chooser.choose_one(intelligence.desired_moves(state, mark))
-        end
-      end
-
-      attr_reader :moves_source, :chooser, :intelligence
-
-      def initialize(user_moves_source, random)
-        @moves_source = user_moves_source
-        @chooser = Ai::RandomChooser.new(random)
-        @intelligence = Ai::PerfectIntelligence.new
-      end
-
-      def create(type, mark)
-        case type
-        when :human
-          Human.new(moves_source)
-        when :computer
-          Computer.new(mark, intelligence, chooser)
-        end
-      end
-    end
-
     attr_accessor :board_size, :x_type, :o_type, :random, :user_moves_source
     attr_accessor :current_mark, :current_player, :state
 
@@ -116,12 +75,33 @@ module Tictactoe
     def reset_players
       first_mark = Sequence.new([:x, :o]).first
 
-      factory = PlayersFactory.new(user_moves_source, random)
+      factory = players_factory
       x_player = factory.create(x_type, first_mark)
       o_player = factory.create(o_type, first_mark.next)
 
       self.current_mark = first_mark
       self.current_player = Sequence.new([x_player, o_player]).first
+    end
+
+    def players_factory
+      factory = Players::Factory.new(computer_factory)
+      factory.register_human_factory(human_factory)
+      factory
+    end
+
+    def computer_factory
+      intelligence = Ai::PerfectIntelligence.new
+      chooser = Ai::RandomChooser.new(random)
+
+      lambda do |mark|
+        Players::Computer.new(mark, intelligence, chooser)
+      end
+    end
+
+    def human_factory
+      lambda do |mark|
+        Players::Human.new(mark, user_moves_source)
+      end
     end
 
     def reset_state
