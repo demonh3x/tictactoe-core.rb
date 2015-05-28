@@ -21,10 +21,6 @@ module Tictactoe
       self.class.new(board, new_marks)
     end
 
-    def when_finished(&block)
-      yield winner if is_finished?
-    end
-
     def is_finished?
       is_full? || has_winner?
     end
