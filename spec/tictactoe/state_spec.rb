@@ -12,13 +12,11 @@ RSpec.describe Tictactoe::State do
   end
 
   def expect_finished(expected)
-    finished = @state.when_finished{true} || false
-    expect(finished).to eq(expected)
+    expect(@state.is_finished?).to eq(expected)
   end
 
   def expect_winner(expected)
-    actual_winner = @state.when_finished{|winner| winner}
-    expect(actual_winner).to eq(expected)
+    expect(@state.winner).to eq(expected)
   end
 
   describe "given a 3x3 board" do
