@@ -1,6 +1,6 @@
 require 'tictactoe/state'
 require 'tictactoe/sequence'
-require 'tictactoe/boards/board_type_factory'
+require 'tictactoe/boards/square'
 
 module Tictactoe
   class Game
@@ -71,7 +71,7 @@ module Tictactoe
     end
 
     def reset_state
-      self.state = State.new(Boards::BoardTypeFactory.new.create(board_size))
+      self.state = State.new(Boards::Square.new(board_size))
     end
   end
 end
