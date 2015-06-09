@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'tictactoe/state'
-require 'tictactoe/boards/three_by_three_board'
 
 RSpec.describe Tictactoe::State do
   def look_at(state, location)
@@ -21,7 +20,7 @@ RSpec.describe Tictactoe::State do
 
   describe "given a 3x3 board" do
     before(:each) do
-      @board = Tictactoe::Boards::ThreeByThreeBoard.new
+      @board = Tictactoe::Boards::Square.new(3)
       @state = described_class.new(@board)
     end
 
@@ -71,7 +70,7 @@ RSpec.describe Tictactoe::State do
       end
     end
 
-    Tictactoe::Boards::ThreeByThreeBoard.new.lines.each do |line|
+    Tictactoe::Boards::Square.new(3).lines.each do |line|
       describe "with a line for player a" do
         before(:each) do
           line.each do |l|

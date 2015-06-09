@@ -1,26 +1,15 @@
 require 'tictactoe/state'
 require 'tictactoe/sequence'
-require 'tictactoe/boards/board_type_factory'
-require 'tictactoe/ai/perfect_intelligence'
-require 'tictactoe/ai/random_chooser'
-
-require 'tictactoe/players/factory'
-require 'tictactoe/players/computer'
+require 'tictactoe/boards/square'
 
 module Tictactoe
   class Game
-    attr_accessor :board_size, :x_type, :o_type, :random
     attr_accessor :current_player, :state
 
-    def initialize(board_size, x_type, o_type, random=Random.new)
-      @board_size = board_size
-      @x_type = x_type
-      @o_type = o_type
-      @random = random
-    end
-
-    def register_human_factory(factory)
-      players_factory.register(:human, factory)
+    def initialize(players_factory, board_size, player_types)
+      self.players_factory = players_factory
+      self.board_size = board_size
+      self.player_types = player_types
       reset
     end
 
@@ -49,6 +38,8 @@ module Tictactoe
     end
 
     private
+    attr_accessor :players_factory, :board_size, :player_types
+
     def is_valid?(move)
       move && state.available_moves.include?(move)
     end
@@ -72,31 +63,15 @@ module Tictactoe
 
     def reset_players
       first_mark = Sequence.new([:x, :o]).first
+      players = [first_mark, first_mark.next].zip(player_types).map do |mark, type|
+        players_factory.create(type, mark)
+      end
 
-      x_player = players_factory.create(x_type, first_mark)
-      o_player = players_factory.create(o_type, first_mark.next)
-
-      self.current_player = Sequence.new([x_player, o_player]).first
-    end
-
-    def players_factory
-      @players_factory ||= create_players_factory
-    end
-
-    def create_players_factory
-      factory = Players::Factory.new()
-      factory.register(:computer, computer_factory)
-      factory
-    end
-
-    def computer_factory
-      intelligence = Ai::PerfectIntelligence.new
-      chooser = Ai::RandomChooser.new(random)
-      lambda {|mark| Players::Computer.new(mark, intelligence, chooser)}
+      self.current_player = Sequence.new(players).first
     end
 
     def reset_state
-      self.state = State.new(Boards::BoardTypeFactory.new.create(board_size))
+      self.state = State.new(Boards::Square.new(board_size))
     end
   end
 end

@@ -2,12 +2,11 @@ require 'spec_helper'
 require 'tictactoe/ai/perfect_intelligence'
 require 'tictactoe/state'
 require 'tictactoe/sequence'
-require 'tictactoe/boards/three_by_three_board'
-require 'tictactoe/boards/four_by_four_board'
+require 'tictactoe/boards/square'
 
 RSpec.describe Tictactoe::Ai::PerfectIntelligence do
   def board(*marks)
-    state = Tictactoe::State.new(Tictactoe::Boards::ThreeByThreeBoard.new)
+    state = Tictactoe::State.new(Tictactoe::Boards::Square.new(3))
     marks.each_with_index do |mark, location|
       state = state.make_move(location, mark)
     end
@@ -36,7 +35,7 @@ RSpec.describe Tictactoe::Ai::PerfectIntelligence do
     )
     expect(play(state)).to eq [4]
   end
-  
+
   it 'given the possibility to lose, should block, not matter if there is a fork comming' do
     state = board(
       :x, nil, nil,
@@ -50,7 +49,7 @@ RSpec.describe Tictactoe::Ai::PerfectIntelligence do
     state = board(
       :x,  :o,  :x,
       :o,  :x,  :o,
-      nil, nil, :o 
+      nil, nil, :o
     )
     expect(play(state)).to eq [6]
   end
@@ -103,7 +102,7 @@ RSpec.describe Tictactoe::Ai::PerfectIntelligence do
   end
 
   def board4(*marks)
-    state = Tictactoe::State.new(Tictactoe::Boards::FourByFourBoard.new)
+    state = Tictactoe::State.new(Tictactoe::Boards::Square.new(4))
     marks.each_with_index do |mark, location|
       state = state.make_move(location, mark)
     end
