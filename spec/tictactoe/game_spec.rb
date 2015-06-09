@@ -1,11 +1,13 @@
 require 'tictactoe/game'
+require 'tictactoe/players/factory'
+require 'tictactoe/players/perfect_computer'
 
 RSpec.describe Tictactoe::Game do
   class Human
     attr_reader :mark
 
     def initialize(mark, moves)
-      @mark = mark 
+      @mark = mark
       @moves = moves
     end
 
@@ -14,21 +16,32 @@ RSpec.describe Tictactoe::Game do
     end
   end
 
-  let(:moves){[]}
+  class FixedRandom
+    def rand
+      0.0
+    end
+  end
+
+  let(:moves) { [] }
 
   def create(board_size, x_type, o_type)
-    game = described_class.new(board_size, x_type, o_type)
-    game.register_human_factory(lambda{|mark| Human.new(mark, moves)})
-    game
+    computer_factory = lambda { |mark| Tictactoe::Players::PerfectComputer.new(mark, FixedRandom.new) }
+    human_factory = lambda { |mark| Human.new(mark, moves) }
+
+    factory = Tictactoe::Players::Factory.new
+    factory.register(:computer, computer_factory)
+    factory.register(:human, human_factory)
+
+    described_class.new(factory, board_size, [x_type, o_type])
   end
 
   def human_tick_playing_to(game, loc)
     moves << loc
-    game.tick()
+    game.tick
   end
-  
+
   def computer_tick(game)
-    game.tick()
+    game.tick
   end
 
   def expect_amount_of_marks(game, mark, expected_count)
@@ -70,7 +83,7 @@ RSpec.describe Tictactoe::Game do
         nil, nil, nil
       ])
     end
-    
+
     it 'first play of o on size 3' do
       game = create(3, :human, :human)
       human_tick_playing_to(game, 0)
@@ -126,7 +139,7 @@ RSpec.describe Tictactoe::Game do
       human_tick_playing_to(game, 6)
       expect(game.is_finished?).to eq(false)
     end
-    
+
     it do
       game = create(3, :human, :human)
       human_tick_playing_to(game, 0)

@@ -36,7 +36,7 @@ RSpec.describe Tictactoe::Ai::PerfectIntelligence do
     )
     expect(play(state)).to eq [4]
   end
-  
+
   it 'given the possibility to lose, should block, not matter if there is a fork comming' do
     state = board(
       :x, nil, nil,
@@ -50,7 +50,7 @@ RSpec.describe Tictactoe::Ai::PerfectIntelligence do
     state = board(
       :x,  :o,  :x,
       :o,  :x,  :o,
-      nil, nil, :o 
+      nil, nil, :o
     )
     expect(play(state)).to eq [6]
   end
