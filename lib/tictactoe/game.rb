@@ -21,6 +21,10 @@ module Tictactoe
       end
     end
 
+    def ready_to_tick?
+      current_player.value.ready_to_move?
+    end
+
     def is_finished?
       state.is_finished?
     end
