@@ -14,6 +14,10 @@ RSpec.describe Tictactoe::Game do
     def get_move(state)
       @moves.pop
     end
+
+    def ready_to_move?
+      !@moves.empty?
+    end
   end
 
   class FixedRandom
@@ -52,6 +56,17 @@ RSpec.describe Tictactoe::Game do
   it 'is not finished' do
     game = create(3, :human, :human)
     expect(game.is_finished?).to eq(false)
+  end
+
+  it 'is not ready to tick when the player is not ready to move' do
+    game = create(3, :human, :human)
+    expect(game.ready_to_tick?).to eq false
+  end
+
+  it 'is ready to tick when the player is ready to move' do
+    game = create(3, :human, :human)
+    moves << 0
+    expect(game.ready_to_tick?).to eq true
   end
 
   describe 'can be observed' do

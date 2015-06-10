@@ -27,8 +27,12 @@ RSpec.describe Tictactoe::Players::Computer do
 
   it 'has a mark' do
     computer = create(:x)
-    expect(computer.mark).to eq(:x)   
+    expect(computer.mark).to eq(:x)
+  end
 
+  it 'is ready to move' do
+    computer = create(:x)
+    expect(computer.ready_to_move?).to eq(true)
   end
 
   it 'can make a move' do

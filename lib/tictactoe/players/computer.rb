@@ -14,6 +14,10 @@ module Tictactoe
         chooser.choose_one(moves)
       end
 
+      def ready_to_move?
+        true
+      end
+
       private
       attr_reader :intelligence, :chooser
     end
