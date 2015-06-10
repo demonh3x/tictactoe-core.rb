@@ -36,7 +36,7 @@ RSpec.describe Tictactoe::Game do
     factory.register(:computer, computer_factory)
     factory.register(:human, human_factory)
 
-    described_class.new(factory, board_size, [x_type, o_type])
+    described_class.new(factory, board_size, x_type, o_type)
   end
 
   def human_tick_playing_to(game, loc)
