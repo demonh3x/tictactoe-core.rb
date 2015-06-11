@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'tictactoe/state'
+require 'tictactoe/boards/square'
 
 RSpec.describe Tictactoe::State do
   def look_at(state, location)
