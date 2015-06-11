@@ -17,7 +17,7 @@ class TestRun
     factory = Tictactoe::Players::Factory.new
     factory.register(:computer, lambda { |mark| Tictactoe::Players::PerfectComputer.new(mark, random) })
 
-    game = Tictactoe::Game.new(factory, board_size, [:computer, :computer])
+    game = Tictactoe::Game.new(factory, board_size, :computer, :computer)
 
     game.tick until game.is_finished?
     game.winner

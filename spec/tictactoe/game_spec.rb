@@ -36,7 +36,7 @@ RSpec.describe Tictactoe::Game do
     factory.register(:computer, computer_factory)
     factory.register(:human, human_factory)
 
-    described_class.new(factory, board_size, [x_type, o_type])
+    described_class.new(factory, board_size, x_type, o_type)
   end
 
   def human_tick_playing_to(game, loc)
@@ -67,6 +67,21 @@ RSpec.describe Tictactoe::Game do
     game = create(3, :human, :human)
     moves << 0
     expect(game.ready_to_tick?).to eq true
+  end
+
+  it 'is not ready to tick when the player is ready to move but the game has finished' do
+    game = create(3, :human, :human)
+    human_tick_playing_to(game, 0)
+    human_tick_playing_to(game, 1)
+    human_tick_playing_to(game, 2)
+    human_tick_playing_to(game, 5)
+    human_tick_playing_to(game, 3)
+    human_tick_playing_to(game, 6)
+    human_tick_playing_to(game, 4)
+    human_tick_playing_to(game, 8)
+    human_tick_playing_to(game, 7)
+    moves << 0
+    expect(game.ready_to_tick?).to eq false
   end
 
   describe 'can be observed' do

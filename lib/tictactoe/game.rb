@@ -5,11 +5,13 @@ require 'tictactoe/boards/square'
 module Tictactoe
   class Game
     attr_accessor :current_player, :state
+    attr_accessor :board_size, :x_type, :o_type
 
-    def initialize(players_factory, board_size, player_types)
+    def initialize(players_factory, board_size, x_type, o_type)
       self.players_factory = players_factory
       self.board_size = board_size
-      self.player_types = player_types
+      self.x_type = x_type
+      self.o_type = o_type
       reset
     end
 
@@ -22,7 +24,7 @@ module Tictactoe
     end
 
     def ready_to_tick?
-      current_player.value.ready_to_move?
+      !is_finished? && current_player.value.ready_to_move?
     end
 
     def is_finished?
@@ -42,7 +44,7 @@ module Tictactoe
     end
 
     private
-    attr_accessor :players_factory, :board_size, :player_types
+    attr_accessor :players_factory
 
     def is_valid?(move)
       move && state.available_moves.include?(move)
@@ -67,7 +69,7 @@ module Tictactoe
 
     def reset_players
       first_mark = Sequence.new([:x, :o]).first
-      players = [first_mark, first_mark.next].zip(player_types).map do |mark, type|
+      players = [first_mark, first_mark.next].zip([x_type, o_type]).map do |mark, type|
         players_factory.create(type, mark)
       end
 

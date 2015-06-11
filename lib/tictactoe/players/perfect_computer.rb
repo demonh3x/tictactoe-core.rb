@@ -19,6 +19,10 @@ module Tictactoe
         player.mark
       end
 
+      def ready_to_move?
+        player.ready_to_move?
+      end
+
       private
       attr_accessor :player
     end
