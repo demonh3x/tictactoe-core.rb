@@ -24,7 +24,7 @@ module Tictactoe
     end
 
     def ready_to_tick?
-      current_player.value.ready_to_move?
+      !is_finished? && current_player.value.ready_to_move?
     end
 
     def is_finished?
