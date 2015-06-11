@@ -27,8 +27,12 @@ task :profile do
 
   RubyProf.start
 
-  TestRun.new(4).game_winner 
+  TestRun.new(4).game_winner
 
   result = RubyProf.stop
   RubyProf::GraphHtmlPrinter.new(result).print(STDOUT)
+end
+
+task :build do
+  sh 'gem build tictactoe-core.gemspec'
 end
