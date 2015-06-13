@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'tictactoe/players/factory'
 
 RSpec.describe Tictactoe::Players::Factory do
@@ -12,7 +13,7 @@ RSpec.describe Tictactoe::Players::Factory do
   let(:computer_factory) do
     lambda{|mark| ComputerFake.new(mark)}
   end
-  let(:factory) do 
+  let(:factory) do
     factory = described_class.new()
     factory.register(:computer, computer_factory)
     factory
