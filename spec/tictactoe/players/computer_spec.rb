@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'tictactoe/players/computer'
 
 RSpec.describe Tictactoe::Players::Computer do

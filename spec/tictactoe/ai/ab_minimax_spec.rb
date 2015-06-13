@@ -26,7 +26,7 @@ RSpec.describe Tictactoe::Ai::ABMinimax do
 
       it do
         expect(strategy leaf 0)
-        .to eq([])                    
+        .to eq([])
       end
     end
   end
@@ -34,7 +34,7 @@ RSpec.describe Tictactoe::Ai::ABMinimax do
   def tree(children)
     spy "tree, children: #{children.to_s}", :is_final? => false, :children => children
   end
-  
+
   describe 'given a one-leaf one-level tree' do
     it 'does not ask the root for the score' do
       root = tree [leaf(1)]
