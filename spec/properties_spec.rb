@@ -3,7 +3,7 @@ require 'reproducible_random'
 require 'test_run'
 
 RSpec.describe "Properties", :properties => true do
-  0.times do |n|
+  10.times do |n|
     it 'two perfect players in a 4x4 board ends up in a draw' do
       random = ReproducibleRandom.new
 
@@ -14,7 +14,7 @@ RSpec.describe "Properties", :properties => true do
     end
   end
 
-  0.times do |n|
+  10.times do |n|
     it 'two perfect players in a 3x3 board ends up in a draw' do
       random = ReproducibleRandom.new
 
