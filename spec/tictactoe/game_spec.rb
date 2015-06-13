@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'tictactoe/game'
 require 'tictactoe/players/factory'
 require 'tictactoe/players/perfect_computer'

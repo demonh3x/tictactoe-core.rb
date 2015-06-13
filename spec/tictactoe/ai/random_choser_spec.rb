@@ -6,7 +6,7 @@ RSpec.describe Tictactoe::Ai::RandomChooser do
     random = spy :rand => random_value
     described_class.new(random).choose_one list
   end
-  
+
   describe 'given only one option' do
     describe 'should choose it no matter the random value'  do
       it 'for example: minimum random value' do
@@ -30,7 +30,7 @@ RSpec.describe Tictactoe::Ai::RandomChooser do
         expect(choose_with 0.99, [1, 2]).to eq 2
     end
   end
-    
+
   describe 'given three options' do
     it 'chooses the first one when the random is less than a third' do
         expect(choose_with 0.0, [1, 2, 3]).to eq 1

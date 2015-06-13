@@ -1,5 +1,5 @@
 require 'rspec/core/rake_task'
-  
+
 class RSpecTask
   def initialize(task)
     @task = task
