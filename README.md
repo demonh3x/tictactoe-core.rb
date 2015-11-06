@@ -1,5 +1,5 @@
 # tictactoe-core.rb
-[![TravisCI](https://travis-ci.org/demonh3x/tictactoe-core.rb.svg?branch=master)](https://travis-ci.org/demonh3x/tictactoe-core.rb) [![Code Climate](https://codeclimate.com/github/demonh3x/tictactoe.rb/badges/gpa.svg)](https://codeclimate.com/github/demonh3x/tictactoe.rb) [![Test Coverage](https://codeclimate.com/github/demonh3x/tictactoe.rb/badges/coverage.svg)](https://codeclimate.com/github/demonh3x/tictactoe.rb)
+[![Build Status](https://travis-ci.org/mateuadsuara/tictactoe-core.rb.svg?branch=remove-old-runtests)](https://travis-ci.org/mateuadsuara/tictactoe-core.rb) [![Code Climate](https://codeclimate.com/github/demonh3x/tictactoe.rb/badges/gpa.svg)](https://codeclimate.com/github/demonh3x/tictactoe.rb) [![Test Coverage](https://codeclimate.com/github/demonh3x/tictactoe.rb/badges/coverage.svg)](https://codeclimate.com/github/demonh3x/tictactoe.rb)
 
 ## Description
 
